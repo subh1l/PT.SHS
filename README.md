@@ -2,7 +2,7 @@
 
 aplikasi untuk mengelola operasional bioskop: film, jadwal tayang, studio, kursi, pemesanan tiket, dan pembayaran.
 
-## 👥 Anggota Kelompok
+## Anggota Kelompok
 
 1. Subhil Mubarak | 140810250032 
 2. Sri Sukmawati | 140810250059 
@@ -12,7 +12,7 @@ aplikasi untuk mengelola operasional bioskop: film, jadwal tayang, studio, kursi
 
 ## 1. Deskripsi Proyek
 
-**Latar Belakang**
+**Latar Belakang**:
 Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan penjualan di buku) rentan kesalahan, seperti: kursi terjual ganda, laporan pendapatan lambat, dan informasi film tidak mudah diakses pelanggan.
 
 **Sistem Manajemen Bioskop PT.shs** adalah aplikasi yang memusatkan seluruh proses tersebut: admin mengelola film, studio, dan jadwal; kasir/pelanggan memesan tiket dengan memilih kursi secara langsung; dan manajemen dapat melihat laporan penjualan.
@@ -145,7 +145,6 @@ Version Control : Git & GitHub
 
 ## 7. Struktur Folder (Rencana)
 
-```
 manajemen-bioskop/
 ├── docs/            # dokumentasi & diagram
 ├── database/        # skema SQL & seeder
