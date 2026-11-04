@@ -34,6 +34,7 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 
 **Pelanggan** : Melihat film, memesan tiket, melihat riwayat pesanan 
 
+### Tabel Fungsionalitas
 | Modul | Fitur | Deskripsi | Peran |
 |-------|-------|-----------|-------|
 | Autentikasi | Registrasi | Mendaftar akun dengan nama, email, dan password. | Pelanggan |
@@ -149,7 +150,11 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 
 Bahasa / Framework : Java 
 
+GUI : Java Swing
+
 Database : MySQL 
+
+IDE : NetBeans
 
 Version Control : Git & GitHub 
 
@@ -160,6 +165,7 @@ manajemen-bioskop/
 ├── database/        # skema SQL & seeder
 ├── src/             # kode sumber
 └── README.md
+```
 
 ---
 
