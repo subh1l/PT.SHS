@@ -28,9 +28,9 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 ## 2. Fungsionalitas
 
 ### Peran
-| **Admin** | Mengelola seluruh data master dan melihat laporan |
-| **Kasir** | Melayani pemesanan tiket langsung di loket |
-| **Pelanggan** | Melihat film, memesan tiket, melihat riwayat pesanan |
+**Admin** : Mengelola seluruh data master dan melihat laporan 
+**Kasir** : Melayani pemesanan tiket langsung di loket 
+**Pelanggan** : Melihat film, memesan tiket, melihat riwayat pesanan 
 
 ### Fitur Utama
 - **Autentikasi** — registrasi, login, logout, pembagian hak akses berdasarkan peran.
@@ -132,7 +132,6 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
         +proses()
     }
 
-```
 
 ---
 
