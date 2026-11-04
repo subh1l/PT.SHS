@@ -34,15 +34,23 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 
 **Pelanggan** : Melihat film, memesan tiket, melihat riwayat pesanan 
 
-### Fitur Utama
-- **Autentikasi** — registrasi, login, logout, pembagian hak akses berdasarkan peran.
-- **Manajemen Film** — tambah, ubah, hapus, lihat film (judul, genre, durasi, rating usia, sinopsis, poster).
-- **Manajemen Studio & Kursi** — atur studio, kapasitas, tipe (Regular/Premium), dan tata letak kursi.
-- **Manajemen Jadwal Tayang** — tentukan film, studio, tanggal, jam, dan harga tiket.
-- **Pemesanan Tiket** — pilih film → jadwal → kursi → konfirmasi.
-- **Pembayaran** — catat metode dan status pembayaran, cetak/tampilkan tiket.
-- **Riwayat Transaksi** — daftar pesanan per pelanggan.
-- **Laporan** — rekap penjualan harian/bulanan dan film terlaris.
+| Modul | Fitur | Deskripsi | Peran |
+|-------|-------|-----------|-------|
+| Autentikasi | Registrasi | Mendaftar akun dengan nama, email, dan password. | Pelanggan |
+| Autentikasi | Login | Masuk dengan email dan password. Sesi aktif selama pengguna belum logout. | Semua |
+| Autentikasi | Logout | Mengakhiri sesi aktif. | Semua |
+| Film | Lihat film | Menampilkan film berstatus `tayang` atau `segera` beserta sinopsis, durasi, dan rating usia. Dapat difilter per genre. | Semua |
+| Film | Kelola film | Menambah, mengubah, dan menghapus data film. Film yang sudah punya jadwal tidak dapat dihapus. | Admin |
+| Studio | Kelola studio dan kursi | Mengatur studio, tipe (regular/premium), kapasitas, dan tata letak kursi. | Admin |
+| Jadwal | Lihat jadwal | Menampilkan jadwal tayang per film dan tanggal beserta harga tiket. | Semua |
+| Jadwal | Kelola jadwal | Menentukan film, studio, tanggal, jam, dan harga. Sistem menolak jadwal yang bentrok di studio yang sama. | Admin |
+| Pemesanan | Pilih kursi | Menampilkan denah kursi. Kursi yang sudah dipesan pada jadwal tersebut tidak dapat dipilih. | Pelanggan, Kasir |
+| Pemesanan | Buat pesanan | Mengonfirmasi kursi yang dipilih. Sistem mengecek ketersediaan kursi sebelum pesanan disimpan dengan status `pending`. | Pelanggan, Kasir |
+| Pemesanan | Batalkan pesanan | Membatalkan pesanan selama statusnya masih `pending`, lalu kursi dilepas kembali. | Pelanggan, Kasir |
+| Pembayaran | Bayar pesanan | Mencatat metode dan jumlah pembayaran. Jika berhasil, status pesanan menjadi `lunas`. | Pelanggan, Kasir |
+| Pembayaran | Cetak tiket | Menampilkan atau mencetak tiket untuk pesanan yang sudah `lunas`. | Pelanggan, Kasir |
+| Riwayat | Lihat riwayat | Menampilkan daftar pesanan milik pengguna sendiri. | Pelanggan |
+| Laporan | Rekap penjualan | Menampilkan pendapatan harian atau bulanan dan film terlaris. | Admin |
 
 ---
 
