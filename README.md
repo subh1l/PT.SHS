@@ -29,7 +29,9 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 
 ### Peran
 **Admin** : Mengelola seluruh data master dan melihat laporan 
+
 **Kasir** : Melayani pemesanan tiket langsung di loket 
+
 **Pelanggan** : Melihat film, memesan tiket, melihat riwayat pesanan 
 
 ### Fitur Utama
@@ -47,23 +49,23 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 ## 3. Alur Aplikasi
 
 ### Alur Pemesanan Tiket
-![Alur Pemesanan Tiket](docs/alur-pemesanan-tiket.jpeg)
+![Alur Pemesanan Tiket](docs/alur-pemesanan-tiket.png)
 
 ### Alur Admin
-![Alur Admin](docs/alur-admin.jpeg)
+![Alur Admin](docs/alur-admin.png)
 
 ---
 
 ## 4. Rancangan Database
 
 ### Struktur Tabel
-![Tabel](docs/Tabel.png)
+![Tabel](docs/Tabel.jpeg)
 
 ---
 
 ## 5. Rancangan Class
 
-![Class Diagram](docs/class.png)
+![Class Diagram](docs/class.jpeg)
 
     class User {
         -int idUser
@@ -137,9 +139,9 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 
 ## 6. Teknologi
 
-| Bahasa / Framework | Java |
-| Database | MySQL |
-| Version Control | Git & GitHub |
+Bahasa / Framework : Java 
+Database : MySQL 
+Version Control : Git & GitHub 
 
 ## 7. Struktur Folder (Rencana)
 
