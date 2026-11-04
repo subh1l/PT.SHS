@@ -140,11 +140,13 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 ## 6. Teknologi
 
 Bahasa / Framework : Java 
+
 Database : MySQL 
+
 Version Control : Git & GitHub 
 
 ## 7. Struktur Folder (Rencana)
-
+```
 manajemen-bioskop/
 ├── docs/            # dokumentasi & diagram
 ├── database/        # skema SQL & seeder
