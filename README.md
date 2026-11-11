@@ -68,7 +68,7 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 ## 4. Rancangan Database
 
 ### Struktur Tabel
-![Tabel](docs/Tabel.jpeg)
+![Tabel](docs/Tabel.png)
 
 ---
 
