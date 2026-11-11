@@ -9,7 +9,7 @@ package com.mycompany.bioskop.view;
  * @author bill
  */
 public class RegisterFrame extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegisterFrame.class.getName());
 
     /**
@@ -28,21 +28,178 @@ public class RegisterFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        panelRegister = new javax.swing.JPanel();
+        lblTitle = new javax.swing.JLabel();
+        lblNama = new javax.swing.JLabel();
+        lblEmail = new javax.swing.JLabel();
+        lblPassword = new javax.swing.JLabel();
+        lblKonfirmasi = new javax.swing.JLabel();
+        lblLogin = new javax.swing.JLabel();
+        txtNama = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        btnDaftar = new javax.swing.JButton();
+        txtPassword = new javax.swing.JPasswordField();
+        txtKonfirmasi = new javax.swing.JPasswordField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Register ");
+        setResizable(false);
+
+        panelRegister.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        lblTitle.setText("REGISTER");
+
+        lblNama.setText("Nama Lengkap");
+
+        lblEmail.setText("Email");
+
+        lblPassword.setText("Password");
+
+        lblKonfirmasi.setText("Konfirmasi Password");
+
+        lblLogin.setText("Sudah punya akun? Login");
+        lblLogin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblLoginMouseClicked(evt);
+            }
+        });
+
+        btnDaftar.setText("DAFTAR");
+        btnDaftar.addActionListener(this::btnDaftarActionPerformed);
+
+        javax.swing.GroupLayout panelRegisterLayout = new javax.swing.GroupLayout(panelRegister);
+        panelRegister.setLayout(panelRegisterLayout);
+        panelRegisterLayout.setHorizontalGroup(
+            panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRegisterLayout.createSequentialGroup()
+                .addGroup(panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelRegisterLayout.createSequentialGroup()
+                        .addGap(205, 205, 205)
+                        .addComponent(lblTitle))
+                    .addGroup(panelRegisterLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblNama, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE)
+                            .addComponent(lblKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNama)
+                            .addComponent(txtEmail)
+                            .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPassword)
+                            .addComponent(txtKonfirmasi)))
+                    .addGroup(panelRegisterLayout.createSequentialGroup()
+                        .addGap(175, 175, 175)
+                        .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(290, Short.MAX_VALUE))
+        );
+        panelRegisterLayout.setVerticalGroup(
+            panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRegisterLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(lblTitle)
+                .addGap(38, 38, 38)
+                .addComponent(lblNama)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNama, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(lblEmail)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(lblPassword)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
+                .addComponent(lblKonfirmasi)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtKonfirmasi, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72)
+                .addComponent(btnDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblLogin)
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelRegister, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
+        // TODO add your handling code here:
+
+        String nama = txtNama.getText().trim();
+        String email = txtEmail.getText().trim();
+        String password = new String(txtPassword.getPassword());
+        String konfirmasi = new String(txtKonfirmasi.getPassword());
+
+        try {
+            com.mycompany.bioskop.service.AuthService authService
+                    = new com.mycompany.bioskop.service.AuthService(
+                            new com.mycompany.bioskop.repository.UserRepository()
+                    );
+
+            authService.register(nama, email, password, konfirmasi);
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Registrasi berhasil! Silakan login.",
+                    "Berhasil",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE
+            );
+
+            txtNama.setText("");
+            txtEmail.setText("");
+            txtPassword.setText("");
+            txtKonfirmasi.setText("");
+
+        } catch (com.mycompany.bioskop.exception.AuthException e) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    e.getMessage(),
+                    "Registrasi Gagal",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+
+        } catch (java.sql.SQLException e) {
+
+            java.util.logging.Logger.getLogger(RegisterFrame.class.getName())
+                    .log(java.util.logging.Level.SEVERE, null, e);
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Gagal menyimpan data. Periksa koneksi database.",
+                    "Database Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
+
+    }//GEN-LAST:event_btnDaftarActionPerformed
+
+    private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked
+        // TODO add your handling code here:
+
+        new LoginFrame().setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_lblLoginMouseClicked
 
     /**
      * @param args the command line arguments
@@ -70,5 +227,17 @@ public class RegisterFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDaftar;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblKonfirmasi;
+    private javax.swing.JLabel lblLogin;
+    private javax.swing.JLabel lblNama;
+    private javax.swing.JLabel lblPassword;
+    private javax.swing.JLabel lblTitle;
+    private javax.swing.JPanel panelRegister;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtKonfirmasi;
+    private javax.swing.JTextField txtNama;
+    private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables
 }

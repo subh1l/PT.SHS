@@ -1,0 +1,6 @@
+com\mycompany\bioskop\view\RegisterFrame$1.class
+com\mycompany\bioskop\util\PasswordHasher.class
+com\mycompany\bioskop\exception\AuthException.class
+com\mycompany\bioskop\model\User.class
+com\mycompany\bioskop\repository\UserRepository.class
+com\mycompany\bioskop\service\AuthService.class
