@@ -91,7 +91,7 @@ public class RegisterFrame extends javax.swing.JFrame {
                     .addGroup(panelRegisterLayout.createSequentialGroup()
                         .addGap(175, 175, 175)
                         .addComponent(lblLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(290, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         panelRegisterLayout.setVerticalGroup(
             panelRegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

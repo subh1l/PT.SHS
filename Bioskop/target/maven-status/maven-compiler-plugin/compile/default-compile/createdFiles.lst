@@ -1,6 +1,12 @@
+com\mycompany\bioskop\Bioskop.class
+com\mycompany\bioskop\view\UserMainFrame.class
+com\mycompany\bioskop\view\RegisterFrame.class
+com\mycompany\bioskop\repository\Databaseutil.class
+com\mycompany\bioskop\view\AdminMainFrame.class
 com\mycompany\bioskop\view\RegisterFrame$1.class
 com\mycompany\bioskop\util\PasswordHasher.class
 com\mycompany\bioskop\exception\AuthException.class
 com\mycompany\bioskop\model\User.class
 com\mycompany\bioskop\repository\UserRepository.class
 com\mycompany\bioskop\service\AuthService.class
+com\mycompany\bioskop\view\LoginFrame.class
