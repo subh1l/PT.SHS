@@ -50,7 +50,7 @@ public class AuthService {
             throw new AuthException("Email sudah terdaftar.");
         }
 
-        User baru = new User(0, nama, email, PasswordHasher.hash(password), "user");
+        User baru = new User(0, nama, email, password, "user");
         try {
             userRepository.save(baru);
         } catch (SQLIntegrityConstraintViolationException e) {
