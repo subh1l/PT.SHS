@@ -8,6 +8,7 @@ import com.mycompany.bioskop.repository.Databaseutil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,6 +42,7 @@ public class LoginFrame extends javax.swing.JFrame {
         txtEmail = new javax.swing.JTextField();
         btnLogin = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
+        BtnRegister = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login - PT SHS Bioskop");
@@ -70,6 +72,13 @@ public class LoginFrame extends javax.swing.JFrame {
         btnLogin.setFocusPainted(false);
         btnLogin.addActionListener(this::btnLoginActionPerformed);
 
+        BtnRegister.setBackground(new java.awt.Color(38, 57, 91));
+        BtnRegister.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        BtnRegister.setForeground(java.awt.Color.white);
+        BtnRegister.setText("REGISTER");
+        BtnRegister.setFocusPainted(false);
+        BtnRegister.addActionListener(this::BtnRegisterActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,18 +95,20 @@ public class LoginFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 89, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtEmail)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(100, 100, 100))))
+                    .addComponent(BtnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(54, 54, 54)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtEmail)
+                                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(100, 100, 100)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,9 +125,11 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblPassword)
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
                 .addComponent(btnLogin)
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(BtnRegister)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -128,78 +141,81 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-         prosesLogin();
-    }//GEN-LAST:event_btnLoginActionPerformed
-    
-    private void prosesLogin() {
+        String email = txtEmail.getText().trim();
+        String password = new String(txtPassword.getPassword());
 
-    String email = txtEmail.getText().trim();
-    String password = new String(txtPassword.getPassword());
-
-    if (email.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Email dan password harus diisi!"
-        );
-        return;
-    }
-
-    String sql = "SELECT id_user, nama, email, role "
-               + "FROM user WHERE email = ? AND password = ?";
-
-    try (
-        Connection conn = Databaseutil.getConnection();
-        PreparedStatement pst = conn.prepareStatement(sql)
-    ) {
-
-        pst.setString(1, email);
-        pst.setString(2, password);
-
-        try (ResultSet rs = pst.executeQuery()) {
-
-            if (rs.next()) {
-
-                String nama = rs.getString("nama");
-                String role = rs.getString("role");
-
-                if ("admin".equalsIgnoreCase(role)) {
-
-                    JOptionPane.showMessageDialog(
-                        this, "Selamat datang, " + nama + "!"
-                    );
-
-                    new AdminMainFrame().setVisible(true);
-
-                } else if ("user".equalsIgnoreCase(role)) {
-
-                    JOptionPane.showMessageDialog(
-                        this, "Selamat datang, " + nama + "!"
-                    );
-
-                    new UserMainFrame().setVisible(true);
-
+        if (email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Email dan password harus diisi!"
+            );
+            return;
+        }
+        
+        String sql = "SELECT id_user, nama, email, role "
+                   + "FROM user WHERE email = ? AND password = ?";
+        
+        try (
+            Connection conn = Databaseutil.getConnection();
+            PreparedStatement pst = conn.prepareStatement(sql)
+        ) {
+            
+            pst.setString(1, email);
+            pst.setString(2, password);
+            
+            try (ResultSet rs = pst.executeQuery()) {
+                
+                if (rs.next()) {
+                    
+                    String nama = rs.getString("nama");
+                    String role = rs.getString("role");
+                    
+                    if ("admin".equalsIgnoreCase(role)) {
+                        
+                        JOptionPane.showMessageDialog(
+                            this, "Selamat datang, " + nama + "!"
+                        );
+                        
+                        new AdminMainFrame().setVisible(true);
+                        
+                    } else if ("user".equalsIgnoreCase(role)) {
+                        
+                        JOptionPane.showMessageDialog(
+                            this, "Selamat datang, " + nama + "!"
+                        );
+                        
+                        new UserMainFrame().setVisible(true);
+                        
+                    } else {
+                        JOptionPane.showMessageDialog(
+                            this, "Role akun tidak dikenali!"
+                        );
+                        return;
+                    }
+                    
+                    dispose();
+                    
                 } else {
                     JOptionPane.showMessageDialog(
-                        this, "Role akun tidak dikenali!"
+                        this, "Email atau password salah!"
                     );
-                    return;
                 }
-
-                dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(
-                    this, "Email atau password salah!"
-                );
             }
-        }
 
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(
-            this, "Login gagal: " + ex.getMessage()
-        );
-    }
-}
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(
+                this, "Login gagal: " + ex.getMessage()
+            );
+        }
+    }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
+        // TODO add your handling code here:
+        JFrame registerFrame = new RegisterFrame();
+        registerFrame.setLocationRelativeTo(null);
+        registerFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_BtnRegisterActionPerformed
    
     /**
      * @param args the command line arguments
@@ -227,6 +243,7 @@ public class LoginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnRegister;
     private javax.swing.JButton btnLogin;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblJudul;
