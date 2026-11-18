@@ -1,9 +1,13 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Other/File.java to edit this template
  */
-package com.mycompany.bioskop.model;
+package com.mycompany.bioskop.entity;
 
+/**
+ *
+ * @author bill
+ */
 public class User {
 
     private int idUser;
@@ -42,5 +46,21 @@ public class User {
 
     public String getRole() {
         return role;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
