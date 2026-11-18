@@ -5,9 +5,8 @@
 package com.mycompany.bioskop.service;
 
 import com.mycompany.bioskop.exception.AuthException;
-import com.mycompany.bioskop.model.User;
+import com.mycompany.bioskop.entity.User;
 import com.mycompany.bioskop.repository.UserRepository;
-import com.mycompany.bioskop.util.PasswordHasher;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.regex.Pattern;

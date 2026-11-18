@@ -1,6 +1,6 @@
 package com.mycompany.bioskop.repository;
 
-import com.mycompany.bioskop.model.Film;
+import com.mycompany.bioskop.entity.Film;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

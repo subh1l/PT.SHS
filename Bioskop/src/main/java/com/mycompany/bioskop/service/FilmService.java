@@ -1,7 +1,7 @@
 package com.mycompany.bioskop.service;
 
 import com.mycompany.bioskop.exception.ValidasiException;
-import com.mycompany.bioskop.model.Film;
+import com.mycompany.bioskop.entity.Film;
 import com.mycompany.bioskop.repository.FilmRepository;
 import java.sql.SQLException;
 import java.util.List;

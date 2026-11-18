@@ -4,7 +4,7 @@
  */
 package com.mycompany.bioskop.repository;
 
-import com.mycompany.bioskop.model.User;
+import com.mycompany.bioskop.entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
