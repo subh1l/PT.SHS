@@ -4,6 +4,10 @@
  */
 package com.mycompany.bioskop.view;
 
+import java.awt.CardLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /**
  *
  * @author bill
@@ -11,12 +15,31 @@ package com.mycompany.bioskop.view;
 public class AdminMainFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AdminMainFrame.class.getName());
+    private CardLayout cardLayout;
+    private JPanel contentContainer;
 
     /**
      * Creates new form AdminMainFrame
      */
     public AdminMainFrame() {
         initComponents();
+        
+        FilmPanel filmPanel = new FilmPanel();
+        StudioPanel studioPanel = new StudioPanel();
+        JadwalPanel jadwalPanel = new JadwalPanel();
+        LaporanPanel laporanPanel = new LaporanPanel();
+        
+        cardLayout = new CardLayout();
+        contentContainer = new JPanel(cardLayout);
+        
+        contentContainer.add(filmPanel, "FILM");
+        contentContainer.add(studioPanel,"STUDIO" );
+        contentContainer.add(jadwalPanel, "JADWAL");
+        contentContainer.add(laporanPanel, "LAPORAN");
+        
+        
+        pnlContent.setLayout(new java.awt.BorderLayout());
+        pnlContent.add(contentContainer, java.awt.BorderLayout.CENTER);
     }
 
     /**
@@ -28,7 +51,6 @@ public class AdminMainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         pnlSidebar = new javax.swing.JPanel();
         lblLogo = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -39,9 +61,15 @@ public class AdminMainFrame extends javax.swing.JFrame {
         btnMenuLaporan = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         lblAdmin = new javax.swing.JLabel();
+        NameFiled = new javax.swing.JTextField();
         pnlContent = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                formComponentRemoved(evt);
+            }
+        });
 
         lblLogo.setBackground(new java.awt.Color(0, 51, 102));
         lblLogo.setForeground(new java.awt.Color(0, 102, 153));
@@ -59,37 +87,47 @@ public class AdminMainFrame extends javax.swing.JFrame {
 
         btnMenuStudio.setText("Menu Studio");
         btnMenuStudio.setActionCommand("Kelola Studio");
+        btnMenuStudio.addActionListener(this::btnMenuStudioActionPerformed);
 
         btnMenuJadwal.setText("Kelola Jadwal");
+        btnMenuJadwal.addActionListener(this::btnMenuJadwalActionPerformed);
 
         btnMenuLaporan.setText("Laporan");
         btnMenuLaporan.addActionListener(this::btnMenuLaporanActionPerformed);
 
         btnLogout.setText("Logout");
+        btnLogout.addActionListener(this::btnLogoutActionPerformed);
 
         lblAdmin.setText("Login Sebagai :");
+
+        NameFiled.setEditable(false);
+        NameFiled.setBackground(new java.awt.Color(0, 51, 102));
+        NameFiled.setBorder(null);
+        NameFiled.addActionListener(this::NameFiledActionPerformed);
 
         javax.swing.GroupLayout lblLogoLayout = new javax.swing.GroupLayout(lblLogo);
         lblLogo.setLayout(lblLogoLayout);
         lblLogoLayout.setHorizontalGroup(
             lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(lblLogoLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
                 .addGroup(lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnMenuJadwal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMenuLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMenuStudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMenuFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(44, Short.MAX_VALUE))
-            .addGroup(lblLogoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblAdmin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addGroup(lblLogoLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addGroup(lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnMenuJadwal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnMenuLaporan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnMenuStudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnMenuFilm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(lblLogoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblAdmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(NameFiled, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         lblLogoLayout.setVerticalGroup(
             lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,37 +146,35 @@ public class AdminMainFrame extends javax.swing.JFrame {
                 .addComponent(btnMenuLaporan)
                 .addGap(34, 34, 34)
                 .addComponent(btnLogout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblAdmin)
-                .addGap(15, 15, 15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 185, Short.MAX_VALUE)
+                .addGroup(lblLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblAdmin)
+                    .addComponent(NameFiled, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12))
         );
 
         javax.swing.GroupLayout pnlSidebarLayout = new javax.swing.GroupLayout(pnlSidebar);
         pnlSidebar.setLayout(pnlSidebarLayout);
         pnlSidebarLayout.setHorizontalGroup(
             pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSidebarLayout.createSequentialGroup()
-                .addGap(0, 6, Short.MAX_VALUE)
+            .addGroup(pnlSidebarLayout.createSequentialGroup()
                 .addComponent(lblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         pnlSidebarLayout.setVerticalGroup(
             pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(lblLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout pnlContentLayout = new javax.swing.GroupLayout(pnlContent);
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 369, Short.MAX_VALUE)
+            .addGap(0, 855, Short.MAX_VALUE)
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 614, Short.MAX_VALUE)
+            .addGap(0, 672, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -147,22 +183,13 @@ public class AdminMainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(pnlSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(85, 85, 85)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(pnlContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -170,11 +197,39 @@ public class AdminMainFrame extends javax.swing.JFrame {
 
     private void btnMenuFilmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuFilmActionPerformed
         // TODO add your handling code here:
+        cardLayout.show(contentContainer, "FILM");
     }//GEN-LAST:event_btnMenuFilmActionPerformed
 
     private void btnMenuLaporanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuLaporanActionPerformed
         // TODO add your handling code here:
+        cardLayout.show(contentContainer, "LAPORAN");
     }//GEN-LAST:event_btnMenuLaporanActionPerformed
+
+    private void formComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_formComponentRemoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentRemoved
+
+    private void NameFiledActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameFiledActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NameFiledActionPerformed
+
+    private void btnMenuStudioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuStudioActionPerformed
+        // TODO add your handling code here:
+        cardLayout.show(contentContainer, "STUDIO");
+    }//GEN-LAST:event_btnMenuStudioActionPerformed
+
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        // TODO add your handling code here:
+        JFrame loginFrame = new LoginFrame();
+        loginFrame.setLocationRelativeTo(null);
+        loginFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnMenuJadwalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuJadwalActionPerformed
+        // TODO add your handling code here:
+        cardLayout.show(contentContainer, "JADWAL");
+    }//GEN-LAST:event_btnMenuJadwalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -202,12 +257,12 @@ public class AdminMainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField NameFiled;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMenuFilm;
     private javax.swing.JButton btnMenuJadwal;
     private javax.swing.JButton btnMenuLaporan;
     private javax.swing.JButton btnMenuStudio;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblAdmin;
