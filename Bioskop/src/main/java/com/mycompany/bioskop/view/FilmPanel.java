@@ -91,10 +91,14 @@ public class FilmPanel extends javax.swing.JPanel {
 
         cmbGenre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Genre", "Action", "Drama", "Comedy", "Horror", "Animation", "Sci - FI", "Romance", "Thriller" }));
 
+        spnDurasi.setModel(new javax.swing.SpinnerNumberModel(0, 0, 600, 1));
+
         cmbRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Rating", "SU", "13+", "17+", "21+" }));
 
+        grpStatus.add(rbTayang);
         rbTayang.setText("Tayang");
 
+        grpStatus.add(rbSegera);
         rbSegera.setText("Segera Tayang");
         rbSegera.addActionListener(this::rbSegeraActionPerformed);
 
@@ -246,7 +250,7 @@ public class FilmPanel extends javax.swing.JPanel {
                         .addGap(6, 6, 6)
                         .addComponent(lblJumlah)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 687, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(5, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
