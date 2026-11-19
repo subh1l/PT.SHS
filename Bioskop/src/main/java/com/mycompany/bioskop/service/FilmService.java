@@ -31,9 +31,9 @@ public class FilmService {
 
         Film f = new Film(0, judul, genre, durasi, rating,
                           sinopsis == null ? "" : sinopsis.trim(), status);
-        repo.save(f);
+        repo.addFilm(f);
         return f;
     }
 
-    public List<Film> semua() throws SQLException { return repo.findAll(); }
+    public List<Film> semua() throws SQLException { return repo.getAllFilm(); }
 }

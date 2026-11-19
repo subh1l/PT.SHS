@@ -21,7 +21,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public User register(String nama, String email, String password, String konfirmasi)
+    public void register(String nama, String email, String password, String konfirmasi)
             throws AuthException, SQLException {
 
         nama = nama == null ? "" : nama.trim();
@@ -49,12 +49,10 @@ public class AuthService {
             throw new AuthException("Email sudah terdaftar.");
         }
 
-        User baru = new User(0, nama, email, password, "user");
         try {
-            userRepository.save(baru);
-        } catch (SQLIntegrityConstraintViolationException e) {
+            userRepository.addUser(nama,email, password, "user");
+        } catch (Exception e) {
             throw new AuthException("Email sudah terdaftar.");
         }
-        return baru;
     }
 }

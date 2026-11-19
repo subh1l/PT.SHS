@@ -52,6 +52,8 @@ public class FilmPanel extends javax.swing.JPanel {
         scrFilm = new javax.swing.JScrollPane();
         tblFilm = new javax.swing.JTable();
         lblJumlah = new javax.swing.JLabel();
+        FieldAmount = new javax.swing.JTextField();
+        lblJumlah1 = new javax.swing.JLabel();
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -137,7 +139,7 @@ public class FilmPanel extends javax.swing.JPanel {
                     .addComponent(spnDurasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtJudul, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblRating)
@@ -230,7 +232,14 @@ public class FilmPanel extends javax.swing.JPanel {
         scrFilm.setViewportView(tblFilm);
 
         lblJumlah.setFont(new java.awt.Font("Microsoft New Tai Lue", 1, 14)); // NOI18N
-        lblJumlah.setText("Jumlah data : 0 film");
+        lblJumlah.setText("Film");
+
+        FieldAmount.setBackground(new java.awt.Color(60, 63, 65));
+        FieldAmount.setBorder(null);
+        FieldAmount.addActionListener(this::FieldAmountActionPerformed);
+
+        lblJumlah1.setFont(new java.awt.Font("Microsoft New Tai Lue", 1, 14)); // NOI18N
+        lblJumlah1.setText("Jumlah Data :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -239,18 +248,24 @@ public class FilmPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(scrFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblJumlah)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 687, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(111, 111, 111)
+                                .addComponent(FieldAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblJumlah)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap(11, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(22, 22, 22)
+                    .addComponent(lblJumlah1)
+                    .addContainerGap(719, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,9 +278,16 @@ public class FilmPanel extends javax.swing.JPanel {
                 .addComponent(lblDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblJumlah)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(FieldAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblJumlah))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(647, Short.MAX_VALUE)
+                    .addComponent(lblJumlah1)
+                    .addContainerGap()))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -277,8 +299,13 @@ public class FilmPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbSegeraActionPerformed
 
+    private void FieldAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldAmountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FieldAmountActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField FieldAmount;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
@@ -295,6 +322,7 @@ public class FilmPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblGenre;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JLabel lblJumlah;
+    private javax.swing.JLabel lblJumlah1;
     private javax.swing.JLabel lblRating;
     private javax.swing.JLabel lblSinopsis;
     private javax.swing.JLabel lblStatus;
