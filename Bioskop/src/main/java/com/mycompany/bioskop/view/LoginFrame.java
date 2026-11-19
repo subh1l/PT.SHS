@@ -4,7 +4,7 @@
  */
 package com.mycompany.bioskop.view;
 
-import com.mycompany.bioskop.repository.Databaseutil;
+import com.mycompany.bioskop.repository.DatabaseUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -156,7 +156,7 @@ public class LoginFrame extends javax.swing.JFrame {
                    + "FROM user WHERE email = ? AND password = ?";
         
         try (
-            Connection conn = Databaseutil.getConnection();
+            Connection conn = DatabaseUtil.getConnection();
             PreparedStatement pst = conn.prepareStatement(sql)
         ) {
             

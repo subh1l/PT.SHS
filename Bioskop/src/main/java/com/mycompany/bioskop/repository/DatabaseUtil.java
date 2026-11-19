@@ -12,7 +12,7 @@ import java.sql.SQLException;
  *
  * @author bill
  */
-public class Databaseutil {
+public class DatabaseUtil {
     private static final String URL = "jdbc:mysql://localhost:3306/dbBioskop";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "lerd";

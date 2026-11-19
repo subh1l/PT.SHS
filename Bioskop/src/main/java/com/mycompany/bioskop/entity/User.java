@@ -16,6 +16,10 @@ public class User {
     private String password;
     private String role;
 
+    public User(){
+        
+    }
+
     public User(int idUser, String nama, String email, String password, String role) {
         this.idUser = idUser;
         this.nama = nama;

@@ -163,6 +163,9 @@ public class RegisterFrame extends javax.swing.JFrame {
                     "Berhasil",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE
             );
+            
+            new UserMainFrame().setVisible(true);
+            this.dispose();
 
             txtNama.setText("");
             txtEmail.setText("");

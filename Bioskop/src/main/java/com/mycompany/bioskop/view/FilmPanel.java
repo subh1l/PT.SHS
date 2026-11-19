@@ -57,6 +57,8 @@ public class FilmPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDaftarFilm = new javax.swing.JTable();
         lblJumlah = new javax.swing.JLabel();
+        FieldAmount = new javax.swing.JTextField();
+        lblJumlah1 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
@@ -373,6 +375,7 @@ public class FilmPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField FieldAmount;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;

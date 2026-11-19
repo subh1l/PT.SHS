@@ -11,20 +11,20 @@ package com.mycompany.bioskop.entity;
 public class Kursi {
     private int idKursi;
     private int idStudio;
-    private char baris;
+    private String baris;
     private int nomor;
 
     public Kursi() {
     }
 
-    public Kursi(int idKursi, int idStudio, char baris, int nomor) {
+    public Kursi(int idKursi, int idStudio, String baris, int nomor) {
         this.idKursi = idKursi;
         this.idStudio = idStudio;
         this.baris = baris;
         this.nomor = nomor;
     }
 
-    public char getBaris() {
+    public String getBaris() {
         return baris;
     }
 
@@ -40,7 +40,7 @@ public class Kursi {
         return nomor;
     }
 
-    public void setBaris(char baris) {
+    public void setBaris(String baris) {
         this.baris = baris;
     }
 
