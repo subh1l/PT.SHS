@@ -27,8 +27,6 @@ public class FilmPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         grpStatus = new javax.swing.ButtonGroup();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblJudul = new javax.swing.JLabel();
         lblGenre = new javax.swing.JLabel();
@@ -47,79 +45,105 @@ public class FilmPanel extends javax.swing.JPanel {
         btnTambah = new javax.swing.JButton();
         btnUbah = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
-        lblDaftar = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        scrFilm = new javax.swing.JScrollPane();
-        tblFilm = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        lblTambahStudio = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        lblKelolaStudio1 = new javax.swing.JLabel();
+        lblgambar4 = new javax.swing.JLabel();
+        lblgambar5 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        lblTambahStudio1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblDaftarFilm = new javax.swing.JTable();
         lblJumlah = new javax.swing.JLabel();
 
-        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
-
-        jLabel1.setFont(new java.awt.Font("Microsoft Uighur", 1, 40)); // NOI18N
-        jLabel1.setText("Kelola Film");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
 
+        lblJudul.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblJudul.setText("Judul Film");
 
+        lblGenre.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblGenre.setText("Genre");
 
+        lblDurasi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblDurasi.setText("Durasi (menit)");
 
+        lblRating.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblRating.setText("Rating Usia ");
 
+        lblStatus.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblStatus.setText("Status ");
 
+        txtJudul.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txtJudul.addActionListener(this::txtJudulActionPerformed);
 
+        cmbGenre.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         cmbGenre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Genre", "Action", "Drama", "Comedy", "Horror", "Animation", "Sci - FI", "Romance", "Thriller" }));
 
+        spnDurasi.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         spnDurasi.setModel(new javax.swing.SpinnerNumberModel(0, 0, 600, 1));
 
+        cmbRating.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         cmbRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Rating", "SU", "13+", "17+", "21+" }));
 
         grpStatus.add(rbTayang);
+        rbTayang.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         rbTayang.setText("Tayang");
 
         grpStatus.add(rbSegera);
+        rbSegera.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         rbSegera.setText("Segera Tayang");
         rbSegera.addActionListener(this::rbSegeraActionPerformed);
 
+        lblSinopsis.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblSinopsis.setText("Sinopsis");
 
         txtSinopsis.setColumns(20);
+        txtSinopsis.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         txtSinopsis.setRows(5);
         jScrollPane1.setViewportView(txtSinopsis);
 
+        btnTambah.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnTambah.setText("Tambah");
 
+        btnUbah.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnUbah.setText("Ubah");
+        btnUbah.addActionListener(this::btnUbahActionPerformed);
 
+        btnHapus.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnHapus.setText("Hapus");
+
+        jPanel4.setBackground(new java.awt.Color(204, 153, 0));
+
+        lblTambahStudio.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        lblTambahStudio.setForeground(new java.awt.Color(255, 255, 255));
+        lblTambahStudio.setText("Tambah Film");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblTambahStudio, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTambahStudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -130,19 +154,20 @@ public class FilmPanel extends javax.swing.JPanel {
                     .addComponent(lblGenre))
                 .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtJudul)
+                        .addComponent(cmbGenre, 0, 192, Short.MAX_VALUE)
+                        .addComponent(spnDurasi))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(rbTayang)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(rbSegera))
-                    .addComponent(spnDurasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJudul, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(rbSegera)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblRating)
-                        .addGap(22, 22, 22)
-                        .addComponent(cmbRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbRating, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblSinopsis, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -153,27 +178,39 @@ public class FilmPanel extends javax.swing.JPanel {
                                 .addComponent(btnUbah)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnHapus))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addGap(16, 16, 16))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(43, 43, 43))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblRating)
-                        .addComponent(cmbRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblJudul)
-                        .addComponent(txtJudul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblRating)
+                            .addComponent(cmbRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblSinopsis)
+                                .addGap(71, 71, 71))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnUbah)
+                            .addComponent(btnTambah)
+                            .addComponent(btnHapus)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblJudul)
+                            .addComponent(txtJudul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmbGenre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblGenre)
-                            .addComponent(lblSinopsis))
+                            .addComponent(lblGenre))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblDurasi)
@@ -183,54 +220,120 @@ public class FilmPanel extends javax.swing.JPanel {
                             .addComponent(lblStatus)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(rbTayang)
-                                .addComponent(rbSegera))))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUbah)
-                    .addComponent(btnTambah)
-                    .addComponent(btnHapus))
-                .addContainerGap(13, Short.MAX_VALUE))
+                                .addComponent(rbSegera)))))
+                .addGap(16, 16, 16))
         );
 
-        lblDaftar.setBackground(new java.awt.Color(204, 204, 204));
-        lblDaftar.setForeground(new java.awt.Color(153, 153, 153));
+        jPanel3.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel3.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5, 5, 5, new java.awt.Color(255, 255, 255)));
 
-        jLabel8.setFont(new java.awt.Font("Microsoft Uighur", 1, 40)); // NOI18N
-        jLabel8.setText("Daftar Film");
+        lblKelolaStudio1.setFont(new java.awt.Font("Microsoft Uighur", 1, 55)); // NOI18N
+        lblKelolaStudio1.setForeground(new java.awt.Color(255, 255, 255));
+        lblKelolaStudio1.setText("Kelola Film");
 
-        javax.swing.GroupLayout lblDaftarLayout = new javax.swing.GroupLayout(lblDaftar);
-        lblDaftar.setLayout(lblDaftarLayout);
-        lblDaftarLayout.setHorizontalGroup(
-            lblDaftarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lblDaftarLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel8)
+        lblgambar4.setBackground(new java.awt.Color(153, 0, 0));
+        lblgambar4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblgambar4.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
+        lblgambar4.setMaximumSize(new java.awt.Dimension(200, 200));
+        lblgambar4.setMinimumSize(new java.awt.Dimension(200, 200));
+        lblgambar4.setPreferredSize(new java.awt.Dimension(150, 150));
+
+        lblgambar5.setBackground(new java.awt.Color(153, 0, 0));
+        lblgambar5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblgambar5.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
+        lblgambar5.setMaximumSize(new java.awt.Dimension(200, 200));
+        lblgambar5.setMinimumSize(new java.awt.Dimension(200, 200));
+        lblgambar5.setPreferredSize(new java.awt.Dimension(150, 150));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(77, 77, 77)
+                .addComponent(lblgambar5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addComponent(lblKelolaStudio1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(lblgambar4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblgambar4, javax.swing.GroupLayout.PREFERRED_SIZE, 116, Short.MAX_VALUE)
+            .addComponent(lblgambar5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(lblKelolaStudio1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        lblDaftarLayout.setVerticalGroup(
-            lblDaftarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(lblDaftarLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
+
+        jPanel6.setBackground(new java.awt.Color(204, 153, 0));
+
+        lblTambahStudio1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+        lblTambahStudio1.setForeground(new java.awt.Color(255, 255, 255));
+        lblTambahStudio1.setText("Daftar Film");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblTambahStudio1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTambahStudio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
-        tblFilm.setModel(new javax.swing.table.DefaultTableModel(
+        tblDaftarFilm.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Judul", "Genre", "Durasi", "Rating", "Status"
+                "ID", "Judul Film", "Genre", "Durasi", "Rating", "Status"
             }
         ));
-        scrFilm.setViewportView(tblFilm);
+        jScrollPane2.setViewportView(tblDaftarFilm);
 
-        lblJumlah.setFont(new java.awt.Font("Microsoft New Tai Lue", 1, 14)); // NOI18N
+        lblJumlah.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblJumlah.setText("Jumlah data : 0 film");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(lblJumlah)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblJumlah)
+                .addGap(145, 145, 145))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -238,34 +341,21 @@ public class FilmPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblDaftar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(scrFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(lblJumlah)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 687, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblDaftar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblJumlah)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -277,6 +367,10 @@ public class FilmPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_rbSegeraActionPerformed
 
+    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUbahActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHapus;
@@ -285,24 +379,33 @@ public class FilmPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cmbGenre;
     private javax.swing.JComboBox<String> cmbRating;
     private javax.swing.ButtonGroup grpStatus;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel lblDaftar;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblDurasi;
     private javax.swing.JLabel lblGenre;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JLabel lblJumlah;
+    private javax.swing.JLabel lblKelolaStudio;
+    private javax.swing.JLabel lblKelolaStudio1;
     private javax.swing.JLabel lblRating;
     private javax.swing.JLabel lblSinopsis;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblTambahStudio;
+    private javax.swing.JLabel lblTambahStudio1;
+    private javax.swing.JLabel lblgambar2;
+    private javax.swing.JLabel lblgambar3;
+    private javax.swing.JLabel lblgambar4;
+    private javax.swing.JLabel lblgambar5;
     private javax.swing.JRadioButton rbSegera;
     private javax.swing.JRadioButton rbTayang;
-    private javax.swing.JScrollPane scrFilm;
     private javax.swing.JSpinner spnDurasi;
-    private javax.swing.JTable tblFilm;
+    private javax.swing.JTable tblDaftarFilm;
     private javax.swing.JTextField txtJudul;
     private javax.swing.JTextArea txtSinopsis;
     // End of variables declaration//GEN-END:variables
