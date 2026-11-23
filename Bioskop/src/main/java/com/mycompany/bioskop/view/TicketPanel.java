@@ -31,7 +31,6 @@ public class TicketPanel extends javax.swing.JPanel {
         lblNamaBioskop = new javax.swing.JLabel();
         pnlTiket = new javax.swing.JPanel();
         lblJudulFilmTiket = new javax.swing.JLabel();
-        pnlPoster = new javax.swing.JPanel();
         lblTanggalTiket = new javax.swing.JLabel();
         lblJamTiket = new javax.swing.JLabel();
         lblKursiTiket = new javax.swing.JLabel();
@@ -88,72 +87,53 @@ public class TicketPanel extends javax.swing.JPanel {
         pnlTiket.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
         pnlTiket.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblJudulFilmTiket.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        lblJudulFilmTiket.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblJudulFilmTiket.setForeground(new java.awt.Color(48, 35, 109));
         lblJudulFilmTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJudulFilmTiket.setText("Judul Film");
-        pnlTiket.add(lblJudulFilmTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 300, 25));
-
-        pnlPoster.setBackground(new java.awt.Color(216, 209, 231));
-        pnlPoster.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        pnlPoster.setToolTipText("");
-        pnlPoster.setMaximumSize(new java.awt.Dimension(120, 160));
-        pnlPoster.setMinimumSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout pnlPosterLayout = new javax.swing.GroupLayout(pnlPoster);
-        pnlPoster.setLayout(pnlPosterLayout);
-        pnlPosterLayout.setHorizontalGroup(
-            pnlPosterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        pnlPosterLayout.setVerticalGroup(
-            pnlPosterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        pnlTiket.add(pnlPoster, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+        pnlTiket.add(lblJudulFilmTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 870, 25));
 
         lblTanggalTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblTanggalTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblTanggalTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTanggalTiket.setText("Tanggal");
-        pnlTiket.add(lblTanggalTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 80, 160, -1));
+        pnlTiket.add(lblTanggalTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 340, -1));
 
         lblJamTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJamTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJamTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJamTiket.setText("Jam");
-        pnlTiket.add(lblJamTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 150, -1));
+        pnlTiket.add(lblJamTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 150, -1));
 
         lblKursiTiket.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblKursiTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblKursiTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblKursiTiket.setText("Kursi");
-        pnlTiket.add(lblKursiTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 150, -1));
+        pnlTiket.add(lblKursiTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 340, -1));
 
         lblTotalTiket.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTotalTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblTotalTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTotalTiket.setText("Total Pembayaran");
-        pnlTiket.add(lblTotalTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 150, 270, -1));
+        pnlTiket.add(lblTotalTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 170, 270, -1));
 
         lblStudioTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblStudioTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblStudioTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblStudioTiket.setText("Studio");
-        pnlTiket.add(lblStudioTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 40, 325, 22));
+        pnlTiket.add(lblStudioTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 170, 22));
 
         lblKodeBooking.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblKodeBooking.setForeground(new java.awt.Color(110, 110, 110));
         lblKodeBooking.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblKodeBooking.setText("Kode Booking");
-        pnlTiket.add(lblKodeBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 40, 150, -1));
+        pnlTiket.add(lblKodeBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 150, -1));
 
         lblJumlahTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJumlahTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJumlahTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJumlahTiket.setText("Jumlah Tiket");
-        pnlTiket.add(lblJumlahTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 90, 150, -1));
+        pnlTiket.add(lblJumlahTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 150, -1));
 
         add(pnlTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 1000, 240));
 
@@ -249,7 +229,6 @@ public class TicketPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTotalTiket;
     private javax.swing.JPanel pnlBerhasil;
     private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlPoster;
     private javax.swing.JPanel pnlTiket;
     // End of variables declaration//GEN-END:variables
 }

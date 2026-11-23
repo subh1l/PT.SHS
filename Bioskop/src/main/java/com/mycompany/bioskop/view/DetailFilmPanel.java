@@ -35,7 +35,6 @@ public class DetailFilmPanel extends javax.swing.JPanel {
         lblDurasi = new javax.swing.JLabel();
         lblRating = new javax.swing.JLabel();
         lblStatusTayang = new javax.swing.JLabel();
-        pnlPoster = new javax.swing.JPanel();
         pnlSinopsi = new javax.swing.JPanel();
         lblSinopsis = new javax.swing.JLabel();
         spSinopsis = new javax.swing.JScrollPane();
@@ -81,56 +80,34 @@ public class DetailFilmPanel extends javax.swing.JPanel {
         lblStatusTayang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblStatusTayang.setText("StatusTayang");
 
-        pnlPoster.setBackground(new java.awt.Color(216, 209, 231));
-        pnlPoster.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        pnlPoster.setToolTipText("");
-        pnlPoster.setMaximumSize(new java.awt.Dimension(120, 160));
-        pnlPoster.setMinimumSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout pnlPosterLayout = new javax.swing.GroupLayout(pnlPoster);
-        pnlPoster.setLayout(pnlPosterLayout);
-        pnlPosterLayout.setHorizontalGroup(
-            pnlPosterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        pnlPosterLayout.setVerticalGroup(
-            pnlPosterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout pnlInfoFilmLayout = new javax.swing.GroupLayout(pnlInfoFilm);
         pnlInfoFilm.setLayout(pnlInfoFilmLayout);
         pnlInfoFilmLayout.setHorizontalGroup(
             pnlInfoFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInfoFilmLayout.createSequentialGroup()
-                .addGap(7, 7, 7)
-                .addComponent(pnlPoster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
                 .addGroup(pnlInfoFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblStatusTayang, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblJudul, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblDurasi, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblRating, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(461, Short.MAX_VALUE))
+                    .addComponent(lblRating, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblStatusTayang, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlInfoFilmLayout.setVerticalGroup(
             pnlInfoFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlInfoFilmLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlInfoFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlPoster, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlInfoFilmLayout.createSequentialGroup()
-                        .addComponent(lblJudul)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblGenre)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDurasi)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblRating)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblStatusTayang)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblJudul)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblGenre)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDurasi)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblRating)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblStatusTayang)
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         pnlSinopsi.setBackground(new java.awt.Color(255, 255, 255));
@@ -285,7 +262,7 @@ public class DetailFilmPanel extends javax.swing.JPanel {
                             .addComponent(pnlSinopsi, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pnlTanggal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(pnlDetailLayout.createSequentialGroup()
-                                .addComponent(btnPesanTiket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPesanTiket, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
@@ -352,7 +329,6 @@ public class DetailFilmPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlInfoFilm;
     private javax.swing.JPanel pnlJadwal;
-    private javax.swing.JPanel pnlPoster;
     private javax.swing.JPanel pnlSinopsi;
     private javax.swing.JPanel pnlTanggal;
     private javax.swing.JScrollPane spSinopsis;

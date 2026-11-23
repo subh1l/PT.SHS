@@ -39,31 +39,9 @@ public class UserMainFrame extends javax.swing.JFrame {
         pnlUtama = new javax.swing.JPanel();
         pnlKonten = new javax.swing.JPanel();
         pnlFilmTayang = new javax.swing.JPanel();
-        pnlDaftarFilm = new javax.swing.JPanel();
-        cardFilm1 = new javax.swing.JPanel();
-        cardFilm2 = new javax.swing.JPanel();
-        cardFilm3 = new javax.swing.JPanel();
-        cardFilm5 = new javax.swing.JPanel();
-        lblFilm1 = new javax.swing.JLabel();
-        lblRating1 = new javax.swing.JLabel();
-        lblFilm2 = new javax.swing.JLabel();
-        lblRating2 = new javax.swing.JLabel();
-        lblFilm4 = new javax.swing.JLabel();
-        lblFilm3 = new javax.swing.JLabel();
-        lblRating3 = new javax.swing.JLabel();
-        lblRating4 = new javax.swing.JLabel();
-        cardFilm4 = new javax.swing.JPanel();
-        lblFilm5 = new javax.swing.JLabel();
-        lblRating5 = new javax.swing.JLabel();
-        btnPilihJadwal1 = new javax.swing.JButton();
-        btnPilihJadwal2 = new javax.swing.JButton();
-        btnPilihJadwal3 = new javax.swing.JButton();
-        btnPilihJadwal4 = new javax.swing.JButton();
-        btnPilihJadwal5 = new javax.swing.JButton();
-        cardFilm6 = new javax.swing.JPanel();
-        lblFilm8 = new javax.swing.JLabel();
-        lblRating6 = new javax.swing.JLabel();
-        btnPilihJadwal6 = new javax.swing.JButton();
+        scrollFilm = new javax.swing.JScrollPane();
+        tblFilm = new javax.swing.JTable();
+        btnPilihFilm = new javax.swing.JButton();
         pnlHeader = new javax.swing.JPanel();
         lblheader = new javax.swing.JLabel();
         lblWelcome = new javax.swing.JLabel();
@@ -85,339 +63,55 @@ public class UserMainFrame extends javax.swing.JFrame {
 
         pnlKonten.setLayout(new java.awt.BorderLayout());
 
-        pnlFilmTayang.setBackground(new java.awt.Color(240, 237, 250));
+        pnlFilmTayang.setBackground(new java.awt.Color(240, 237, 248));
         pnlFilmTayang.setPreferredSize(new java.awt.Dimension(600, 250));
 
-        pnlDaftarFilm.setBackground(new java.awt.Color(240, 237, 250));
-        pnlDaftarFilm.setPreferredSize(new java.awt.Dimension(600, 450));
+        scrollFilm.setBackground(new java.awt.Color(240, 237, 248));
 
-        cardFilm1.setBackground(new java.awt.Color(255, 255, 255));
-        cardFilm1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        cardFilm1.setToolTipText("");
-        cardFilm1.setMaximumSize(new java.awt.Dimension(120, 160));
-        cardFilm1.setMinimumSize(new java.awt.Dimension(120, 160));
-        cardFilm1.setPreferredSize(new java.awt.Dimension(120, 160));
+        tblFilm.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Judul Film", "Genre", "Rating", "Harga Tiket"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
+            };
 
-        javax.swing.GroupLayout cardFilm1Layout = new javax.swing.GroupLayout(cardFilm1);
-        cardFilm1.setLayout(cardFilm1Layout);
-        cardFilm1Layout.setHorizontalGroup(
-            cardFilm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        cardFilm1Layout.setVerticalGroup(
-            cardFilm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        scrollFilm.setViewportView(tblFilm);
 
-        cardFilm2.setBackground(new java.awt.Color(255, 255, 255));
-        cardFilm2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        cardFilm2.setToolTipText("");
-        cardFilm2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        cardFilm2.setMaximumSize(new java.awt.Dimension(120, 160));
-        cardFilm2.setMinimumSize(new java.awt.Dimension(120, 160));
-        cardFilm2.setPreferredSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout cardFilm2Layout = new javax.swing.GroupLayout(cardFilm2);
-        cardFilm2.setLayout(cardFilm2Layout);
-        cardFilm2Layout.setHorizontalGroup(
-            cardFilm2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        cardFilm2Layout.setVerticalGroup(
-            cardFilm2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        cardFilm3.setBackground(new java.awt.Color(255, 255, 255));
-        cardFilm3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        cardFilm3.setToolTipText("");
-        cardFilm3.setMaximumSize(new java.awt.Dimension(120, 160));
-        cardFilm3.setMinimumSize(new java.awt.Dimension(120, 160));
-        cardFilm3.setPreferredSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout cardFilm3Layout = new javax.swing.GroupLayout(cardFilm3);
-        cardFilm3.setLayout(cardFilm3Layout);
-        cardFilm3Layout.setHorizontalGroup(
-            cardFilm3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        cardFilm3Layout.setVerticalGroup(
-            cardFilm3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        cardFilm5.setBackground(new java.awt.Color(255, 255, 255));
-        cardFilm5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        cardFilm5.setToolTipText("");
-        cardFilm5.setMaximumSize(new java.awt.Dimension(120, 160));
-        cardFilm5.setMinimumSize(new java.awt.Dimension(120, 160));
-        cardFilm5.setPreferredSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout cardFilm5Layout = new javax.swing.GroupLayout(cardFilm5);
-        cardFilm5.setLayout(cardFilm5Layout);
-        cardFilm5Layout.setHorizontalGroup(
-            cardFilm5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        cardFilm5Layout.setVerticalGroup(
-            cardFilm5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        lblFilm1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblFilm1.setForeground(new java.awt.Color(48, 36, 110));
-        lblFilm1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblFilm1.setText("Ramayana");
-
-        lblRating1.setForeground(new java.awt.Color(150, 110, 30));
-        lblRating1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRating1.setText("8.5/10");
-        lblRating1.setToolTipText("");
-
-        lblFilm2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblFilm2.setForeground(new java.awt.Color(48, 36, 110));
-        lblFilm2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblFilm2.setText("Laut Bercerita");
-
-        lblRating2.setForeground(new java.awt.Color(150, 110, 30));
-        lblRating2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRating2.setText("9.0/10");
-
-        lblFilm4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblFilm4.setForeground(new java.awt.Color(48, 36, 110));
-        lblFilm4.setText("Enola Holmes");
-
-        lblFilm3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblFilm3.setForeground(new java.awt.Color(48, 36, 110));
-        lblFilm3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblFilm3.setText("Batman");
-
-        lblRating3.setForeground(new java.awt.Color(150, 110, 30));
-        lblRating3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRating3.setText("8.9/10");
-
-        lblRating4.setForeground(new java.awt.Color(150, 110, 30));
-        lblRating4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRating4.setText("8.7/10");
-
-        cardFilm4.setBackground(new java.awt.Color(255, 255, 255));
-        cardFilm4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        cardFilm4.setToolTipText("");
-        cardFilm4.setMaximumSize(new java.awt.Dimension(120, 160));
-        cardFilm4.setMinimumSize(new java.awt.Dimension(120, 160));
-        cardFilm4.setPreferredSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout cardFilm4Layout = new javax.swing.GroupLayout(cardFilm4);
-        cardFilm4.setLayout(cardFilm4Layout);
-        cardFilm4Layout.setHorizontalGroup(
-            cardFilm4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        cardFilm4Layout.setVerticalGroup(
-            cardFilm4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        lblFilm5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblFilm5.setForeground(new java.awt.Color(48, 36, 110));
-        lblFilm5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblFilm5.setText("Superman 10");
-
-        lblRating5.setForeground(new java.awt.Color(150, 110, 30));
-        lblRating5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRating5.setText("7.9/10");
-
-        btnPilihJadwal1.setBackground(new java.awt.Color(118, 88, 184));
-        btnPilihJadwal1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihJadwal1.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihJadwal1.setText("Pilih Jadwal");
-        btnPilihJadwal1.addActionListener(this::btnPilihJadwal1ActionPerformed);
-
-        btnPilihJadwal2.setBackground(new java.awt.Color(118, 88, 184));
-        btnPilihJadwal2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihJadwal2.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihJadwal2.setText("Pilih Jadwal");
-        btnPilihJadwal2.addActionListener(this::btnPilihJadwal2ActionPerformed);
-
-        btnPilihJadwal3.setBackground(new java.awt.Color(118, 88, 184));
-        btnPilihJadwal3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihJadwal3.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihJadwal3.setText("Pilih Jadwal");
-        btnPilihJadwal3.addActionListener(this::btnPilihJadwal3ActionPerformed);
-
-        btnPilihJadwal4.setBackground(new java.awt.Color(118, 88, 184));
-        btnPilihJadwal4.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihJadwal4.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihJadwal4.setText("Pilih Jadwal");
-        btnPilihJadwal4.addActionListener(this::btnPilihJadwal4ActionPerformed);
-
-        btnPilihJadwal5.setBackground(new java.awt.Color(118, 88, 184));
-        btnPilihJadwal5.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihJadwal5.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihJadwal5.setText("Pilih Jadwal");
-        btnPilihJadwal5.addActionListener(this::btnPilihJadwal5ActionPerformed);
-
-        cardFilm6.setBackground(new java.awt.Color(255, 255, 255));
-        cardFilm6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        cardFilm6.setToolTipText("");
-        cardFilm6.setMaximumSize(new java.awt.Dimension(120, 160));
-        cardFilm6.setMinimumSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout cardFilm6Layout = new javax.swing.GroupLayout(cardFilm6);
-        cardFilm6.setLayout(cardFilm6Layout);
-        cardFilm6Layout.setHorizontalGroup(
-            cardFilm6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        cardFilm6Layout.setVerticalGroup(
-            cardFilm6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        lblFilm8.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        lblFilm8.setForeground(new java.awt.Color(48, 36, 110));
-        lblFilm8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblFilm8.setText("Avatar");
-
-        lblRating6.setForeground(new java.awt.Color(150, 110, 30));
-        lblRating6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRating6.setText("8.9/10");
-
-        btnPilihJadwal6.setBackground(new java.awt.Color(118, 88, 184));
-        btnPilihJadwal6.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihJadwal6.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihJadwal6.setText("Pilih Jadwal");
-        btnPilihJadwal6.addActionListener(this::btnPilihJadwal6ActionPerformed);
-
-        javax.swing.GroupLayout pnlDaftarFilmLayout = new javax.swing.GroupLayout(pnlDaftarFilm);
-        pnlDaftarFilm.setLayout(pnlDaftarFilmLayout);
-        pnlDaftarFilmLayout.setHorizontalGroup(
-            pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblFilm1)
-                                    .addComponent(lblRating1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(74, 74, 74))
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addComponent(btnPilihJadwal2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)))
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblFilm2)
-                                    .addComponent(lblRating2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(192, 192, 192)
-                                .addComponent(lblFilm4)
-                                .addGap(54, 54, 54)
-                                .addComponent(lblFilm5))
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addComponent(btnPilihJadwal3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnPilihJadwal4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnPilihJadwal1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnPilihJadwal5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblRating6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblFilm8)))
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(btnPilihJadwal6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                        .addComponent(cardFilm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(cardFilm2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFilm3)
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addComponent(cardFilm3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cardFilm4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cardFilm5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cardFilm6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                                .addComponent(lblRating3, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(97, 97, 97)
-                                .addComponent(lblRating4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(97, 97, 97)
-                                .addComponent(lblRating5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(85, Short.MAX_VALUE))))
-        );
-        pnlDaftarFilmLayout.setVerticalGroup(
-            pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cardFilm1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cardFilm2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cardFilm3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cardFilm4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cardFilm5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cardFilm6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblFilm5)
-                        .addComponent(lblFilm4))
-                    .addComponent(lblFilm3)
-                    .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblFilm1)
-                            .addComponent(lblFilm2)
-                            .addComponent(lblFilm8))
-                        .addGap(0, 0, 0)
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblRating2)
-                            .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblRating1)
-                                .addComponent(lblRating3)
-                                .addComponent(lblRating4)
-                                .addComponent(lblRating5)
-                                .addComponent(lblRating6)))))
-                .addGap(0, 0, 0)
-                .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                        .addGroup(pnlDaftarFilmLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnPilihJadwal3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPilihJadwal4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPilihJadwal1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPilihJadwal5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(42, Short.MAX_VALUE))
-                    .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                        .addComponent(btnPilihJadwal6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlDaftarFilmLayout.createSequentialGroup()
-                        .addComponent(btnPilihJadwal2)
-                        .addGap(0, 0, Short.MAX_VALUE))))
-        );
+        btnPilihFilm.setBackground(new java.awt.Color(118, 87, 189));
+        btnPilihFilm.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnPilihFilm.setForeground(new java.awt.Color(255, 255, 255));
+        btnPilihFilm.setText("Pilih Jadwal");
 
         javax.swing.GroupLayout pnlFilmTayangLayout = new javax.swing.GroupLayout(pnlFilmTayang);
         pnlFilmTayang.setLayout(pnlFilmTayangLayout);
         pnlFilmTayangLayout.setHorizontalGroup(
             pnlFilmTayangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlFilmTayangLayout.createSequentialGroup()
-                .addComponent(pnlDaftarFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 916, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(scrollFilm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilmTayangLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnPilihFilm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlFilmTayangLayout.setVerticalGroup(
             pnlFilmTayangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlFilmTayangLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilmTayangLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlDaftarFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(scrollFilm, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPilihFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pnlKonten.add(pnlFilmTayang, java.awt.BorderLayout.PAGE_END);
@@ -588,30 +282,6 @@ public class UserMainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnPilihJadwal1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihJadwal1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihJadwal1ActionPerformed
-
-    private void btnPilihJadwal2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihJadwal2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihJadwal2ActionPerformed
-
-    private void btnPilihJadwal3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihJadwal3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihJadwal3ActionPerformed
-
-    private void btnPilihJadwal4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihJadwal4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihJadwal4ActionPerformed
-
-    private void btnPilihJadwal5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihJadwal5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihJadwal5ActionPerformed
-
-    private void btnPilihJadwal6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihJadwal6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihJadwal6ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -642,43 +312,21 @@ public class UserMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnDetail;
     private javax.swing.JButton btnFilm;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnPilihJadwal1;
-    private javax.swing.JButton btnPilihJadwal2;
-    private javax.swing.JButton btnPilihJadwal3;
-    private javax.swing.JButton btnPilihJadwal4;
-    private javax.swing.JButton btnPilihJadwal5;
-    private javax.swing.JButton btnPilihJadwal6;
-    private javax.swing.JPanel cardFilm1;
-    private javax.swing.JPanel cardFilm2;
-    private javax.swing.JPanel cardFilm3;
-    private javax.swing.JPanel cardFilm4;
-    private javax.swing.JPanel cardFilm5;
-    private javax.swing.JPanel cardFilm6;
+    private javax.swing.JButton btnPilihFilm;
     private javax.swing.JLabel lblBanner;
     private javax.swing.JLabel lblDeskripsi;
-    private javax.swing.JLabel lblFilm1;
-    private javax.swing.JLabel lblFilm2;
-    private javax.swing.JLabel lblFilm3;
-    private javax.swing.JLabel lblFilm4;
-    private javax.swing.JLabel lblFilm5;
-    private javax.swing.JLabel lblFilm8;
     private javax.swing.JLabel lblLogo1;
     private javax.swing.JLabel lblLogo2;
-    private javax.swing.JLabel lblRating1;
-    private javax.swing.JLabel lblRating2;
-    private javax.swing.JLabel lblRating3;
-    private javax.swing.JLabel lblRating4;
-    private javax.swing.JLabel lblRating5;
-    private javax.swing.JLabel lblRating6;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JLabel lblheader;
     private javax.swing.JPanel pnlBanner;
-    private javax.swing.JPanel pnlDaftarFilm;
     private javax.swing.JPanel pnlFilmTayang;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlKonten;
     private javax.swing.JPanel pnlLogo;
     private javax.swing.JPanel pnlSidebar;
     private javax.swing.JPanel pnlUtama;
+    private javax.swing.JScrollPane scrollFilm;
+    private javax.swing.JTable tblFilm;
     // End of variables declaration//GEN-END:variables
 }
