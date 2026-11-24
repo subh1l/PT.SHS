@@ -17,7 +17,55 @@ public class Laporan {
     private String studio;
     private LocalTime jam;
     private int jumlah;
-}
 
-create view laporan_view as
-select tanggal
+    public Laporan() {
+    }
+
+    public Laporan(LocalDate tanggal, String film, String studio, LocalTime jam, int jumlah) {
+        this.tanggal = tanggal;
+        this.film = film;
+        this.studio = studio;
+        this.jam = jam;
+        this.jumlah = jumlah;
+    }
+
+    public String getFilm() {
+        return film;
+    }
+
+    public LocalTime getJam() {
+        return jam;
+    }
+
+    public int getJumlah() {
+        return jumlah;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public LocalDate getTanggal() {
+        return tanggal;
+    }
+
+    public void setFilm(String film) {
+        this.film = film;
+    }
+
+    public void setJam(LocalTime jam) {
+        this.jam = jam;
+    }
+
+    public void setJumlah(int jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
+    }
+
+    public void setTanggal(LocalDate tanggal) {
+        this.tanggal = tanggal;
+    }    
+}

@@ -1,36 +1,36 @@
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\Bioskop.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\DetailPemesanan.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\Film.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\Jadwal.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\Kursi.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\Pembayaran.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\Pemesanan.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\Studio.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\entity\User.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\exception\AuthException.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\exception\ValidasiException.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\model\Laporan.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\DatabaseUtil.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\DetailPesananRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\FilmRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\JadwalRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\KursiRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\PembayaranRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\PemesananRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\StudioRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\repository\UserRepository.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\service\AuthService.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\service\FilmService.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\AdminMainFrame.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\DetailFilmPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\FilmPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\JadwalPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\LaporanPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\LoginFrame.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\PembayaranPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\RegisterFrame.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\RiwayatPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\SeatSelectionPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\StudioPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\TicketPanel.java
-C:\kuliah\semester 3\PBO_prak\PT.SHS\Bioskop\src\main\java\com\mycompany\bioskop\view\UserMainFrame.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/Bioskop.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/DetailPemesanan.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Film.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Jadwal.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Kursi.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Pembayaran.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Pemesanan.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Studio.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/User.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/exception/AuthException.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/exception/ValidasiException.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/model/Laporan.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/DatabaseUtil.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/DetailPesananRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/FilmRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/JadwalRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/KursiRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/PembayaranRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/PemesananRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/StudioRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/UserRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/service/AuthService.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/service/FilmService.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/AdminMainFrame.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/DetailFilmPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/FilmPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/JadwalPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/LaporanPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/LoginFrame.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/PembayaranPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/RegisterFrame.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/RiwayatPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/SeatSelectionPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/StudioPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/TicketPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/UserMainFrame.java

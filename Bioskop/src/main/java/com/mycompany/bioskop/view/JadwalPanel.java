@@ -331,7 +331,7 @@ public class JadwalPanel extends javax.swing.JPanel {
         LocalTime jamMulai = toLocalTime((java.util.Date) spnJam.getValue());
         
         jadwalRepository.addJadwal(film, studio, tanggal, jamMulai, harga);
-        
+        renderTable();
     }//GEN-LAST:event_btnSimpanActionPerformed
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed

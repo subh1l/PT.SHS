@@ -295,3 +295,25 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE OR REPLACE VIEW `laporan` AS
+SELECT
+    j.`tanggal` AS `Tanggal`,
+    f.`judul` AS `Film`,
+    s.`nama_studio` AS `Studio`,
+    j.`jam_mulai` AS `Jam Tayang`,
+    COUNT(dp.`id_detail`) AS `Jumlah Tiket`,
+    p.`total_harga` AS `Total Harga`
+FROM `pemesanan` p
+JOIN `jadwal` j ON p.`id_jadwal` = j.`id_jadwal`
+JOIN `film` f ON j.`id_film` = f.`id_film`
+JOIN `studio` s ON j.`id_studio` = s.`id_studio`
+LEFT JOIN `detail_pemesanan` dp ON dp.`id_pemesanan` = p.`id_pemesanan`
+WHERE p.`status` = 'Sukses'
+GROUP BY
+    p.`id_pemesanan`,
+    j.`tanggal`,
+    f.`judul`,
+    s.`nama_studio`,
+    j.`jam_mulai`,
+    p.`total_harga`;

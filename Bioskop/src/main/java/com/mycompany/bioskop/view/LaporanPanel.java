@@ -35,19 +35,9 @@ public class LaporanPanel extends javax.swing.JPanel {
         lblTerlarisJudul = new javax.swing.JLabel();
         lblTiketTerlaris = new javax.swing.JLabel();
         lblFilmTerlaris = new javax.swing.JLabel();
-        pnlBody = new javax.swing.JPanel();
-        pnlGrafik = new javax.swing.JPanel();
-        pnlGrafikLine = new javax.swing.JPanel();
-        lblTambahStudio = new javax.swing.JLabel();
-        pnlChartLine = new javax.swing.JPanel();
-        pnlGafikBar = new javax.swing.JPanel();
-        pnlGrafikLine1 = new javax.swing.JPanel();
-        lblTambahStudio1 = new javax.swing.JLabel();
-        pnlChartBar = new javax.swing.JPanel();
         pnlIsi = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lblTambahStudio2 = new javax.swing.JLabel();
-        btnCetak = new javax.swing.JButton();
         scrLaporan = new javax.swing.JScrollPane();
         tblLaporan = new javax.swing.JTable();
         spnDariTanggal = new javax.swing.JSpinner();
@@ -156,92 +146,6 @@ public class LaporanPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        pnlBody.setBackground(new java.awt.Color(255, 255, 255));
-        pnlBody.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
-
-        pnlGrafik.setLayout(new java.awt.GridLayout(1, 0));
-
-        pnlGrafikLine.setBackground(new java.awt.Color(204, 153, 0));
-
-        lblTambahStudio.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        lblTambahStudio.setForeground(new java.awt.Color(255, 255, 255));
-        lblTambahStudio.setText("Grafik Penjualan");
-
-        javax.swing.GroupLayout pnlGrafikLineLayout = new javax.swing.GroupLayout(pnlGrafikLine);
-        pnlGrafikLine.setLayout(pnlGrafikLineLayout);
-        pnlGrafikLineLayout.setHorizontalGroup(
-            pnlGrafikLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGrafikLineLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblTambahStudio, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlGrafikLineLayout.setVerticalGroup(
-            pnlGrafikLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGrafikLineLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTambahStudio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        pnlChartLine.setLayout(new java.awt.GridLayout(1, 0));
-
-        javax.swing.GroupLayout pnlBodyLayout = new javax.swing.GroupLayout(pnlBody);
-        pnlBody.setLayout(pnlBodyLayout);
-        pnlBodyLayout.setHorizontalGroup(
-            pnlBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlGrafikLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlBodyLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(pnlGrafik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlBodyLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(pnlChartLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
-        );
-        pnlBodyLayout.setVerticalGroup(
-            pnlBodyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBodyLayout.createSequentialGroup()
-                .addComponent(pnlGrafikLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlGrafik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(pnlChartLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
-        );
-
-        pnlGafikBar.setBackground(new java.awt.Color(255, 255, 255));
-        pnlGafikBar.setLayout(new java.awt.BorderLayout());
-
-        pnlGrafikLine1.setBackground(new java.awt.Color(204, 153, 0));
-
-        lblTambahStudio1.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        lblTambahStudio1.setForeground(new java.awt.Color(255, 255, 255));
-        lblTambahStudio1.setText("Penjuan per Film");
-
-        javax.swing.GroupLayout pnlGrafikLine1Layout = new javax.swing.GroupLayout(pnlGrafikLine1);
-        pnlGrafikLine1.setLayout(pnlGrafikLine1Layout);
-        pnlGrafikLine1Layout.setHorizontalGroup(
-            pnlGrafikLine1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGrafikLine1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lblTambahStudio1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(326, Short.MAX_VALUE))
-        );
-        pnlGrafikLine1Layout.setVerticalGroup(
-            pnlGrafikLine1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlGrafikLine1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTambahStudio1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        pnlGafikBar.add(pnlGrafikLine1, java.awt.BorderLayout.PAGE_START);
-
-        pnlChartBar.setLayout(new java.awt.BorderLayout());
-        pnlGafikBar.add(pnlChartBar, java.awt.BorderLayout.PAGE_END);
-
         pnlIsi.setBackground(new java.awt.Color(255, 255, 255));
         pnlIsi.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
 
@@ -252,8 +156,6 @@ public class LaporanPanel extends javax.swing.JPanel {
         lblTambahStudio2.setForeground(new java.awt.Color(255, 255, 255));
         lblTambahStudio2.setText("Detail Penjualan");
 
-        btnCetak.setText("Cetak Laporan");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -261,17 +163,13 @@ public class LaporanPanel extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(lblTambahStudio2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCetak)
-                .addContainerGap())
+                .addContainerGap(902, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTambahStudio2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCetak))
+                .addComponent(lblTambahStudio2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -422,11 +320,7 @@ public class LaporanPanel extends javax.swing.JPanel {
                         .addComponent(spnSampaiTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnMuatData)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(pnlBody, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlGafikBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -447,11 +341,7 @@ public class LaporanPanel extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pnlKartuTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlBody, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlGafikBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                 .addComponent(pnlIsi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -459,7 +349,6 @@ public class LaporanPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCetak;
     private javax.swing.JButton btnMuatData;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -468,8 +357,6 @@ public class LaporanPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblJumlahTiket;
     private javax.swing.JLabel lblKelolaStudio;
     private javax.swing.JLabel lblSampai;
-    private javax.swing.JLabel lblTambahStudio;
-    private javax.swing.JLabel lblTambahStudio1;
     private javax.swing.JLabel lblTambahStudio2;
     private javax.swing.JLabel lblTerlarisJudul;
     private javax.swing.JLabel lblTiketJudul;
@@ -478,13 +365,6 @@ public class LaporanPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblTotalPenjualan;
     private javax.swing.JLabel lblgambar2;
     private javax.swing.JLabel lblgambar3;
-    private javax.swing.JPanel pnlBody;
-    private javax.swing.JPanel pnlChartBar;
-    private javax.swing.JPanel pnlChartLine;
-    private javax.swing.JPanel pnlGafikBar;
-    private javax.swing.JPanel pnlGrafik;
-    private javax.swing.JPanel pnlGrafikLine;
-    private javax.swing.JPanel pnlGrafikLine1;
     private javax.swing.JPanel pnlIsi;
     private javax.swing.JPanel pnlKartu;
     private javax.swing.JPanel pnlKartuTerlaris;
