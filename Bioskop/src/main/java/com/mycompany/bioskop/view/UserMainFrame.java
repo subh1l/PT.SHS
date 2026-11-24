@@ -4,6 +4,7 @@
  */
 package com.mycompany.bioskop.view;
 
+import java.awt.CardLayout;
 import java.awt.HeadlessException;
 import javax.swing.*;
 
@@ -14,6 +15,8 @@ import javax.swing.*;
 public class UserMainFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserMainFrame.class.getName());
+    private CardLayout cardLayout;
+    private JPanel contentContainer;
 
     private int idUser;
     /**
@@ -28,27 +31,28 @@ public class UserMainFrame extends javax.swing.JFrame {
     public UserMainFrame(int idUser) {
         this.idUser = idUser;
         initComponents();
-
+        BerandaPanel beranda = new BerandaPanel();
+        RiwayatPanel riwayat = new RiwayatPanel();
+        PembayaranPanel pembayaran = new PembayaranPanel();
+        SeatSelectionPanel seatSelection = new SeatSelectionPanel();
+        TicketPanel ticket = new TicketPanel();
+        
+        cardLayout = new CardLayout();
+        contentContainer = new JPanel(cardLayout);
+        
+        contentContainer.add(beranda, "BERANDA");
+        contentContainer.add(riwayat, "RIWAYAT");
+        contentContainer.add(pembayaran, "PEMBAYARAN");
+        contentContainer.add(seatSelection, "SEAT");
+        contentContainer.add(ticket, "TIKET");
+        
+        pnlKonten.setLayout(new java.awt.BorderLayout());
+        pnlKonten.add(contentContainer, java.awt.BorderLayout.CENTER);
+        
         setTitle("PT.shs Cinema");
         setSize(1200, 700);
         setLocationRelativeTo(null);
     }
-    
-    public void tampilkanPanel(javax.swing.JPanel panel) {
-        setContentPane(panel);
-        revalidate();
-        repaint();
-    }
-
-    public void tampilkanBeranda() {
-        setContentPane(pnlUtama);
-        revalidate();
-        repaint();
-    }
-
-
-    
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -60,10 +64,6 @@ public class UserMainFrame extends javax.swing.JFrame {
 
         pnlUtama = new javax.swing.JPanel();
         pnlKonten = new javax.swing.JPanel();
-        pnlBanner = new javax.swing.JPanel();
-        lblBanner = new javax.swing.JLabel();
-        btnDetail = new javax.swing.JButton();
-        lblDeskripsi = new javax.swing.JLabel();
         pnlSidebar = new javax.swing.JPanel();
         btnBeranda = new javax.swing.JButton();
         btnRiwayat = new javax.swing.JButton();
@@ -74,62 +74,15 @@ public class UserMainFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pnlBanner.setBackground(new java.awt.Color(48, 36, 110));
-        pnlBanner.setPreferredSize(new java.awt.Dimension(500, 100));
-
-        lblBanner.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblBanner.setForeground(new java.awt.Color(255, 255, 255));
-        lblBanner.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblBanner.setText("Avatar: Fire and Ash");
-
-        btnDetail.setBackground(new java.awt.Color(118, 88, 184));
-        btnDetail.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnDetail.setForeground(new java.awt.Color(255, 255, 255));
-        btnDetail.setText("Lihat Detail");
-        btnDetail.setBorderPainted(false);
-        btnDetail.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnDetail.setFocusPainted(false);
-
-        lblDeskripsi.setForeground(new java.awt.Color(255, 255, 255));
-        lblDeskripsi.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblDeskripsi.setText("Film terbaru yang sedang tayang di PT.shs Cinema.");
-
-        javax.swing.GroupLayout pnlBannerLayout = new javax.swing.GroupLayout(pnlBanner);
-        pnlBanner.setLayout(pnlBannerLayout);
-        pnlBannerLayout.setHorizontalGroup(
-            pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBannerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDetail)
-                    .addComponent(lblDeskripsi, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(508, Short.MAX_VALUE))
-        );
-        pnlBannerLayout.setVerticalGroup(
-            pnlBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlBannerLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblBanner)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblDeskripsi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                .addComponent(btnDetail)
-                .addGap(29, 29, 29))
-        );
-
         javax.swing.GroupLayout pnlKontenLayout = new javax.swing.GroupLayout(pnlKonten);
         pnlKonten.setLayout(pnlKontenLayout);
         pnlKontenLayout.setHorizontalGroup(
             pnlKontenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 898, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 898, Short.MAX_VALUE)
         );
         pnlKontenLayout.setVerticalGroup(
             pnlKontenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlKontenLayout.createSequentialGroup()
-                .addGap(86, 86, 86)
-                .addComponent(pnlBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(250, 250, 250))
+            .addGap(0, 520, Short.MAX_VALUE)
         );
 
         pnlSidebar.setBackground(new java.awt.Color(214, 218, 225));
@@ -259,16 +212,20 @@ public class UserMainFrame extends javax.swing.JFrame {
 
     private void btnBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBerandaActionPerformed
         // TODO add your handling code here:
-         tampilkanBeranda();
+        cardLayout.show(contentContainer, "BERANDA");
     }//GEN-LAST:event_btnBerandaActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
+        JFrame loginFrame = new LoginFrame();
+        loginFrame.setLocationRelativeTo(null);
+        loginFrame.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiwayatActionPerformed
         // TODO add your handling code here:
-        tampilkanPanel(new RiwayatPanel(idUser));
+        cardLayout.show(contentContainer, "RIWAYAT");
     }//GEN-LAST:event_btnRiwayatActionPerformed
 
     /**
@@ -298,14 +255,10 @@ public class UserMainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBeranda;
-    private javax.swing.JButton btnDetail;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnRiwayat;
-    private javax.swing.JLabel lblBanner;
-    private javax.swing.JLabel lblDeskripsi;
     private javax.swing.JLabel lblLogo1;
     private javax.swing.JLabel lblLogo2;
-    private javax.swing.JPanel pnlBanner;
     private javax.swing.JPanel pnlKonten;
     private javax.swing.JPanel pnlLogo;
     private javax.swing.JPanel pnlSidebar;

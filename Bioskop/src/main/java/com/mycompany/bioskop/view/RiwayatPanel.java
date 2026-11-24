@@ -15,7 +15,8 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RiwayatPanel extends javax.swing.JPanel {
     private int idUser;
-
+    
+    private final UserMainFrame mainFrame;
     /**
      * Creates new form RiwayatPanel
      */
