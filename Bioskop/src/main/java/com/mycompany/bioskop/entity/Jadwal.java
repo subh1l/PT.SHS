@@ -4,7 +4,7 @@
  */
 package com.mycompany.bioskop.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
@@ -15,14 +15,14 @@ public class Jadwal {
     private int idJadwal;
     private int idFilm;
     private int idStudio;
-    private LocalDateTime tanggal;
+    private LocalDate tanggal;
     private LocalTime jamMulai;
     private double harga;
 
     public Jadwal() {
     }
 
-    public Jadwal(int idjadwal, int idFilm, int idStudio, LocalDateTime tanggal, LocalTime jamMulai, double harga) {
+    public Jadwal(int idjadwal, int idFilm, int idStudio, LocalDate tanggal, LocalTime jamMulai, double harga) {
         this.idJadwal = idjadwal;
         this.idFilm = idFilm;
         this.idStudio = idStudio;
@@ -51,7 +51,7 @@ public class Jadwal {
         return jamMulai;
     }
 
-    public LocalDateTime getTanggal() {
+    public LocalDate getTanggal() {
         return tanggal;
     }
 
@@ -75,7 +75,7 @@ public class Jadwal {
         this.jamMulai = jamMulai;
     }
 
-    public void setTanggal(LocalDateTime tanggal) {
+    public void setTanggal(LocalDate tanggal) {
         this.tanggal = tanggal;
     }
     

@@ -8,12 +8,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mycompany.bioskop.entity.Jadwal;
+import java.time.LocalDate;
 
 /**
  *
@@ -31,7 +31,7 @@ public class JadwalRepository {
                 int id = rs.getInt("id_jadwal");
                 int film = rs.getInt("id_film");
                 int studio = rs.getInt("email");
-                LocalDateTime tanggal = rs.getObject("tanggal", LocalDateTime.class);
+                LocalDate tanggal = rs.getObject("tanggal", LocalDate.class);
                 LocalTime jamMulai = rs.getObject("jam_mulai", LocalTime.class);
                 double harga = rs.getDouble("harga");
 
@@ -56,7 +56,7 @@ public class JadwalRepository {
                     int idJadwal = rs.getInt("id_jadwal");
                     int film = rs.getInt("id_film");
                     int studio = rs.getInt("email");
-                    LocalDateTime tanggal = rs.getObject("tanggal", LocalDateTime.class);
+                    LocalDate tanggal = rs.getObject("tanggal", LocalDate.class);
                     LocalTime jamMulai = rs.getObject("jam_mulai", LocalTime.class);
                     double harga = rs.getDouble("harga");
 
@@ -82,7 +82,7 @@ public class JadwalRepository {
         }
     }
     
-    public void addJadwal(int film, int studio, LocalDateTime tanggal, LocalTime mulai, double harga){
+    public void addJadwal(int film, int studio, LocalDate tanggal, LocalTime mulai, double harga){
         try (
                 Connection conn = DatabaseUtil.getConnection();
                 PreparedStatement stmt = conn.prepareStatement("INSERT INTO jadwal (id_film, id_studio, tanggal, jam_mulai, harga) VALUES (?, ?, ?, ?, ?)")
@@ -98,7 +98,7 @@ public class JadwalRepository {
         }
     }
 
-    public void updateJadwal(int film, int studio, LocalDateTime tanggal, LocalTime mulai, double harga, int jadwal){
+    public void updateJadwal(int film, int studio, LocalDate tanggal, LocalTime mulai, double harga, int jadwal){
         try(
             Connection conn = DatabaseUtil.getConnection();
             PreparedStatement stmt = conn.prepareStatement("UPDATE jadwal SET id_film = ?, id_studio = ?, tanggal = ?, jam_mulai = ?, harga = ? WHERE id_jadwal = ?");
@@ -112,6 +112,20 @@ public class JadwalRepository {
             stmt.executeUpdate();
         }catch(SQLException e){
             e.printStackTrace();
+        }
+    }
+    
+    public int getJadwalAmount(){
+        try(
+                Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM jadwal");
+                ResultSet rs = stmt.executeQuery();
+                ){
+            int amount = rs.getInt(1);
+            return amount;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return 0;
         }
     }
 }

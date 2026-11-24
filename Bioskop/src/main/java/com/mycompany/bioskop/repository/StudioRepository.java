@@ -104,4 +104,18 @@ public class StudioRepository {
             e.printStackTrace();
         }
     }
+    
+    public int getStudioAmount(){
+        try(
+                Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM studio");
+                ResultSet rs = stmt.executeQuery();
+                ){
+            int amount = rs.getInt(1);
+            return amount;
+        }catch(SQLException e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

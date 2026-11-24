@@ -4,17 +4,25 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Film;
+import com.mycompany.bioskop.entity.Studio;
+import com.mycompany.bioskop.repository.StudioRepository;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author hp
  */
 public class StudioPanel extends javax.swing.JPanel {
 
+    private final StudioRepository studioRepository = new StudioRepository();
     /**
      * Creates new form StudioPanel
      */
     public StudioPanel() {
         initComponents();
+        renderTable();
     }
 
     /**
@@ -33,17 +41,12 @@ public class StudioPanel extends javax.swing.JPanel {
         lblgambar3 = new javax.swing.JLabel();
         pnlForm = new javax.swing.JPanel();
         lblGambar = new javax.swing.JLabel();
-        btnPilihGambar = new javax.swing.JButton();
         lblNamaStudio = new javax.swing.JLabel();
         txtNamaStudio = new javax.swing.JTextField();
         lblTipe = new javax.swing.JLabel();
         cmbTipe = new javax.swing.JComboBox<>();
         lblKapasitas = new javax.swing.JLabel();
         txtKapasitas = new javax.swing.JTextField();
-        lblKursiPerBaris = new javax.swing.JLabel();
-        txtKursiPerBaris = new javax.swing.JTextField();
-        lblJumlahBaris = new javax.swing.JLabel();
-        txtJumlahBaris = new javax.swing.JTextField();
         btnReset = new javax.swing.JButton();
         btnSimpan = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -71,14 +74,12 @@ public class StudioPanel extends javax.swing.JPanel {
 
         lblgambar2.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar2.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar2.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar2.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar2.setPreferredSize(new java.awt.Dimension(150, 150));
 
         lblgambar3.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar3.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar3.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar3.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar3.setPreferredSize(new java.awt.Dimension(150, 150));
@@ -114,10 +115,6 @@ public class StudioPanel extends javax.swing.JPanel {
         lblGambar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/foto6.jpg"))); // NOI18N
         lblGambar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153)));
 
-        btnPilihGambar.setFont(new java.awt.Font("Times New Roman", 0, 13)); // NOI18N
-        btnPilihGambar.setText("Pilih Gambar");
-        btnPilihGambar.addActionListener(this::btnPilihGambarActionPerformed);
-
         lblNamaStudio.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblNamaStudio.setText("Nama Studio");
 
@@ -134,17 +131,6 @@ public class StudioPanel extends javax.swing.JPanel {
 
         txtKapasitas.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         txtKapasitas.addActionListener(this::txtKapasitasActionPerformed);
-
-        lblKursiPerBaris.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        lblKursiPerBaris.setText("Kursi per Baris");
-
-        txtKursiPerBaris.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        txtKursiPerBaris.addActionListener(this::txtKursiPerBarisActionPerformed);
-
-        lblJumlahBaris.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        lblJumlahBaris.setText("Jumlah Baris");
-
-        txtJumlahBaris.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
 
         btnReset.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
         btnReset.setText("Reset");
@@ -182,28 +168,19 @@ public class StudioPanel extends javax.swing.JPanel {
         pnlFormLayout.setHorizontalGroup(
             pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlFormLayout.createSequentialGroup()
-                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(lblGambar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(btnPilihGambar)))
+                .addGap(38, 38, 38)
+                .addComponent(lblGambar, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(91, 91, 91)
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblKursiPerBaris)
                     .addComponent(lblKapasitas, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNamaStudio, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(txtKursiPerBaris, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
-                        .addComponent(txtKapasitas, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtKapasitas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                         .addComponent(txtNamaStudio, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblJumlahBaris)
                     .addComponent(lblTipe)
                     .addComponent(cmbTipe, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJumlahBaris, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addComponent(btnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -216,11 +193,8 @@ public class StudioPanel extends javax.swing.JPanel {
             .addGroup(pnlFormLayout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnlFormLayout.createSequentialGroup()
-                        .addComponent(lblGambar, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnPilihGambar))
+                .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblGambar, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addComponent(lblNamaStudio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -228,24 +202,16 @@ public class StudioPanel extends javax.swing.JPanel {
                         .addGap(29, 29, 29)
                         .addComponent(lblKapasitas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtKapasitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(lblKursiPerBaris)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtKursiPerBaris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtKapasitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnlFormLayout.createSequentialGroup()
                         .addComponent(lblTipe)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmbTipe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
-                        .addComponent(lblJumlahBaris)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtJumlahBaris, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)
+                        .addGap(125, 125, 125)
                         .addGroup(pnlFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnSimpan)
                             .addComponent(btnReset))))
-                .addGap(23, 23, 23))
+                .addGap(29, 29, 29))
         );
 
         pnlDaftar.setBackground(new java.awt.Color(255, 255, 255));
@@ -261,13 +227,13 @@ public class StudioPanel extends javax.swing.JPanel {
 
         tblStudio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "No", "Nama Studio", "Tipe", "Kapasitas", "Jumlah Baris", "Kursi per Baris", "Aksi"
+                "ID", "Nama Studio", "Tipe", "Kapasitas"
             }
         ));
         scrollStudio.setViewportView(tblStudio);
@@ -370,33 +336,49 @@ public class StudioPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtKapasitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKapasitasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtKapasitasActionPerformed
-
-    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResetActionPerformed
-
-    private void btnPilihGambarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihGambarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnPilihGambarActionPerformed
-
-    private void txtKursiPerBarisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKursiPerBarisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtKursiPerBarisActionPerformed
-
-    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSimpanActionPerformed
-
     private void txtCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCariActionPerformed
 
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        // TODO add your handling code here:
+        int capacity = Integer.parseInt(txtKapasitas.getText());
+        String name = txtNamaStudio.getText();
+        String type = (String)cmbTipe.getSelectedItem();
+        studioRepository.addStudio(name, type, capacity);
+        renderTable();
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        txtKapasitas.setText("");
+        txtNamaStudio.setText("");
+        cmbTipe.setSelectedIndex(0);
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void txtKapasitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKapasitasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKapasitasActionPerformed
+  
+    private void renderTable(){
+        List<Studio> Studios = studioRepository.getAllStudio();
+        DefaultTableModel model = (DefaultTableModel)tblStudio.getModel();
+        model.setRowCount(0);
+        
+        for(Studio s : Studios){
+            Object[] rowData = {
+            s.getIdStudio(),
+            s.getNamaStudio(),
+            s.getTipe(),
+            s.getKapasitas(),
+            };
+            model.addRow(rowData);
+        }
+        int jumlah = studioRepository.getStudioAmount();
+        lblJumlahData.setText("Jumlah data : " + jumlah + " studio");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnPilihGambar;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JComboBox<String> cmbTipe;
@@ -406,11 +388,9 @@ public class StudioPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JLabel lblGambar;
-    private javax.swing.JLabel lblJumlahBaris;
     private javax.swing.JLabel lblJumlahData;
     private javax.swing.JLabel lblKapasitas;
     private javax.swing.JLabel lblKelolaStudio;
-    private javax.swing.JLabel lblKursiPerBaris;
     private javax.swing.JLabel lblNamaStudio;
     private javax.swing.JLabel lblTambahStudio;
     private javax.swing.JLabel lblTambahStudio1;
@@ -422,9 +402,7 @@ public class StudioPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrollStudio;
     private javax.swing.JTable tblStudio;
     private javax.swing.JTextField txtCari;
-    private javax.swing.JTextField txtJumlahBaris;
     private javax.swing.JTextField txtKapasitas;
-    private javax.swing.JTextField txtKursiPerBaris;
     private javax.swing.JTextField txtNamaStudio;
     // End of variables declaration//GEN-END:variables
 }

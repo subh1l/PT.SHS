@@ -4,17 +4,32 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Jadwal;
+import com.mycompany.bioskop.entity.Studio;
+import com.mycompany.bioskop.repository.JadwalRepository;
+import java.time.LocalDate;
+import static java.time.LocalDateTime.now;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
+import javax.swing.JSpinner;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author hp
  */
 public class JadwalPanel extends javax.swing.JPanel {
 
+    JadwalRepository jadwalRepository = new JadwalRepository();
     /**
      * Creates new form JadwalPanel
      */
     public JadwalPanel() {
         initComponents();
+        spnTgl.setEditor(new javax.swing.JSpinner.DateEditor(spnTgl, "dd/MM/yyyy"));
+        spnJam.setEditor(new javax.swing.JSpinner.DateEditor(spnJam, "HH:mm"));
+        renderTable();
     }
 
     /**
@@ -36,14 +51,15 @@ public class JadwalPanel extends javax.swing.JPanel {
         btnReset = new javax.swing.JButton();
         btnSimpan = new javax.swing.JButton();
         lblJam = new javax.swing.JLabel();
-        cmbStudio = new javax.swing.JComboBox<>();
-        cmbFilm = new javax.swing.JComboBox<>();
         lblTanggal = new javax.swing.JLabel();
-        spnJam = new javax.swing.JSpinner();
+        spnTgl = new javax.swing.JSpinner();
         lblHarga = new javax.swing.JLabel();
         txtHarga = new javax.swing.JTextField();
         lblFilm = new javax.swing.JLabel();
         lblStudio = new javax.swing.JLabel();
+        txtStudio = new javax.swing.JTextField();
+        txtFilm = new javax.swing.JTextField();
+        spnJam = new javax.swing.JSpinner();
         pnlForm = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         lblTambahStudio1 = new javax.swing.JLabel();
@@ -60,14 +76,12 @@ public class JadwalPanel extends javax.swing.JPanel {
 
         lblgambar2.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar2.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar2.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar2.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar2.setPreferredSize(new java.awt.Dimension(150, 150));
 
         lblgambar3.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar3.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar3.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar3.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar3.setPreferredSize(new java.awt.Dimension(150, 150));
@@ -123,6 +137,7 @@ public class JadwalPanel extends javax.swing.JPanel {
 
         btnReset.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnReset.setText("Reset");
+        btnReset.addActionListener(this::btnResetActionPerformed);
 
         btnSimpan.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnSimpan.setText("Simpan Jadwal");
@@ -131,17 +146,11 @@ public class JadwalPanel extends javax.swing.JPanel {
         lblJam.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblJam.setText("Jam Tayang");
 
-        cmbStudio.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cmbStudio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Studio", " " }));
-
-        cmbFilm.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        cmbFilm.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Film" }));
-
         lblTanggal.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblTanggal.setText("Tanggal Tayang");
 
-        spnJam.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        spnJam.setModel(new javax.swing.SpinnerDateModel(new java.util.Date(1795017373762L), null, null, java.util.Calendar.DAY_OF_MONTH));
+        spnTgl.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        spnTgl.setModel(new javax.swing.SpinnerDateModel());
 
         lblHarga.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lblHarga.setText("Harga Tiket (Rp)");
@@ -149,60 +158,70 @@ public class JadwalPanel extends javax.swing.JPanel {
         txtHarga.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
         lblFilm.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        lblFilm.setText("Film");
+        lblFilm.setText("ID Film");
 
         lblStudio.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        lblStudio.setText("Studio");
+        lblStudio.setText("ID Studio");
+
+        txtStudio.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+
+        txtFilm.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+
+        spnJam.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        spnJam.setModel(new javax.swing.SpinnerDateModel());
 
         javax.swing.GroupLayout pnlForm1Layout = new javax.swing.GroupLayout(pnlForm1);
         pnlForm1.setLayout(pnlForm1Layout);
         pnlForm1Layout.setHorizontalGroup(
             pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlForm1Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTanggal)
                     .addComponent(lblHarga)
                     .addComponent(lblFilm)
-                    .addComponent(cmbFilm, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(spnJam)
-                    .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnTgl, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(109, 109, 109)
                 .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(spnJam, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtStudio, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlForm1Layout.createSequentialGroup()
                         .addComponent(btnReset)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnSimpan))
                     .addComponent(lblStudio)
-                    .addComponent(lblJam)
-                    .addComponent(cmbStudio, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(308, Short.MAX_VALUE))
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblJam))
+                .addContainerGap(309, Short.MAX_VALUE))
         );
         pnlForm1Layout.setVerticalGroup(
             pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlForm1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(27, 27, 27)
+                .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFilm)
+                    .addComponent(lblStudio))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtStudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTanggal)
+                    .addComponent(lblJam))
+                .addGap(18, 18, 18)
+                .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(spnTgl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spnJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnReset)
                         .addComponent(btnSimpan))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlForm1Layout.createSequentialGroup()
-                        .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblFilm)
-                            .addComponent(lblStudio))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbFilm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbStudio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(22, 22, 22)
-                        .addGroup(pnlForm1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTanggal)
-                            .addComponent(lblJam))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spnJam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
                         .addComponent(lblHarga)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -237,13 +256,13 @@ public class JadwalPanel extends javax.swing.JPanel {
 
         tblJadwal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "No", "Film", "Studio", "Tanggal", "Jam", "Harga (Rp)", "Aksi"
+                "ID", "Film", "Studio", "Tanggal", "Jam", "Harga (Rp)"
             }
         ));
         jScrollPane1.setViewportView(tblJadwal);
@@ -305,14 +324,56 @@ public class JadwalPanel extends javax.swing.JPanel {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
+        int film = Integer.valueOf(txtFilm.getText());
+        int studio = Integer.valueOf(txtStudio.getText());
+        double harga = Double.valueOf(txtHarga.getText());
+        LocalDate tanggal = toLocalDate((java.util.Date) spnTgl.getValue());
+        LocalTime jamMulai = toLocalTime((java.util.Date) spnJam.getValue());
+        
+        jadwalRepository.addJadwal(film, studio, tanggal, jamMulai, harga);
+        
     }//GEN-LAST:event_btnSimpanActionPerformed
 
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        // TODO add your handling code here:
+        txtFilm.setText("");
+        txtStudio.setText("");
+        txtHarga.setText("");
+        spnTgl.setValue(now());
+        spnTgl.setValue(now());
+    }//GEN-LAST:event_btnResetActionPerformed
+    
+    private void renderTable(){
+        List<Jadwal> jadwals = jadwalRepository.getAllJadwal();
+        DefaultTableModel model = (DefaultTableModel)tblJadwal.getModel();
+        model.setRowCount(0);
+        
+        for(Jadwal j : jadwals){
+            Object[] rowData = {
+            j.getIdJadwal(),
+            j.getIdFilm(),
+            j.getIdStudio(),
+            j.getTanggal(),
+            j.getJamMulai(),
+            j.getHarga()
+            };
+            model.addRow(rowData);
+        }
+        int jumlah = jadwalRepository.getJadwalAmount();
+        lblTotalJadwal.setText("Jumlah data : " + jumlah + " Jadwal");
+    }
+    
+    private LocalDate toLocalDate(java.util.Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    private LocalTime toLocalTime(java.util.Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalTime().withSecond(0).withNano(0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnSimpan;
-    private javax.swing.JComboBox<String> cmbFilm;
-    private javax.swing.JComboBox<String> cmbStudio;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -331,7 +392,10 @@ public class JadwalPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlForm;
     private javax.swing.JPanel pnlForm1;
     private javax.swing.JSpinner spnJam;
+    private javax.swing.JSpinner spnTgl;
     private javax.swing.JTable tblJadwal;
+    private javax.swing.JTextField txtFilm;
     private javax.swing.JTextField txtHarga;
+    private javax.swing.JTextField txtStudio;
     // End of variables declaration//GEN-END:variables
 }

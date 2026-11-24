@@ -4,17 +4,25 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Film;
+import com.mycompany.bioskop.repository.FilmRepository;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author hp
  */
 public class FilmPanel extends javax.swing.JPanel {
-
+    private final FilmRepository filmRepository = new FilmRepository();
+    
     /**
      * Creates new form FilmPanel
      */
     public FilmPanel() {
         initComponents();
+        renderTable();
+        tableListener();
     }
 
     /**
@@ -57,8 +65,6 @@ public class FilmPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblDaftarFilm = new javax.swing.JTable();
         lblJumlah = new javax.swing.JLabel();
-        FieldAmount = new javax.swing.JTextField();
-        lblJumlah1 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
@@ -83,12 +89,14 @@ public class FilmPanel extends javax.swing.JPanel {
 
         cmbGenre.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         cmbGenre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Genre", "Action", "Drama", "Comedy", "Horror", "Animation", "Sci - FI", "Romance", "Thriller" }));
+        cmbGenre.addActionListener(this::cmbGenreActionPerformed);
 
         spnDurasi.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         spnDurasi.setModel(new javax.swing.SpinnerNumberModel(0, 0, 600, 1));
 
         cmbRating.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         cmbRating.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pilih Rating", "SU", "13+", "17+", "21+" }));
+        cmbRating.addActionListener(this::cmbRatingActionPerformed);
 
         grpStatus.add(rbTayang);
         rbTayang.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -109,6 +117,7 @@ public class FilmPanel extends javax.swing.JPanel {
 
         btnTambah.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnTambah.setText("Tambah");
+        btnTambah.addActionListener(this::btnTambahActionPerformed);
 
         btnUbah.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnUbah.setText("Ubah");
@@ -116,6 +125,7 @@ public class FilmPanel extends javax.swing.JPanel {
 
         btnHapus.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(this::btnHapusActionPerformed);
 
         jPanel4.setBackground(new java.awt.Color(204, 153, 0));
 
@@ -196,9 +206,7 @@ public class FilmPanel extends javax.swing.JPanel {
                             .addComponent(cmbRating, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(21, 21, 21)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(lblSinopsis)
-                                .addGap(71, 71, 71))
+                            .addComponent(lblSinopsis)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -235,14 +243,12 @@ public class FilmPanel extends javax.swing.JPanel {
 
         lblgambar4.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar4.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar4.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar4.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar4.setPreferredSize(new java.awt.Dimension(150, 150));
 
         lblgambar5.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar5.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar5.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar5.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar5.setPreferredSize(new java.awt.Dimension(150, 150));
@@ -256,7 +262,7 @@ public class FilmPanel extends javax.swing.JPanel {
                 .addComponent(lblgambar5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65)
                 .addComponent(lblKelolaStudio1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addComponent(lblgambar4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(86, 86, 86))
         );
@@ -341,13 +347,9 @@ public class FilmPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24))
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -356,8 +358,7 @@ public class FilmPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 428, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -371,11 +372,133 @@ public class FilmPanel extends javax.swing.JPanel {
 
     private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
         // TODO add your handling code here:
+            String title = txtJudul.getText();
+            String synopsis = txtSinopsis.getText();
+            String genre = (String)cmbGenre.getSelectedItem();
+            String rating = (String)cmbRating.getSelectedItem();
+            int duration = (int)spnDurasi.getValue();
+            String status;
+            if(rbTayang.isSelected()){
+                status = "Tayang";
+            }else if(rbSegera.isSelected()){
+                status = "Segera";
+            }else{
+                throw new IllegalArgumentException("status cannot be empty");
+            }
+            
+            int viewRow = tblDaftarFilm.getSelectedRow();
+            if(viewRow != -1){
+                int modelRow = tblDaftarFilm.convertRowIndexToModel(viewRow);
+                int id = (int)tblDaftarFilm.getModel().getValueAt(modelRow, 0);
+                Film film = new Film(id, title, genre, duration, rating, synopsis, status);
+                filmRepository.updateFilm(film);
+            }
+            resetFields();
+            renderTable();
     }//GEN-LAST:event_btnUbahActionPerformed
 
+    private void cmbGenreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbGenreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbGenreActionPerformed
+
+    private void cmbRatingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRatingActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbRatingActionPerformed
+
+    private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
+        // TODO add your handling code here:
+        String title = txtJudul.getText();
+        String synopsis = txtSinopsis.getText();
+        String genre = (String)cmbGenre.getSelectedItem();
+        String rating = (String)cmbRating.getSelectedItem();
+        int duration = (int)spnDurasi.getValue();
+        String status;
+        if(rbTayang.isSelected()){
+            status = "Tayang";
+        }else if(rbSegera.isSelected()){
+            status = "Segera";
+        }else{
+            throw new IllegalArgumentException("status cannot be empty");
+        }
+        
+        Film film = new Film(0, title, genre, duration, rating, synopsis, status);
+        filmRepository.addFilm(film);
+        resetFields();
+        renderTable();
+    }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        int viewRow = tblDaftarFilm.getSelectedRow();
+        if(viewRow != -1){
+            int modelRow = tblDaftarFilm.convertRowIndexToModel(viewRow);
+            Object id = tblDaftarFilm.getModel().getValueAt(modelRow, 0);
+            filmRepository.deleteFilm((int)id);
+        }
+        resetFields();
+        renderTable();
+    }//GEN-LAST:event_btnHapusActionPerformed
+    
+    private void renderTable(){
+        List<Film> films = filmRepository.getAllFilm();
+        DefaultTableModel model = (DefaultTableModel)tblDaftarFilm.getModel();
+        model.setRowCount(0);
+        
+        for(Film f : films){
+            Object[] rowData = {
+            f.getIdFilm(),
+            f.getJudul(),
+            f.getGenre(),
+            f.getDurasiMenit(),
+            f.getRatingUsia(),
+            f.getStatus(),
+            };
+            model.addRow(rowData);
+        }
+        int jumlah = filmRepository.getAmount();
+        lblJumlah.setText("Jumlah data : " + jumlah + " film");
+    }
+    
+    private void tableListener(){
+        tblDaftarFilm.getSelectionModel().addListSelectionListener(e -> {
+            if(e.getValueIsAdjusting()){
+                return;
+            }
+            int viewRow = tblDaftarFilm.getSelectedRow();
+            if(viewRow != -1){
+                int modelRow = tblDaftarFilm.convertRowIndexToModel(viewRow);
+                String title = (String)tblDaftarFilm.getModel().getValueAt(modelRow, 1);
+                String genre = (String)tblDaftarFilm.getModel().getValueAt(modelRow, 2);
+                int durasi = (int)tblDaftarFilm.getModel().getValueAt(modelRow, 3);
+                String status = (String)tblDaftarFilm.getModel().getValueAt(modelRow, 5);
+                String rating = (String)tblDaftarFilm.getModel().getValueAt(modelRow, 4);
+                String sinopsis = filmRepository.getFilm((int)tblDaftarFilm.getModel().getValueAt(modelRow, 0)).getSinopsis();
+                txtJudul.setText(title);
+                cmbGenre.setSelectedItem(genre);
+                spnDurasi.setValue(durasi);
+                if ("Tayang".equals(status)) {
+                    rbTayang.setSelected(true);
+                } else if ("Segera".equals(status)) {
+                    rbSegera.setSelected(true);
+                } else {
+                    grpStatus.clearSelection();
+                }
+                cmbRating.setSelectedItem(rating);
+                txtSinopsis.setText(sinopsis);
+            }
+        });
+    }
+    
+    public void resetFields(){
+        txtJudul.setText("");
+        cmbGenre.setSelectedIndex(0);
+        spnDurasi.setValue(0);
+        grpStatus.clearSelection();
+        cmbRating.setSelectedIndex(0);
+        txtSinopsis.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField FieldAmount;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnTambah;
     private javax.swing.JButton btnUbah;
@@ -383,7 +506,6 @@ public class FilmPanel extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cmbRating;
     private javax.swing.ButtonGroup grpStatus;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -394,15 +516,12 @@ public class FilmPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblGenre;
     private javax.swing.JLabel lblJudul;
     private javax.swing.JLabel lblJumlah;
-    private javax.swing.JLabel lblKelolaStudio;
     private javax.swing.JLabel lblKelolaStudio1;
     private javax.swing.JLabel lblRating;
     private javax.swing.JLabel lblSinopsis;
     private javax.swing.JLabel lblStatus;
     private javax.swing.JLabel lblTambahStudio;
     private javax.swing.JLabel lblTambahStudio1;
-    private javax.swing.JLabel lblgambar2;
-    private javax.swing.JLabel lblgambar3;
     private javax.swing.JLabel lblgambar4;
     private javax.swing.JLabel lblgambar5;
     private javax.swing.JRadioButton rbSegera;
