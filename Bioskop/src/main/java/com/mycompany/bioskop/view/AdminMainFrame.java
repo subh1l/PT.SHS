@@ -112,7 +112,6 @@ public class AdminMainFrame extends javax.swing.JFrame {
         lblAdmin1.setForeground(new java.awt.Color(255, 255, 255));
         lblAdmin1.setText("Login Sebagai :");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto12.png")); // NOI18N
         jLabel1.setBorder(javax.swing.BorderFactory.createMatteBorder(5, 5, 5, 5, new java.awt.Color(204, 153, 0)));
 
         javax.swing.GroupLayout lblLogoLayout = new javax.swing.GroupLayout(lblLogo);
@@ -196,11 +195,11 @@ public class AdminMainFrame extends javax.swing.JFrame {
         pnlContent.setLayout(pnlContentLayout);
         pnlContentLayout.setHorizontalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 849, Short.MAX_VALUE)
+            .addGap(0, 1098, Short.MAX_VALUE)
         );
         pnlContentLayout.setVerticalGroup(
             pnlContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 660, Short.MAX_VALUE)
+            .addGap(0, 868, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

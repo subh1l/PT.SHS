@@ -41,7 +41,6 @@ public class LaporanPanel extends javax.swing.JPanel {
         lblTambahStudio = new javax.swing.JLabel();
         pnlChartLine = new javax.swing.JPanel();
         pnlGafikBar = new javax.swing.JPanel();
-        pnlDetail = new javax.swing.JPanel();
         pnlGrafikLine1 = new javax.swing.JPanel();
         lblTambahStudio1 = new javax.swing.JLabel();
         pnlChartBar = new javax.swing.JPanel();
@@ -72,14 +71,12 @@ public class LaporanPanel extends javax.swing.JPanel {
 
         lblgambar2.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar2.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar2.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar2.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar2.setPreferredSize(new java.awt.Dimension(150, 150));
 
         lblgambar3.setBackground(new java.awt.Color(153, 0, 0));
         lblgambar3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblgambar3.setIcon(new javax.swing.ImageIcon("D:\\Haifa\\Sem 3\\PBO\\FOTO-KELOMPOK\\foto10.jpg")); // NOI18N
         lblgambar3.setMaximumSize(new java.awt.Dimension(200, 200));
         lblgambar3.setMinimumSize(new java.awt.Dimension(200, 200));
         lblgambar3.setPreferredSize(new java.awt.Dimension(150, 150));
@@ -216,10 +213,6 @@ public class LaporanPanel extends javax.swing.JPanel {
 
         pnlGafikBar.setBackground(new java.awt.Color(255, 255, 255));
         pnlGafikBar.setLayout(new java.awt.BorderLayout());
-
-        pnlDetail.setBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(204, 153, 0)));
-        pnlDetail.setLayout(new java.awt.BorderLayout());
-        pnlGafikBar.add(pnlDetail, java.awt.BorderLayout.CENTER);
 
         pnlGrafikLine1.setBackground(new java.awt.Color(204, 153, 0));
 
@@ -488,7 +481,6 @@ public class LaporanPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlBody;
     private javax.swing.JPanel pnlChartBar;
     private javax.swing.JPanel pnlChartLine;
-    private javax.swing.JPanel pnlDetail;
     private javax.swing.JPanel pnlGafikBar;
     private javax.swing.JPanel pnlGrafik;
     private javax.swing.JPanel pnlGrafikLine;
