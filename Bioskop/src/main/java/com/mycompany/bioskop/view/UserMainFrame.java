@@ -60,13 +60,6 @@ public class UserMainFrame extends javax.swing.JFrame {
 
         pnlUtama = new javax.swing.JPanel();
         pnlKonten = new javax.swing.JPanel();
-        pnlFilmTayang = new javax.swing.JPanel();
-        scrollFilm = new javax.swing.JScrollPane();
-        tblFilm = new javax.swing.JTable();
-        btnPilihFilm = new javax.swing.JButton();
-        pnlHeader = new javax.swing.JPanel();
-        lblheader = new javax.swing.JLabel();
-        lblWelcome = new javax.swing.JLabel();
         pnlBanner = new javax.swing.JPanel();
         lblBanner = new javax.swing.JLabel();
         btnDetail = new javax.swing.JButton();
@@ -80,87 +73,6 @@ public class UserMainFrame extends javax.swing.JFrame {
         lblLogo2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        pnlFilmTayang.setBackground(new java.awt.Color(240, 237, 248));
-        pnlFilmTayang.setPreferredSize(new java.awt.Dimension(600, 250));
-
-        scrollFilm.setBackground(new java.awt.Color(240, 237, 248));
-
-        tblFilm.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Judul Film", "Genre", "Rating", "Harga Tiket"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        scrollFilm.setViewportView(tblFilm);
-
-        btnPilihFilm.setBackground(new java.awt.Color(118, 87, 189));
-        btnPilihFilm.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnPilihFilm.setForeground(new java.awt.Color(255, 255, 255));
-        btnPilihFilm.setText("Pilih Jadwal");
-
-        javax.swing.GroupLayout pnlFilmTayangLayout = new javax.swing.GroupLayout(pnlFilmTayang);
-        pnlFilmTayang.setLayout(pnlFilmTayangLayout);
-        pnlFilmTayangLayout.setHorizontalGroup(
-            pnlFilmTayangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollFilm, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 898, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilmTayangLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnPilihFilm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        pnlFilmTayangLayout.setVerticalGroup(
-            pnlFilmTayangLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlFilmTayangLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrollFilm, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnPilihFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
-        pnlHeader.setPreferredSize(new java.awt.Dimension(600, 86));
-
-        lblheader.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblheader.setText("Temukan film favoritmu dan nikmati pengalaman menonton bersama PT.shs Cinema");
-
-        lblWelcome.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblWelcome.setText("Selamat Datang ");
-
-        javax.swing.GroupLayout pnlHeaderLayout = new javax.swing.GroupLayout(pnlHeader);
-        pnlHeader.setLayout(pnlHeaderLayout);
-        pnlHeaderLayout.setHorizontalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblheader, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(281, Short.MAX_VALUE))
-        );
-        pnlHeaderLayout.setVerticalGroup(
-            pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblWelcome)
-                .addGap(18, 18, 18)
-                .addComponent(lblheader)
-                .addContainerGap(22, Short.MAX_VALUE))
-        );
 
         pnlBanner.setBackground(new java.awt.Color(48, 36, 110));
         pnlBanner.setPreferredSize(new java.awt.Dimension(500, 100));
@@ -210,18 +122,14 @@ public class UserMainFrame extends javax.swing.JFrame {
         pnlKonten.setLayout(pnlKontenLayout);
         pnlKontenLayout.setHorizontalGroup(
             pnlKontenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 898, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(pnlBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 898, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(pnlFilmTayang, javax.swing.GroupLayout.PREFERRED_SIZE, 898, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         pnlKontenLayout.setVerticalGroup(
             pnlKontenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlKontenLayout.createSequentialGroup()
-                .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGap(86, 86, 86)
                 .addComponent(pnlBanner, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pnlFilmTayang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(250, 250, 250))
         );
 
         pnlSidebar.setBackground(new java.awt.Color(214, 218, 225));
@@ -392,22 +300,15 @@ public class UserMainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnBeranda;
     private javax.swing.JButton btnDetail;
     private javax.swing.JButton btnLogout;
-    private javax.swing.JButton btnPilihFilm;
     private javax.swing.JButton btnRiwayat;
     private javax.swing.JLabel lblBanner;
     private javax.swing.JLabel lblDeskripsi;
     private javax.swing.JLabel lblLogo1;
     private javax.swing.JLabel lblLogo2;
-    private javax.swing.JLabel lblWelcome;
-    private javax.swing.JLabel lblheader;
     private javax.swing.JPanel pnlBanner;
-    private javax.swing.JPanel pnlFilmTayang;
-    private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlKonten;
     private javax.swing.JPanel pnlLogo;
     private javax.swing.JPanel pnlSidebar;
     private javax.swing.JPanel pnlUtama;
-    private javax.swing.JScrollPane scrollFilm;
-    private javax.swing.JTable tblFilm;
     // End of variables declaration//GEN-END:variables
 }
