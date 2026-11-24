@@ -46,7 +46,6 @@ public class TicketPanel extends javax.swing.JPanel {
         btnRiwayatTiket = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 237, 248));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnlHeader.setBackground(new java.awt.Color(240, 237, 248));
 
@@ -69,7 +68,7 @@ public class TicketPanel extends javax.swing.JPanel {
                 .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblSubTiket)
                     .addComponent(lblNamaBioskop))
-                .addContainerGap(417, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -81,61 +80,95 @@ public class TicketPanel extends javax.swing.JPanel {
                 .addGap(40, 40, 40))
         );
 
-        add(pnlHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 1000, 70));
-
         pnlTiket.setBackground(new java.awt.Color(255, 255, 255));
         pnlTiket.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
-        pnlTiket.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblJudulFilmTiket.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblJudulFilmTiket.setForeground(new java.awt.Color(48, 35, 109));
         lblJudulFilmTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJudulFilmTiket.setText("Judul Film");
-        pnlTiket.add(lblJudulFilmTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 870, 25));
 
         lblTanggalTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblTanggalTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblTanggalTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTanggalTiket.setText("Tanggal");
-        pnlTiket.add(lblTanggalTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 340, -1));
 
         lblJamTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJamTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJamTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJamTiket.setText("Jam");
-        pnlTiket.add(lblJamTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 150, -1));
 
         lblKursiTiket.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblKursiTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblKursiTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblKursiTiket.setText("Kursi");
-        pnlTiket.add(lblKursiTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 340, -1));
 
         lblTotalTiket.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTotalTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblTotalTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTotalTiket.setText("Total Pembayaran");
-        pnlTiket.add(lblTotalTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 170, 270, -1));
 
         lblStudioTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblStudioTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblStudioTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblStudioTiket.setText("Studio");
-        pnlTiket.add(lblStudioTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 60, 170, 22));
 
         lblKodeBooking.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblKodeBooking.setForeground(new java.awt.Color(110, 110, 110));
         lblKodeBooking.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblKodeBooking.setText("Kode Booking");
-        pnlTiket.add(lblKodeBooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 150, -1));
 
         lblJumlahTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJumlahTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJumlahTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJumlahTiket.setText("Jumlah Tiket");
-        pnlTiket.add(lblJumlahTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 100, 150, -1));
 
-        add(pnlTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 1000, 240));
+        javax.swing.GroupLayout pnlTiketLayout = new javax.swing.GroupLayout(pnlTiket);
+        pnlTiket.setLayout(pnlTiketLayout);
+        pnlTiketLayout.setHorizontalGroup(
+            pnlTiketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTiketLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addGroup(pnlTiketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblJudulFilmTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 870, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlTiketLayout.createSequentialGroup()
+                        .addComponent(lblStudioTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(300, 300, 300)
+                        .addComponent(lblKodeBooking, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlTiketLayout.createSequentialGroup()
+                        .addComponent(lblTanggalTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(130, 130, 130)
+                        .addComponent(lblJumlahTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblJamTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlTiketLayout.createSequentialGroup()
+                        .addComponent(lblKursiTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(130, 130, 130)
+                        .addComponent(lblTotalTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlTiketLayout.setVerticalGroup(
+            pnlTiketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlTiketLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(lblJudulFilmTiket)
+                .addGap(25, 25, 25)
+                .addGroup(pnlTiketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblStudioTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblKodeBooking))
+                .addGap(18, 18, 18)
+                .addGroup(pnlTiketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTanggalTiket)
+                    .addComponent(lblJumlahTiket))
+                .addGap(24, 24, 24)
+                .addComponent(lblJamTiket)
+                .addGap(14, 14, 14)
+                .addGroup(pnlTiketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlTiketLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(lblKursiTiket))
+                    .addComponent(lblTotalTiket))
+                .addContainerGap(30, Short.MAX_VALUE))
+        );
 
         pnlBerhasil.setBackground(new java.awt.Color(255, 255, 255));
         pnlBerhasil.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
@@ -169,7 +202,7 @@ public class TicketPanel extends javax.swing.JPanel {
                     .addGroup(pnlBerhasilLayout.createSequentialGroup()
                         .addGap(395, 395, 395)
                         .addComponent(lblPesanBerhasil)))
-                .addContainerGap(398, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlBerhasilLayout.setVerticalGroup(
             pnlBerhasilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,15 +216,12 @@ public class TicketPanel extends javax.swing.JPanel {
                 .addGap(11, 11, 11))
         );
 
-        add(pnlBerhasil, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 1000, -1));
-
         btnKembaliBeranda.setBackground(new java.awt.Color(118, 87, 189));
         btnKembaliBeranda.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnKembaliBeranda.setForeground(new java.awt.Color(255, 255, 255));
         btnKembaliBeranda.setText("Kreembali Ke Beranda");
         btnKembaliBeranda.setFocusable(false);
         btnKembaliBeranda.addActionListener(this::btnKembaliBerandaActionPerformed);
-        add(btnKembaliBeranda, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 490, 560, 40));
 
         btnRiwayatTiket.setBackground(new java.awt.Color(216, 209, 231));
         btnRiwayatTiket.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -199,7 +229,37 @@ public class TicketPanel extends javax.swing.JPanel {
         btnRiwayatTiket.setText("Lihat Riwayat");
         btnRiwayatTiket.setFocusable(false);
         btnRiwayatTiket.addActionListener(this::btnRiwayatTiketActionPerformed);
-        add(btnRiwayatTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 430, 40));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlBerhasil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnRiwayatTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnKembaliBeranda, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlTiket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(3, 3, 3))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20)
+                .addComponent(pnlBerhasil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addComponent(pnlTiket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRiwayatTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnKembaliBeranda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKembaliBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliBerandaActionPerformed

@@ -31,7 +31,6 @@ public class PembayaranPanel extends javax.swing.JPanel {
         lblHeader1 = new javax.swing.JLabel();
         pnlRingkasan = new javax.swing.JPanel();
         lblJudulFilm = new javax.swing.JLabel();
-        pnlPoster = new javax.swing.JPanel();
         lblTotalPembayaran = new javax.swing.JLabel();
         lblTanggalPembayaran = new javax.swing.JLabel();
         lblGenre = new javax.swing.JLabel();
@@ -40,7 +39,6 @@ public class PembayaranPanel extends javax.swing.JPanel {
         lblKursiPembayaran = new javax.swing.JLabel();
         lblJumlahTiket = new javax.swing.JLabel();
         lblRingkasan = new javax.swing.JLabel();
-        lblHeader17 = new javax.swing.JLabel();
         lblJamPembayaran = new javax.swing.JLabel();
         pnlMetodeBayar = new javax.swing.JPanel();
         lblMetodeBayar = new javax.swing.JLabel();
@@ -62,7 +60,6 @@ public class PembayaranPanel extends javax.swing.JPanel {
         btnKembali = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 237, 248));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnlHeader.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -85,7 +82,7 @@ public class PembayaranPanel extends javax.swing.JPanel {
                 .addGroup(pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblHeader)
                     .addComponent(lblHeader1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(619, Short.MAX_VALUE))
         );
         pnlHeaderLayout.setVerticalGroup(
             pnlHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,147 +94,205 @@ public class PembayaranPanel extends javax.swing.JPanel {
                 .addGap(26, 26, 26))
         );
 
-        add(pnlHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 4, 1000, 40));
-
         pnlRingkasan.setBackground(new java.awt.Color(255, 255, 255));
         pnlRingkasan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
-        pnlRingkasan.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblJudulFilm.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblJudulFilm.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJudulFilm.setText("Judul Film");
-        pnlRingkasan.add(lblJudulFilm, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 40, -1, -1));
-
-        pnlPoster.setBackground(new java.awt.Color(216, 209, 231));
-        pnlPoster.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 237, 250)));
-        pnlPoster.setToolTipText("");
-        pnlPoster.setMaximumSize(new java.awt.Dimension(120, 160));
-        pnlPoster.setMinimumSize(new java.awt.Dimension(120, 160));
-
-        javax.swing.GroupLayout pnlPosterLayout = new javax.swing.GroupLayout(pnlPoster);
-        pnlPoster.setLayout(pnlPosterLayout);
-        pnlPosterLayout.setHorizontalGroup(
-            pnlPosterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 118, Short.MAX_VALUE)
-        );
-        pnlPosterLayout.setVerticalGroup(
-            pnlPosterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-
-        pnlRingkasan.add(pnlPoster, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         lblTotalPembayaran.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTotalPembayaran.setForeground(new java.awt.Color(48, 35, 109));
         lblTotalPembayaran.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTotalPembayaran.setText("Total:");
-        pnlRingkasan.add(lblTotalPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 50, -1));
 
         lblTanggalPembayaran.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblTanggalPembayaran.setForeground(new java.awt.Color(110, 110, 110));
         lblTanggalPembayaran.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTanggalPembayaran.setText("Tanggal");
-        pnlRingkasan.add(lblTanggalPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 110, 80, -1));
 
         lblGenre.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblGenre.setForeground(new java.awt.Color(110, 110, 110));
         lblGenre.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblGenre.setText("Genre");
-        pnlRingkasan.add(lblGenre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 80, 60, -1));
 
         lblHargaPerTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblHargaPerTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblHargaPerTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblHargaPerTiket.setText("Harga");
-        pnlRingkasan.add(lblHargaPerTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, 60, 20));
 
         lblStudioPembayaran.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblStudioPembayaran.setForeground(new java.awt.Color(110, 110, 110));
         lblStudioPembayaran.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblStudioPembayaran.setText("Studio");
-        pnlRingkasan.add(lblStudioPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, 70, 20));
 
         lblKursiPembayaran.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblKursiPembayaran.setForeground(new java.awt.Color(110, 110, 110));
         lblKursiPembayaran.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblKursiPembayaran.setText("Kursi");
-        pnlRingkasan.add(lblKursiPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 80, -1, 20));
 
         lblJumlahTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJumlahTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJumlahTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJumlahTiket.setText("Jumlah");
-        pnlRingkasan.add(lblJumlahTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, 140, 20));
 
         lblRingkasan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRingkasan.setForeground(new java.awt.Color(48, 35, 109));
         lblRingkasan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblRingkasan.setText("Ringlasan Pesanan");
-        pnlRingkasan.add(lblRingkasan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 150, -1));
-
-        lblHeader17.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        lblHeader17.setForeground(new java.awt.Color(110, 110, 110));
-        lblHeader17.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblHeader17.setText("Total Bayar");
-        pnlRingkasan.add(lblHeader17, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, 160, 20));
 
         lblJamPembayaran.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJamPembayaran.setForeground(new java.awt.Color(110, 110, 110));
         lblJamPembayaran.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJamPembayaran.setText("Jam");
-        pnlRingkasan.add(lblJamPembayaran, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 40, 20));
 
-        add(pnlRingkasan, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 610, 320));
+        javax.swing.GroupLayout pnlRingkasanLayout = new javax.swing.GroupLayout(pnlRingkasan);
+        pnlRingkasan.setLayout(pnlRingkasanLayout);
+        pnlRingkasanLayout.setHorizontalGroup(
+            pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(lblRingkasan, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblJudulFilm))
+                    .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                        .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRingkasanLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(lblGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(250, 250, 250))
+                                .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                                    .addContainerGap()
+                                    .addComponent(lblTanggalPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(230, 230, 230)))
+                            .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblJamPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(270, 270, 270))
+                            .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblStudioPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblTotalPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblKursiPembayaran)
+                            .addComponent(lblHargaPerTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblJumlahTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(138, Short.MAX_VALUE))
+        );
+        pnlRingkasanLayout.setVerticalGroup(
+            pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(lblRingkasan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblJudulFilm)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblGenre)
+                    .addComponent(lblKursiPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTanggalPembayaran)
+                    .addComponent(lblHargaPerTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblJumlahTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblJamPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStudioPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblTotalPembayaran))
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
 
         pnlMetodeBayar.setBackground(new java.awt.Color(255, 255, 255));
         pnlMetodeBayar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
-        pnlMetodeBayar.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblMetodeBayar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblMetodeBayar.setForeground(new java.awt.Color(48, 35, 109));
         lblMetodeBayar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblMetodeBayar.setText("Metode Pembayaran");
-        pnlMetodeBayar.add(lblMetodeBayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 150, -1));
 
         lblDescKasir.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescKasir.setForeground(new java.awt.Color(110, 110, 110));
         lblDescKasir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDescKasir.setText("Bayar langsung di loket");
-        pnlMetodeBayar.add(lblDescKasir, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 160, 30));
 
         lblSubMetodeBayar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblSubMetodeBayar.setForeground(new java.awt.Color(110, 110, 110));
         lblSubMetodeBayar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblSubMetodeBayar.setText("Pilih metode pembayaran");
-        pnlMetodeBayar.add(lblSubMetodeBayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 270, 20));
 
         lblDescTransfer.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescTransfer.setForeground(new java.awt.Color(110, 110, 110));
         lblDescTransfer.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDescTransfer.setText("Transfer melalui rekening bank");
-        pnlMetodeBayar.add(lblDescTransfer, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 280, 40));
 
         rbQRIS.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         rbQRIS.setText("Qris");
         rbQRIS.addActionListener(this::rbQRISActionPerformed);
-        pnlMetodeBayar.add(rbQRIS, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
         rbTransfer.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         rbTransfer.setText("Transfer Bank");
-        pnlMetodeBayar.add(rbTransfer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 112, -1, 30));
 
         rbKasir.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         rbKasir.setText("Bayar di Kasir");
         rbKasir.addActionListener(this::rbKasirActionPerformed);
-        pnlMetodeBayar.add(rbKasir, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, -1, -1));
 
         lblDescQRIS.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescQRIS.setForeground(new java.awt.Color(110, 110, 110));
         lblDescQRIS.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblDescQRIS.setText("Scan QR untuk pembayaran");
-        pnlMetodeBayar.add(lblDescQRIS, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 270, 30));
 
-        add(pnlMetodeBayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 50, 380, 230));
+        javax.swing.GroupLayout pnlMetodeBayarLayout = new javax.swing.GroupLayout(pnlMetodeBayar);
+        pnlMetodeBayar.setLayout(pnlMetodeBayarLayout);
+        pnlMetodeBayarLayout.setHorizontalGroup(
+            pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMetodeBayarLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addGroup(pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblMetodeBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSubMetodeBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rbQRIS)
+                    .addComponent(rbTransfer)
+                    .addComponent(rbKasir)
+                    .addGroup(pnlMetodeBayarLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDescQRIS, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDescTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblDescKasir, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlMetodeBayarLayout.setVerticalGroup(
+            pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlMetodeBayarLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(lblMetodeBayar)
+                .addGap(0, 0, 0)
+                .addComponent(lblSubMetodeBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rbQRIS)
+                    .addGroup(pnlMetodeBayarLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(lblDescQRIS, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(2, 2, 2)
+                .addGroup(pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMetodeBayarLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(lblDescTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rbTransfer, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlMetodeBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMetodeBayarLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(lblDescKasir, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(rbKasir)))
+        );
 
         pnlDetailBayar.setBackground(new java.awt.Color(255, 255, 255));
         pnlDetailBayar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
@@ -270,10 +325,8 @@ public class PembayaranPanel extends javax.swing.JPanel {
                 .addComponent(lblDetailMetode)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblPetunjukBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
-
-        add(pnlDetailBayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 290, 380, 90));
 
         pnlTotalBayar.setBackground(new java.awt.Color(255, 255, 255));
         pnlTotalBayar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
@@ -303,7 +356,7 @@ public class PembayaranPanel extends javax.swing.JPanel {
                     .addComponent(lblTotalBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblBanyakTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(212, Short.MAX_VALUE))
+                .addContainerGap(281, Short.MAX_VALUE))
         );
         pnlTotalBayarLayout.setVerticalGroup(
             pnlTotalBayarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,15 +370,12 @@ public class PembayaranPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        add(pnlTotalBayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 390, 380, -1));
-
         btnBayar.setBackground(new java.awt.Color(118, 87, 189));
         btnBayar.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnBayar.setForeground(new java.awt.Color(255, 255, 255));
         btnBayar.setText("Pesan Tiket");
         btnBayar.setFocusable(false);
         btnBayar.addActionListener(this::btnBayarActionPerformed);
-        add(btnBayar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 490, 660, 30));
 
         btnKembali.setBackground(new java.awt.Color(216, 209, 231));
         btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -333,7 +383,50 @@ public class PembayaranPanel extends javax.swing.JPanel {
         btnKembali.setText("Kembali");
         btnKembali.setFocusable(false);
         btnKembali.addActionListener(this::btnKembaliActionPerformed);
-        add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 320, 30));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlRingkasan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnlTotalBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(pnlMetodeBayar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlDetailBayar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlRingkasan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnlMetodeBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(pnlDetailBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10)
+                .addComponent(pnlTotalBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void rbQRISActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbQRISActionPerformed
@@ -365,7 +458,6 @@ public class PembayaranPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblHargaPerTiket;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblHeader1;
-    private javax.swing.JLabel lblHeader17;
     private javax.swing.JLabel lblJamPembayaran;
     private javax.swing.JLabel lblJudulFilm;
     private javax.swing.JLabel lblJumlahTiket;
@@ -382,7 +474,6 @@ public class PembayaranPanel extends javax.swing.JPanel {
     private javax.swing.JPanel pnlDetailBayar;
     private javax.swing.JPanel pnlHeader;
     private javax.swing.JPanel pnlMetodeBayar;
-    private javax.swing.JPanel pnlPoster;
     private javax.swing.JPanel pnlRingkasan;
     private javax.swing.JPanel pnlTotalBayar;
     private javax.swing.JRadioButton rbKasir;

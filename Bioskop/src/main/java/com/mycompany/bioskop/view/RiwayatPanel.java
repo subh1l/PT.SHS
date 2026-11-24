@@ -35,7 +35,6 @@ public class RiwayatPanel extends javax.swing.JPanel {
         btnLihatTiket = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 237, 248));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnlHeader.setBackground(new java.awt.Color(240, 237, 248));
 
@@ -69,8 +68,6 @@ public class RiwayatPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        add(pnlHeader, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 1000, 60));
-
         tblRiwayat.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, null},
@@ -92,21 +89,44 @@ public class RiwayatPanel extends javax.swing.JPanel {
         });
         scrollRiwayat.setViewportView(tblRiwayat);
 
-        add(scrollRiwayat, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 980, 390));
-
         btnKembali.setBackground(new java.awt.Color(216, 209, 231));
         btnKembali.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnKembali.setForeground(new java.awt.Color(48, 35, 109));
         btnKembali.setText("Kembali");
         btnKembali.setFocusable(false);
-        add(btnKembali, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 480, 430, 40));
 
         btnLihatTiket.setBackground(new java.awt.Color(118, 87, 189));
         btnLihatTiket.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnLihatTiket.setForeground(new java.awt.Color(255, 255, 255));
         btnLihatTiket.setText("Lihat Tiket");
         btnLihatTiket.setFocusable(false);
-        add(btnLihatTiket, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 480, 540, 40));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 980, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(btnLihatTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(pnlHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(scrollRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLihatTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
 
