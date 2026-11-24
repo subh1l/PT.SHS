@@ -30,7 +30,7 @@ public class JadwalRepository {
             while (rs.next()){
                 int id = rs.getInt("id_jadwal");
                 int film = rs.getInt("id_film");
-                int studio = rs.getInt("email");
+                int studio = rs.getInt("id_studio");
                 LocalDate tanggal = rs.getObject("tanggal", LocalDate.class);
                 LocalTime jamMulai = rs.getObject("jam_mulai", LocalTime.class);
                 double harga = rs.getDouble("harga");
