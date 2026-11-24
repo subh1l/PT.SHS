@@ -17,20 +17,26 @@ public class Laporan {
     private String studio;
     private LocalTime jam;
     private int jumlah;
+    private double harga;
 
     public Laporan() {
     }
 
-    public Laporan(LocalDate tanggal, String film, String studio, LocalTime jam, int jumlah) {
+    public Laporan(LocalDate tanggal, String film, String studio, LocalTime jam, int jumlah, double harga) {
         this.tanggal = tanggal;
         this.film = film;
         this.studio = studio;
         this.jam = jam;
         this.jumlah = jumlah;
+        this.harga = harga;
     }
 
     public String getFilm() {
         return film;
+    }
+
+    public double getHarga() {
+        return harga;
     }
 
     public LocalTime getJam() {
@@ -53,6 +59,10 @@ public class Laporan {
         this.film = film;
     }
 
+    public void setHarga(double harga) {
+        this.harga = harga;
+    }
+
     public void setJam(LocalTime jam) {
         this.jam = jam;
     }
@@ -67,5 +77,5 @@ public class Laporan {
 
     public void setTanggal(LocalDate tanggal) {
         this.tanggal = tanggal;
-    }    
+    }
 }

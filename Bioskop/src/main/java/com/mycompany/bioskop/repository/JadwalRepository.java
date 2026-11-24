@@ -55,7 +55,7 @@ public class JadwalRepository {
                 if(rs.next()){
                     int idJadwal = rs.getInt("id_jadwal");
                     int film = rs.getInt("id_film");
-                    int studio = rs.getInt("email");
+                    int studio = rs.getInt("id_studio");
                     LocalDate tanggal = rs.getObject("tanggal", LocalDate.class);
                     LocalTime jamMulai = rs.getObject("jam_mulai", LocalTime.class);
                     double harga = rs.getDouble("harga");
@@ -73,7 +73,7 @@ public class JadwalRepository {
     public void deleteJadwal(int id){
         try(
             Connection conn = DatabaseUtil.getConnection();
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM detail_pemesanan WHERE id_detail = ?");
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM jadwal WHERE id_jadwal = ?");
         ){
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -115,15 +115,17 @@ public class JadwalRepository {
         }
     }
     
-    public int getJadwalAmount(){
-        try(
-                Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM jadwal");
-                ResultSet rs = stmt.executeQuery();
-                ){
-            int amount = rs.getInt(1);
-            return amount;
-        }catch(SQLException e){
+    public int getJadwalAmount() {
+        try (
+            Connection conn = DatabaseUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM jadwal");
+            ResultSet rs = stmt.executeQuery()
+        ) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
             e.printStackTrace();
             return 0;
         }

@@ -15,6 +15,7 @@
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/FilmRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/JadwalRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/KursiRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/LaporanRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/PembayaranRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/PemesananRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/StudioRepository.java
