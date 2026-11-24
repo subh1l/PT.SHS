@@ -317,3 +317,39 @@ GROUP BY
     s.`nama_studio`,
     j.`jam_mulai`,
     p.`total_harga`;
+
+CREATE OR REPLACE VIEW view_riwayat AS
+SELECT
+    p.id_pemesanan,
+    p.id_user,
+    f.judul AS film,
+    j.tanggal,
+    j.jam_mulai AS jam,
+    s.nama_studio AS studio,
+    GROUP_CONCAT(
+        CONCAT(k.baris, k.nomor)
+        ORDER BY k.baris, k.nomor
+        SEPARATOR ', '
+    ) AS kursi,
+    p.total_harga,
+    p.status
+FROM pemesanan p
+JOIN detail_pemesanan dp
+    ON p.id_pemesanan = dp.id_pemesanan
+JOIN jadwal j
+    ON p.id_jadwal = j.id_jadwal
+JOIN film f
+    ON j.id_film = f.id_film
+JOIN studio s
+    ON j.id_studio = s.id_studio
+JOIN kursi k
+    ON dp.id_kursi = k.id_kursi
+GROUP BY
+    p.id_pemesanan,
+    p.id_user,
+    f.judul,
+    j.tanggal,
+    j.jam_mulai,
+    s.nama_studio,
+    p.total_harga,
+    p.status;

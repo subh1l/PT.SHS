@@ -4,6 +4,7 @@
  */
 package com.mycompany.bioskop.view;
 
+import java.awt.HeadlessException;
 import javax.swing.*;
 
 /**
@@ -14,18 +15,39 @@ public class UserMainFrame extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserMainFrame.class.getName());
 
+    private int idUser;
     /**
      * Creates new form UserMainFrame
      */
-    public UserMainFrame() {
+    
+    
+    public UserMainFrame(){
+        this(0);
+    }
+
+    public UserMainFrame(int idUser) {
+        this.idUser = idUser;
         initComponents();
-        
-         setTitle("PT.shs Cinema");
+
+        setTitle("PT.shs Cinema");
         setSize(1200, 700);
         setLocationRelativeTo(null);
     }
+    
+    public void tampilkanPanel(javax.swing.JPanel panel) {
+        setContentPane(panel);
+        revalidate();
+        repaint();
+    }
+
+    public void tampilkanBeranda() {
+        setContentPane(pnlUtama);
+        revalidate();
+        repaint();
+    }
 
 
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -51,7 +73,7 @@ public class UserMainFrame extends javax.swing.JFrame {
         lblDeskripsi = new javax.swing.JLabel();
         pnlSidebar = new javax.swing.JPanel();
         btnBeranda = new javax.swing.JButton();
-        btnFilm = new javax.swing.JButton();
+        btnRiwayat = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         pnlLogo = new javax.swing.JPanel();
         lblLogo1 = new javax.swing.JLabel();
@@ -215,13 +237,14 @@ public class UserMainFrame extends javax.swing.JFrame {
         btnBeranda.setFocusable(false);
         btnBeranda.addActionListener(this::btnBerandaActionPerformed);
 
-        btnFilm.setBackground(new java.awt.Color(48, 36, 110));
-        btnFilm.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnFilm.setForeground(new java.awt.Color(255, 255, 255));
-        btnFilm.setText("Film");
-        btnFilm.setBorderPainted(false);
-        btnFilm.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnFilm.setFocusPainted(false);
+        btnRiwayat.setBackground(new java.awt.Color(48, 36, 110));
+        btnRiwayat.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnRiwayat.setForeground(new java.awt.Color(255, 255, 255));
+        btnRiwayat.setText("Riwayat");
+        btnRiwayat.setBorderPainted(false);
+        btnRiwayat.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRiwayat.setFocusPainted(false);
+        btnRiwayat.addActionListener(this::btnRiwayatActionPerformed);
 
         btnLogout.setBackground(new java.awt.Color(48, 36, 110));
         btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -279,7 +302,7 @@ public class UserMainFrame extends javax.swing.JFrame {
                 .addComponent(btnBeranda))
             .addGroup(pnlSidebarLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addComponent(btnFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(pnlSidebarLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -292,7 +315,7 @@ public class UserMainFrame extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(btnBeranda)
                 .addGap(18, 18, 18)
-                .addComponent(btnFilm)
+                .addComponent(btnRiwayat)
                 .addGap(289, 289, 289)
                 .addComponent(btnLogout))
         );
@@ -328,11 +351,17 @@ public class UserMainFrame extends javax.swing.JFrame {
 
     private void btnBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBerandaActionPerformed
         // TODO add your handling code here:
+         tampilkanBeranda();
     }//GEN-LAST:event_btnBerandaActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void btnRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiwayatActionPerformed
+        // TODO add your handling code here:
+        tampilkanPanel(new RiwayatPanel(idUser));
+    }//GEN-LAST:event_btnRiwayatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -362,9 +391,9 @@ public class UserMainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBeranda;
     private javax.swing.JButton btnDetail;
-    private javax.swing.JButton btnFilm;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnPilihFilm;
+    private javax.swing.JButton btnRiwayat;
     private javax.swing.JLabel lblBanner;
     private javax.swing.JLabel lblDeskripsi;
     private javax.swing.JLabel lblLogo1;

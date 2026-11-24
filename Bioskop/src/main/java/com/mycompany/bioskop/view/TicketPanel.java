@@ -4,17 +4,26 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Riwayat;
+
 /**
  *
  * @author ACER NITRO
  */
 public class TicketPanel extends javax.swing.JPanel {
 
+    private int idUser;
     /**
      * Creates new form TicketPanel
      */
     public TicketPanel() {
         initComponents();
+    }
+    
+
+    public TicketPanel(Riwayat riwayat, int idUser) {
+        initComponents();
+        this.idUser = idUser;
     }
 
     /**
