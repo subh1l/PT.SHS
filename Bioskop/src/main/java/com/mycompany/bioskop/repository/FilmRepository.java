@@ -105,15 +105,17 @@ public class FilmRepository {
         }
     }
     
-    public int getAmount(){
-        try(
-                Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM film");
-                ResultSet rs = stmt.executeQuery();
-                ){
-            int amount = rs.getInt(1);
-            return amount;
-        }catch(SQLException e){
+    public int getAmount() {
+        try (
+            Connection conn = DatabaseUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT COUNT(*) FROM film");
+            ResultSet rs = stmt.executeQuery()
+        ) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
             e.printStackTrace();
             return 0;
         }

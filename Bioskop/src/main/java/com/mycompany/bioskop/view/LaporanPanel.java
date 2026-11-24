@@ -4,17 +4,32 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.model.Laporan;
+import com.mycompany.bioskop.repository.LaporanRepository;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bill
  */
 public class LaporanPanel extends javax.swing.JPanel {
 
+    LaporanRepository laporanRepository = new LaporanRepository();
     /**
      * Creates new form LaporanPanel
      */
     public LaporanPanel() {
         initComponents();
+        renderTable(false);
+        findMax();
+        findTotal();
+        findSales();
+        spnDariTanggal.setEditor(new javax.swing.JSpinner.DateEditor(spnDariTanggal, "yyyy-MM-dd"));
+        spnSampaiTanggal.setEditor(new javax.swing.JSpinner.DateEditor(spnSampaiTanggal, "yyyy-MM-dd"));
     }
 
     /**
@@ -111,11 +126,11 @@ public class LaporanPanel extends javax.swing.JPanel {
         pnlKartuTerlarisLayout.setHorizontalGroup(
             pnlKartuTerlarisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlKartuTerlarisLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlKartuTerlarisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap(262, Short.MAX_VALUE)
+                .addGroup(pnlKartuTerlarisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblTiketTerlaris)
-                    .addComponent(lblTerlarisJudul)
-                    .addComponent(lblFilmTerlaris, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTerlarisJudul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblFilmTerlaris, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(103, 103, 103))
         );
         pnlKartuTerlarisLayout.setVerticalGroup(
@@ -216,6 +231,7 @@ public class LaporanPanel extends javax.swing.JPanel {
         btnMuatData.setText("Muat Data");
         btnMuatData.setBorderPainted(false);
         btnMuatData.setFocusPainted(false);
+        btnMuatData.addActionListener(this::btnMuatDataActionPerformed);
 
         pnlKartuTotal.setBackground(new java.awt.Color(255, 255, 255));
         pnlKartuTotal.setBorder(javax.swing.BorderFactory.createMatteBorder(3, 3, 3, 3, new java.awt.Color(153, 51, 0)));
@@ -347,6 +363,101 @@ public class LaporanPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnMuatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMuatDataActionPerformed
+        // TODO add your handling code here:
+        renderTable(true);
+        findMax();
+        findTotal();
+        findSales();
+        
+    }//GEN-LAST:event_btnMuatDataActionPerformed
+
+    private void renderTable(boolean filter) {
+        List<Laporan> reports;
+        if (filter) {
+            LocalDate from = toLocalDate((java.util.Date) spnDariTanggal.getValue());
+            LocalDate till = toLocalDate((java.util.Date) spnSampaiTanggal.getValue());
+            reports = laporanRepository.getLaporan(from, till);
+        } else {
+            reports = laporanRepository.getAllLaporan();
+        }
+
+        DefaultTableModel model = (DefaultTableModel) tblLaporan.getModel();
+        model.setRowCount(0);
+        int num = 0;
+
+        for (Laporan l : reports) {
+            Object[] rowData = {
+                ++num,
+                l.getTanggal(),
+                l.getFilm(),
+                l.getStudio(),
+                l.getJam(),
+                l.getJumlah(),
+                l.getHarga()
+            };
+            model.addRow(rowData);
+        }
+    }
+
+    private void findSales() {
+        int rowCount = tblLaporan.getRowCount();
+        if (rowCount == 0) {
+            lblTotalPenjualan.setText("Rp. 0");
+            return;
+        }
+        double total = 0;
+
+        for (int row = 0; row < rowCount; row++) {
+            Number harga = (Number) tblLaporan.getValueAt(row, 6);
+            if (harga != null) {
+                total += harga.doubleValue();
+            }
+        }
+        lblTotalPenjualan.setText(String.format("Rp. %.0f", total));
+    }
+
+    private void findTotal() {
+        int rowCount = tblLaporan.getRowCount();
+        if (rowCount == 0) {
+            lblJumlahTiket.setText("0 tiket");
+            return;
+        }
+        int total = 0;
+
+        for (int row = 0; row < rowCount; row++) {
+            Number tiket = (Number) tblLaporan.getValueAt(row, 5);
+            if (tiket != null) {
+                total += tiket.intValue();
+            }
+        }
+        lblJumlahTiket.setText(String.format("%d tiket", total));
+    }
+
+    private void findMax() {
+        int rowCount = tblLaporan.getRowCount();
+        if (rowCount == 0) {
+            lblFilmTerlaris.setText("-");
+            lblTiketTerlaris.setText("0 tiket");
+            return;
+        }
+        int max = ((Number) tblLaporan.getValueAt(0, 5)).intValue();
+        String curr = String.valueOf(tblLaporan.getValueAt(0, 2));
+
+        for (int row = 0; row < rowCount; row++) {
+            int tiket = ((Number) tblLaporan.getValueAt(row, 5)).intValue();
+            if (tiket > max) {
+                curr = String.valueOf(tblLaporan.getValueAt(row, 2));
+                max = tiket;
+            }
+        }
+        lblFilmTerlaris.setText(curr);
+        lblTiketTerlaris.setText(String.format("%d tiket", max));
+    }
+    
+    private LocalDate toLocalDate(java.util.Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMuatData;

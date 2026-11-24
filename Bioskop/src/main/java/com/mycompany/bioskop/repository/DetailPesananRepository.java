@@ -65,6 +65,42 @@ public class DetailPesananRepository {
             return new DetailPemesanan();
         }
     }
+    
+    
+public List<DetailPemesanan> getDetailByPemesanan(int idPemesanan){
+    try(
+        Connection conn = DatabaseUtil.getConnection();
+        PreparedStatement stmt = conn.prepareStatement(
+            "SELECT * FROM detail_pemesanan WHERE id_pemesanan = ?"
+        );
+    ){
+        stmt.setInt(1, idPemesanan);
+
+        try(ResultSet rs = stmt.executeQuery()){
+            List<DetailPemesanan> details = new ArrayList<>();
+
+            while(rs.next()){
+                int idDetail = rs.getInt("id_detail");
+                int pemesanan = rs.getInt("id_pemesanan");
+                int jadwal = rs.getInt("id_jadwal");
+                int kursi = rs.getInt("id_kursi");
+                double harga = rs.getDouble("harga");
+
+                DetailPemesanan detail = new DetailPemesanan(
+                    idDetail, pemesanan, jadwal, kursi, harga
+                );
+
+                details.add(detail);
+            }
+
+            return details;
+        }
+    }catch(SQLException e){
+        e.printStackTrace();
+        return List.of();
+    }
+}
+
 
     public void deleteDetail(int id){
         try(

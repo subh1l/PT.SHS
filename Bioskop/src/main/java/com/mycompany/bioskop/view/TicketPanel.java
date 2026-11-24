@@ -3,30 +3,136 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.mycompany.bioskop.view;
-
-import com.mycompany.bioskop.entity.Riwayat;
-
+import com.mycompany.bioskop.entity.*;
+import com.mycompany.bioskop.repository.*;
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 /**
  *
  * @author ACER NITRO
  */
 public class TicketPanel extends javax.swing.JPanel {
+    
+    private PemesananRepository pemesananRepository = new PemesananRepository();
+    private JadwalRepository jadwalRepository = new JadwalRepository();
+    private FilmRepository filmRepository = new FilmRepository();
+    private StudioRepository studioRepository = new StudioRepository();
+    private DetailPesananRepository detailPesananRepository = new DetailPesananRepository();
+    private KursiRepository kursiRepository = new KursiRepository();
+    private PembayaranRepository pembayaranRepository = new PembayaranRepository();
 
-    private int idUser;
+
     /**
      * Creates new form TicketPanel
      */
     public TicketPanel() {
         initComponents();
+        
+         javax.swing.JFrame frame = new javax.swing.JFrame("Test Ticket");
+        frame.setContentPane(this);
+        frame.setSize(1200, 700);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
     
-
-    public TicketPanel(Riwayat riwayat, int idUser) {
+    public TicketPanel(int idPemesanan) {
         initComponents();
-        this.idUser = idUser;
+        tampilkanDataTiket(idPemesanan);
     }
+    
+    private void tampilkanDataTiket(int idPemesanan) {
+        
+        Pemesanan pemesanan = pemesananRepository.getPemesanan(idPemesanan);
+        
+        if(pemesanan.getIdPemesanan() == 0) {
+            lblPesanBerhasil.setText("Data pemesanan tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            return;
+            
+        }
+        Jadwal jadwal = jadwalRepository.getJadwal(pemesanan.getIdJadwal());
 
-    /**
+        if (jadwal.getIdJadwal() == 0) {
+            lblPesanBerhasil.setText("Data jadwal tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            return;
+                  
+}
+        Film film = filmRepository.getFilm(jadwal.getIdFilm());
+
+        if (film.getIdFilm() == 0) {
+            lblPesanBerhasil.setText("Data film tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            return;
+        }
+
+        Studio studio = studioRepository.getStudio(jadwal.getIdStudio());
+
+        if (studio.getIdStudio() == 0) {
+            lblPesanBerhasil.setText("Data studio tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            return;
+            
+        }
+        
+        List<DetailPemesanan> details =
+        detailPesananRepository.getDetailByPemesanan(idPemesanan);
+
+
+        if (details.isEmpty()) {
+            lblPesanBerhasil.setText("Detail pemesanan tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            return;
+        }
+        StringBuilder daftarKursi = new StringBuilder();
+
+        for (DetailPemesanan detail : details) {
+            Kursi kursi = kursiRepository.getKursi(detail.getIdKursi());
+
+            if (daftarKursi.length() > 0) {
+                daftarKursi.append(", ");
+            }
+
+            daftarKursi.append(kursi.getBaris())
+                       .append(kursi.getNomor());
+        }
+
+        lblKursiTiket.setText("Kursi: " + daftarKursi);
+        lblJumlahTiket.setText("Jumlah Tiket: " + details.size());
+        DateTimeFormatter formatTanggal =
+                DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("id", "ID"));
+
+        DateTimeFormatter formatJam =
+                DateTimeFormatter.ofPattern("HH:mm");
+
+        NumberFormat formatRupiah =
+                NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+
+        lblJudulFilmTiket.setText(film.getJudul());
+        lblStudioTiket.setText("Studio: " + studio.getNamaStudio());
+        lblKodeBooking.setText("Kode Booking: " + pemesanan.getIdPemesanan());
+        lblTanggalTiket.setText("Tanggal: " + jadwal.getTanggal().format(formatTanggal));
+        lblJamTiket.setText("Jam: " + jadwal.getJamMulai().format(formatJam));
+        lblTotalTiket.setText("Total Pembayaran: " + formatRupiah.format(pemesanan.getTotalHarga()));
+        
+        Pembayaran pembayaran =
+                pembayaranRepository.getPembayaranByPemesanan(idPemesanan);
+        if (pembayaran.getIdPembayaran() == 0) {
+            lblPesanBerhasil.setText("Data pembayaran tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            lblInfoBerhasil1.setText("");
+            return;
+        }
+
+            lblPesanBerhasil.setText("Tiket Berhasil Dipesan!");
+            lblInfoBerhasil.setText("Metode Pembayaran: " + pembayaran.getMetode());
+            lblInfoBerhasil1.setText("Status Pembayaran: " + pembayaran.getStatus());
+                }
+                /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -272,7 +378,13 @@ public class TicketPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKembaliBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliBerandaActionPerformed
-        // TODO add your handling code here:
+           UserMainFrame beranda = new UserMainFrame();
+            beranda.setVisible(true);
+
+            javax.swing.JFrame frame = (javax.swing.JFrame)
+                    javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            frame.dispose();
     }//GEN-LAST:event_btnKembaliBerandaActionPerformed
 
     private void btnRiwayatTiketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiwayatTiketActionPerformed

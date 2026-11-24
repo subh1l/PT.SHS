@@ -339,8 +339,8 @@ public class JadwalPanel extends javax.swing.JPanel {
         txtFilm.setText("");
         txtStudio.setText("");
         txtHarga.setText("");
-        spnTgl.setValue(now());
-        spnTgl.setValue(now());
+        spnTgl.setValue(new java.util.Date());
+        spnJam.setValue(new java.util.Date());
     }//GEN-LAST:event_btnResetActionPerformed
     
     private void renderTable(){

@@ -298,12 +298,12 @@ COMMIT;
 
 CREATE OR REPLACE VIEW `laporan` AS
 SELECT
-    j.`tanggal` AS `Tanggal`,
-    f.`judul` AS `Film`,
-    s.`nama_studio` AS `Studio`,
-    j.`jam_mulai` AS `Jam Tayang`,
-    COUNT(dp.`id_detail`) AS `Jumlah Tiket`,
-    p.`total_harga` AS `Total Harga`
+    j.`tanggal` AS `tanggal`,
+    f.`judul` AS `film`,
+    s.`nama_studio` AS `studio`,
+    j.`jam_mulai` AS `jam_tayang`,
+    COUNT(dp.`id_detail`) AS `jumlah_tiket`,
+    p.`total_harga` AS `total_harga`
 FROM `pemesanan` p
 JOIN `jadwal` j ON p.`id_jadwal` = j.`id_jadwal`
 JOIN `film` f ON j.`id_film` = f.`id_film`

@@ -202,9 +202,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblTanggalTiket">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
@@ -214,9 +211,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblJamTiket">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
@@ -250,9 +244,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblStudioTiket">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
@@ -262,9 +253,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblKodeBooking">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
@@ -274,9 +262,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblJumlahTiket">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
@@ -339,9 +324,6 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lblInfoBerhasil">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
@@ -363,9 +345,6 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblInfoBerhasil1">
           <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Segoe UI" size="12" style="0"/>
-            </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>

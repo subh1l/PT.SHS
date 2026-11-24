@@ -22,6 +22,7 @@ com/mycompany/bioskop/view/FilmPanel.class
 com/mycompany/bioskop/repository/KursiRepository.class
 com/mycompany/bioskop/entity/Studio.class
 com/mycompany/bioskop/view/RiwayatPanel.class
+com/mycompany/bioskop/repository/LaporanRepository.class
 com/mycompany/bioskop/service/FilmService.class
 com/mycompany/bioskop/view/PembayaranPanel.class
 com/mycompany/bioskop/view/JadwalPanel.class

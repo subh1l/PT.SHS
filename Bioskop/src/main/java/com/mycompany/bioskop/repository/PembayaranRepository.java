@@ -68,6 +68,40 @@ public class PembayaranRepository {
             return new Pembayaran();
         }
     }
+    
+    
+    public Pembayaran getPembayaranByPemesanan(int idPemesanan){
+        try(
+            Connection conn = DatabaseUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT * FROM pembayaran WHERE id_pemesanan = ? ORDER BY id_pembayaran DESC LIMIT 1"
+            );
+        ){
+            stmt.setInt(1, idPemesanan);
+
+            try(ResultSet rs = stmt.executeQuery()){
+                if(rs.next()){
+                    int idPembayaran = rs.getInt("id_pembayaran");
+                    int idPemesananDB = rs.getInt("id_pemesanan");
+                    String metode = rs.getString("metode");
+                    double jumlah = rs.getDouble("jumlah");
+                    LocalDateTime tanggalBayar = rs.getObject("tanggal_bayar", LocalDateTime.class);
+                    String status = rs.getString("status");
+
+                    return new Pembayaran(
+                        idPembayaran, idPemesananDB, metode,
+                        jumlah, tanggalBayar, status
+                    );
+                }
+
+                return new Pembayaran();
+                }
+            }catch(SQLException e){
+                e.printStackTrace();
+                return new Pembayaran();
+            }
+        }
+
 
     public void deletePembayaran(int id){
         try(
