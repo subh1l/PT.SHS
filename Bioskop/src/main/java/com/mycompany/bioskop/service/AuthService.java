@@ -21,7 +21,8 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    public void register(String nama, String email, String password, String konfirmasi)
+    public void register(String nama, String email, String password,
+            String konfirmasi)
             throws AuthException, SQLException {
 
         nama = nama == null ? "" : nama.trim();
@@ -30,28 +31,34 @@ public class AuthService {
         if (nama.isEmpty()) {
             throw new AuthException("Nama tidak boleh kosong.");
         }
+
         if (nama.length() > 100) {
             throw new AuthException("Nama maksimal 100 karakter.");
         }
+
         if (email.isEmpty()) {
             throw new AuthException("Email tidak boleh kosong.");
         }
+
         if (email.length() > 100 || !EMAIL.matcher(email).matches()) {
             throw new AuthException("Format email tidak valid.");
         }
+
         if (password == null || password.length() < 6) {
             throw new AuthException("Password minimal 6 karakter.");
         }
+
         if (!password.equals(konfirmasi)) {
             throw new AuthException("Konfirmasi password tidak cocok.");
         }
+
         if (userRepository.existsByEmail(email)) {
             throw new AuthException("Email sudah terdaftar.");
         }
 
         try {
-            userRepository.addUser(nama,email, password, "user");
-        } catch (Exception e) {
+            userRepository.addUser(nama, email, password, "user");
+        } catch (java.sql.SQLIntegrityConstraintViolationException e) {
             throw new AuthException("Email sudah terdaftar.");
         }
     }

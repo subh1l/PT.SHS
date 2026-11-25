@@ -31,27 +31,44 @@ public class UserMainFrame extends javax.swing.JFrame {
     public UserMainFrame(int idUser) {
         this.idUser = idUser;
         initComponents();
-        BerandaPanel beranda = new BerandaPanel();
-        RiwayatPanel riwayat = new RiwayatPanel();
-        PembayaranPanel pembayaran = new PembayaranPanel();
-        SeatSelectionPanel seatSelection = new SeatSelectionPanel();
-        TicketPanel ticket = new TicketPanel();
-        
+
+        pnlUtama.setLayout(new java.awt.BorderLayout());
+        pnlUtama.add(pnlSidebar, java.awt.BorderLayout.WEST);
+        pnlUtama.add(pnlKonten, java.awt.BorderLayout.CENTER);
+
         cardLayout = new CardLayout();
         contentContainer = new JPanel(cardLayout);
-        
-        contentContainer.add(beranda, "BERANDA");
-        contentContainer.add(riwayat, "RIWAYAT");
-        contentContainer.add(pembayaran, "PEMBAYARAN");
-        contentContainer.add(seatSelection, "SEAT");
-        contentContainer.add(ticket, "TIKET");
-        
+
+        pnlKonten.removeAll();
         pnlKonten.setLayout(new java.awt.BorderLayout());
         pnlKonten.add(contentContainer, java.awt.BorderLayout.CENTER);
-        
-        setTitle("PT.shs Cinema");
-        setSize(1200, 700);
+
+        tampilkanBeranda();
+
+        setTitle("PT.SHS Cinema");
         setLocationRelativeTo(null);
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void tampilkanPanel(JPanel panel) {
+        contentContainer.removeAll();
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+
+        contentContainer.add(scrollPane, "AKTIF");
+        cardLayout.show(contentContainer, "AKTIF");
+        contentContainer.revalidate();
+        contentContainer.repaint();
+    }
+
+    public void tampilkanBeranda() {
+        tampilkanPanel(new BerandaPanel());
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,11 +95,11 @@ public class UserMainFrame extends javax.swing.JFrame {
         pnlKonten.setLayout(pnlKontenLayout);
         pnlKontenLayout.setHorizontalGroup(
             pnlKontenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 898, Short.MAX_VALUE)
+            .addGap(0, 1039, Short.MAX_VALUE)
         );
         pnlKontenLayout.setVerticalGroup(
             pnlKontenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 520, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         pnlSidebar.setBackground(new java.awt.Color(214, 218, 225));
@@ -156,17 +173,19 @@ public class UserMainFrame extends javax.swing.JFrame {
         pnlSidebarLayout.setHorizontalGroup(
             pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(pnlLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(btnBeranda))
-            .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(btnRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(pnlSidebarLayout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlSidebarLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(pnlLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlSidebarLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlSidebarLayout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnRiwayat, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBeranda))))
+                .addGap(6, 6, 6))
         );
         pnlSidebarLayout.setVerticalGroup(
             pnlSidebarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,8 +196,9 @@ public class UserMainFrame extends javax.swing.JFrame {
                 .addComponent(btnBeranda)
                 .addGap(18, 18, 18)
                 .addComponent(btnRiwayat)
-                .addGap(289, 289, 289)
-                .addComponent(btnLogout))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                .addComponent(btnLogout)
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout pnlUtamaLayout = new javax.swing.GroupLayout(pnlUtama);
@@ -187,13 +207,17 @@ public class UserMainFrame extends javax.swing.JFrame {
             pnlUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlUtamaLayout.createSequentialGroup()
                 .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pnlKonten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlKonten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnlUtamaLayout.setVerticalGroup(
             pnlUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(pnlKonten, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(pnlUtamaLayout.createSequentialGroup()
+                .addGroup(pnlUtamaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnlKonten, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlSidebar, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -212,7 +236,7 @@ public class UserMainFrame extends javax.swing.JFrame {
 
     private void btnBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBerandaActionPerformed
         // TODO add your handling code here:
-        cardLayout.show(contentContainer, "BERANDA");
+        tampilkanBeranda();
     }//GEN-LAST:event_btnBerandaActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -225,7 +249,7 @@ public class UserMainFrame extends javax.swing.JFrame {
 
     private void btnRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiwayatActionPerformed
         // TODO add your handling code here:
-        cardLayout.show(contentContainer, "RIWAYAT");
+        tampilkanPanel(new RiwayatPanel(idUser));
     }//GEN-LAST:event_btnRiwayatActionPerformed
 
     /**

@@ -89,6 +89,19 @@ public class KursiRepository {
             e.printStackTrace();
         }
     }
+    
+    public void addKursi(Connection conn, int idStudio, String baris, int nomor)
+            throws SQLException {
+
+        String sql = "INSERT INTO kursi (id_studio, baris, nomor) VALUES (?, ?, ?)";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idStudio);
+            stmt.setString(2, baris);
+            stmt.setInt(3, nomor);
+            stmt.executeUpdate();
+        }
+    }
 
     public void updateKursi(int idStudio, String baris, int nomor, int idKursi){
         try(

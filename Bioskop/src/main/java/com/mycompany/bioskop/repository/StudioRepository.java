@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import com.mycompany.bioskop.entity.Studio;
 
@@ -18,6 +20,9 @@ import com.mycompany.bioskop.entity.Studio;
  * @author bill
  */
 public class StudioRepository {
+    
+    private final KursiRepository kursiRepository = new KursiRepository();
+    
     public List<Studio> getAllStudio(){
         try(
             Connection conn = DatabaseUtil.getConnection();
@@ -76,17 +81,60 @@ public class StudioRepository {
         }
     }
 
-    public void addStudio(String namaStudio, String tipe, int kapasitas){
-        try (
-                Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("INSERT INTO studio (nama_studio, tipe, kapasitas) VALUES (?, ?, ?)")
-                ){
-            stmt.setString(1, namaStudio);
-            stmt.setString(2, tipe);
-            stmt.setInt(3, kapasitas);
-            stmt.executeUpdate();
-        }catch(SQLException e){
-            e.printStackTrace();
+    public void addStudio(String namaStudio, String tipe, int kapasitas)
+            throws SQLException {
+
+        if (kapasitas < 1 || kapasitas > 48) {
+            throw new IllegalArgumentException(
+                    "Kapasitas studio harus antara 1 sampai 48."
+            );
+        }
+
+        String sql = "INSERT INTO studio (nama_studio, tipe, kapasitas) VALUES (?, ?, ?)";
+
+        try (Connection conn = DatabaseUtil.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try {
+                int idStudio;
+
+                try (PreparedStatement stmt = conn.prepareStatement(
+                        sql, Statement.RETURN_GENERATED_KEYS)) {
+
+                    stmt.setString(1, namaStudio);
+                    stmt.setString(2, tipe);
+                    stmt.setInt(3, kapasitas);
+                    stmt.executeUpdate();
+
+                    try (ResultSet rs = stmt.getGeneratedKeys()) {
+                        if (!rs.next()) {
+                            throw new SQLException("Gagal mendapatkan ID studio.");
+                        }
+
+                        idStudio = rs.getInt(1);
+                    }
+                }
+
+                String[] baris = {"F", "A", "B", "C", "D", "E"};
+
+                for (int i = 0; i < kapasitas; i++) {
+                    int indexBaris = i / 8;
+                    int nomorKursi = (i % 8) + 1;
+
+                    kursiRepository.addKursi(
+                            conn,
+                            idStudio,
+                            baris[indexBaris],
+                            nomorKursi
+                    );
+                }
+
+                conn.commit();
+
+            } catch (SQLException | RuntimeException e) {
+                conn.rollback();
+                throw e;
+            }
         }
     }
 

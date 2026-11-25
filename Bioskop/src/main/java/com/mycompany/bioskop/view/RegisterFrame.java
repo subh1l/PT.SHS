@@ -17,6 +17,13 @@ public class RegisterFrame extends javax.swing.JFrame {
      */
     public RegisterFrame() {
         initComponents();
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                new LoginFrame().setVisible(true);
+            }
+        });
     }
 
     /**
@@ -143,9 +150,8 @@ public class RegisterFrame extends javax.swing.JFrame {
 
     private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
         // TODO add your handling code here:
-
-        String nama = txtNama.getText().trim();
-        String email = txtEmail.getText().trim();
+        String nama = txtNama.getText();
+        String email = txtEmail.getText();
         String password = new String(txtPassword.getPassword());
         String konfirmasi = new String(txtKonfirmasi.getPassword());
 
@@ -163,14 +169,9 @@ public class RegisterFrame extends javax.swing.JFrame {
                     "Berhasil",
                     javax.swing.JOptionPane.INFORMATION_MESSAGE
             );
-            
-            new UserMainFrame().setVisible(true);
-            this.dispose();
 
-            txtNama.setText("");
-            txtEmail.setText("");
-            txtPassword.setText("");
-            txtKonfirmasi.setText("");
+            new LoginFrame().setVisible(true);
+            this.dispose();
 
         } catch (com.mycompany.bioskop.exception.AuthException e) {
 
@@ -193,7 +194,6 @@ public class RegisterFrame extends javax.swing.JFrame {
                     javax.swing.JOptionPane.ERROR_MESSAGE
             );
         }
-
     }//GEN-LAST:event_btnDaftarActionPerformed
 
     private void lblLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblLoginMouseClicked

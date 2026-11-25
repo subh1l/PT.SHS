@@ -4,17 +4,267 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Film;
+import com.mycompany.bioskop.entity.Jadwal;
+import com.mycompany.bioskop.entity.Kursi;
+import com.mycompany.bioskop.entity.Studio;
+import com.mycompany.bioskop.repository.FilmRepository;
+import com.mycompany.bioskop.repository.StudioRepository;
+
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 /**
  *
  * @author ACER NITRO
  */
 public class PembayaranPanel extends javax.swing.JPanel {
 
+    private Jadwal jadwal;
+    private int idUser;
+    private List<Kursi> kursiDipilih;
+
+    private final javax.swing.ButtonGroup grupMetode
+            = new javax.swing.ButtonGroup();
     /**
      * Creates new form PembayaranPanel
      */
     public PembayaranPanel() {
         initComponents();
+
+        grupMetode.add(rbQRIS);
+        grupMetode.add(rbTransfer);
+        grupMetode.add(rbKasir);
+    }
+
+    public PembayaranPanel(Jadwal jadwal, int idUser, List<Kursi> kursiDipilih) {
+        this.jadwal = jadwal;
+        this.idUser = idUser;
+        this.kursiDipilih = new java.util.ArrayList<>(kursiDipilih);
+
+        initComponents();
+
+        grupMetode.add(rbQRIS);
+        grupMetode.add(rbTransfer);
+        grupMetode.add(rbKasir);
+
+        Film film = new FilmRepository().getFilm(jadwal.getIdFilm());
+        Studio studio = new StudioRepository().getStudio(jadwal.getIdStudio());
+
+        NumberFormat rupiah
+                = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+
+        String judul = film.getJudul() == null
+                ? "Film tidak ditemukan" : film.getJudul();
+
+        String genre = film.getGenre() == null
+                ? "-" : film.getGenre();
+
+        String namaStudio = studio.getNamaStudio() == null
+                ? "-" : studio.getNamaStudio();
+
+        String tanggal = jadwal.getTanggal() == null
+                ? "-" : jadwal.getTanggal().format(
+                        DateTimeFormatter.ofPattern(
+                                "dd MMMM yyyy", new Locale("id", "ID")));
+
+        String jam = jadwal.getJamMulai() == null
+                ? "-" : jadwal.getJamMulai().format(
+                        DateTimeFormatter.ofPattern("HH:mm"));
+
+        String daftarKursi = kursiDipilih.stream()
+                .map(k -> k.getBaris() + k.getNomor())
+                .collect(Collectors.joining(", "));
+
+        int jumlahTiket = kursiDipilih.size();
+        double total = jumlahTiket * jadwal.getHarga();
+
+        lblJudulFilm.setText(judul);
+        lblGenre.setText(genre);
+        lblTanggalPembayaran.setText(tanggal);
+        lblJamPembayaran.setText(jam);
+        lblStudioPembayaran.setText(namaStudio);
+        lblKursiPembayaran.setText(daftarKursi);
+        lblJumlahTiket.setText(String.valueOf(jumlahTiket));
+        lblHargaPerTiket.setText(rupiah.format(jadwal.getHarga()));
+        lblBanyakTiket.setText(jumlahTiket + " tiket");
+        lblTotalPembayaran.setText("Total:" + rupiah.format(total));
+        lblTotal.setText(rupiah.format(total));
+    }
+    
+    private String getMetodePembayaran() {
+        javax.swing.JRadioButton terpilih = null;
+
+        if (rbQRIS.isSelected()) {
+            terpilih = rbQRIS;
+        } else if (rbTransfer.isSelected()) {
+            terpilih = rbTransfer;
+        } else if (rbKasir.isSelected()) {
+            terpilih = rbKasir;
+        }
+
+        if (terpilih == null) {
+            return null;
+        }
+
+        String metode = terpilih.getText().trim();
+
+        if (!metode.equals("Dana")
+                && !metode.equals("GoPay")
+                && !metode.equals("Bank")) {
+            return null;
+        }
+
+        return metode;
+    }
+    
+    private void simpanPemesanan() {
+        if (jadwal == null || kursiDipilih == null || kursiDipilih.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Data pemesanan tidak valid.",
+                    "Pemesanan gagal",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        if (idUser <= 0) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "User tidak valid. Silakan login kembali.",
+                    "Pemesanan gagal",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        String metode = getMetodePembayaran();
+
+        if (metode == null) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Pilih metode pembayaran yang sesuai dengan database.",
+                    "Metode belum dipilih",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        double harga = jadwal.getHarga();
+        double total = harga * kursiDipilih.size();
+
+        String sqlPemesanan
+                = "INSERT INTO pemesanan "
+                + "(id_user, id_jadwal, tanggal_pesan, total_harga, status) "
+                + "VALUES (?, ?, ?, ?, 'Sukses')";
+
+        String sqlDetail
+                = "INSERT INTO detail_pemesanan "
+                + "(id_pemesanan, id_jadwal, id_kursi, harga) "
+                + "VALUES (?, ?, ?, ?)";
+
+        String sqlPembayaran
+                = "INSERT INTO pembayaran "
+                + "(id_pemesanan, metode, jumlah, tanggal_bayar, status) "
+                + "VALUES (?, ?, ?, ?, 'Sukses')";
+
+        try (java.sql.Connection conn
+                = com.mycompany.bioskop.repository.DatabaseUtil.getConnection()) {
+
+            conn.setAutoCommit(false);
+
+            try {
+                int idPemesanan;
+
+                try (java.sql.PreparedStatement stmt
+                        = conn.prepareStatement(
+                                sqlPemesanan,
+                                java.sql.Statement.RETURN_GENERATED_KEYS)) {
+
+                    stmt.setInt(1, idUser);
+                    stmt.setInt(2, jadwal.getIdJadwal());
+                    stmt.setObject(3, java.time.LocalDateTime.now());
+                    stmt.setDouble(4, total);
+
+                    stmt.executeUpdate();
+
+                    try (java.sql.ResultSet rs = stmt.getGeneratedKeys()) {
+                        if (!rs.next()) {
+                            throw new java.sql.SQLException(
+                                    "ID pemesanan gagal dibuat."
+                            );
+                        }
+
+                        idPemesanan = rs.getInt(1);
+                    }
+                }
+
+                try (java.sql.PreparedStatement stmt
+                        = conn.prepareStatement(sqlDetail)) {
+
+                    for (Kursi kursi : kursiDipilih) {
+                        stmt.setInt(1, idPemesanan);
+                        stmt.setInt(2, jadwal.getIdJadwal());
+                        stmt.setInt(3, kursi.getIdKursi());
+                        stmt.setDouble(4, harga);
+                        stmt.addBatch();
+                    }
+
+                    stmt.executeBatch();
+                }
+
+                try (java.sql.PreparedStatement stmt
+                        = conn.prepareStatement(sqlPembayaran)) {
+
+                    stmt.setInt(1, idPemesanan);
+                    stmt.setString(2, metode);
+                    stmt.setDouble(3, total);
+                    stmt.setObject(4, java.time.LocalDateTime.now());
+
+                    stmt.executeUpdate();
+                }
+
+                conn.commit();
+
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "Pemesanan berhasil!\n"
+                        + "ID Pemesanan: " + idPemesanan
+                        + "\nTotal: " + NumberFormat
+                                .getCurrencyInstance(new Locale("id", "ID"))
+                                .format(total),
+                        "Pemesanan berhasil",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE
+                );
+
+                java.awt.Window window
+                        = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+                if (window instanceof UserMainFrame frame) {
+                    frame.tampilkanPanel(new RiwayatPanel(idUser));
+                }
+
+            } catch (java.sql.SQLException e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(
+                    this,
+                    "Pemesanan gagal disimpan.\n"
+                    + "Kemungkinan kursi sudah dipesan atau database bermasalah.\n\n"
+                    + e.getMessage(),
+                    "Kesalahan Pemesanan",
+                    javax.swing.JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
 
     /**
@@ -139,7 +389,7 @@ public class PembayaranPanel extends javax.swing.JPanel {
         lblRingkasan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRingkasan.setForeground(new java.awt.Color(48, 35, 109));
         lblRingkasan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRingkasan.setText("Ringlasan Pesanan");
+        lblRingkasan.setText("Ringkasan Pesanan");
 
         lblJamPembayaran.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJamPembayaran.setForeground(new java.awt.Color(110, 110, 110));
@@ -159,23 +409,20 @@ public class PembayaranPanel extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(lblJudulFilm))
                     .addGroup(pnlRingkasanLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRingkasanLayout.createSequentialGroup()
-                                    .addContainerGap()
                                     .addComponent(lblGenre, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(250, 250, 250))
                                 .addGroup(pnlRingkasanLayout.createSequentialGroup()
-                                    .addContainerGap()
                                     .addComponent(lblTanggalPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(230, 230, 230)))
                             .addGroup(pnlRingkasanLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblJamPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(270, 270, 270))
-                            .addGroup(pnlRingkasanLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(lblStudioPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblJamPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblStudioPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(240, 240, 240)))
                         .addGroup(pnlRingkasanLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTotalPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblKursiPembayaran)
@@ -220,7 +467,7 @@ public class PembayaranPanel extends javax.swing.JPanel {
         lblDescKasir.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescKasir.setForeground(new java.awt.Color(110, 110, 110));
         lblDescKasir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblDescKasir.setText("Bayar langsung di loket");
+        lblDescKasir.setText("Pembayaran melalui E-Wallet GoPay");
 
         lblSubMetodeBayar.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblSubMetodeBayar.setForeground(new java.awt.Color(110, 110, 110));
@@ -233,20 +480,20 @@ public class PembayaranPanel extends javax.swing.JPanel {
         lblDescTransfer.setText("Transfer melalui rekening bank");
 
         rbQRIS.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        rbQRIS.setText("Qris");
+        rbQRIS.setText("Dana");
         rbQRIS.addActionListener(this::rbQRISActionPerformed);
 
         rbTransfer.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        rbTransfer.setText("Transfer Bank");
+        rbTransfer.setText("Bank");
 
         rbKasir.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        rbKasir.setText("Bayar di Kasir");
+        rbKasir.setText("GoPay");
         rbKasir.addActionListener(this::rbKasirActionPerformed);
 
         lblDescQRIS.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblDescQRIS.setForeground(new java.awt.Color(110, 110, 110));
         lblDescQRIS.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblDescQRIS.setText("Scan QR untuk pembayaran");
+        lblDescQRIS.setText("Pembayaran melalui E-Wallet Dana");
 
         javax.swing.GroupLayout pnlMetodeBayarLayout = new javax.swing.GroupLayout(pnlMetodeBayar);
         pnlMetodeBayar.setLayout(pnlMetodeBayarLayout);
@@ -422,10 +669,11 @@ public class PembayaranPanel extends javax.swing.JPanel {
                         .addComponent(pnlDetailBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(10, 10, 10)
                 .addComponent(pnlTotalBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(btnBayar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -439,10 +687,19 @@ public class PembayaranPanel extends javax.swing.JPanel {
 
     private void btnBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBayarActionPerformed
         // TODO add your handling code here:
+        simpanPemesanan();
     }//GEN-LAST:event_btnBayarActionPerformed
 
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
+        java.awt.Window window
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (window instanceof UserMainFrame frame) {
+            frame.tampilkanPanel(
+                    new SeatSelectionPanel(jadwal, idUser)
+            );
+        }
     }//GEN-LAST:event_btnKembaliActionPerformed
 
 

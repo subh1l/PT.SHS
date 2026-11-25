@@ -141,70 +141,82 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        String email = txtEmail.getText().trim();
+        String email = txtEmail.getText().trim().toLowerCase();
         String password = new String(txtPassword.getPassword());
 
         if (email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(
-                this,
-                "Email dan password harus diisi!"
+                    this,
+                    "Email dan password harus diisi!"
             );
             return;
         }
-        
-        String sql = "SELECT id_user, nama, email, role "
-                   + "FROM user WHERE email = ? AND password = ?";
-        
+
+        String sql = "SELECT id_user, nama, role FROM user "
+                + "WHERE email = ? AND password = ?";
+
         try (
-            Connection conn = DatabaseUtil.getConnection();
-            PreparedStatement pst = conn.prepareStatement(sql)
-        ) {
-            
+                Connection conn = DatabaseUtil.getConnection(); PreparedStatement pst = conn.prepareStatement(sql)) {
+
             pst.setString(1, email);
             pst.setString(2, password);
-            
+
             try (ResultSet rs = pst.executeQuery()) {
-                
-                if (rs.next()) {
-                    
-                    String nama = rs.getString("nama");
-                    String role = rs.getString("role");
-                    
-                    if ("admin".equalsIgnoreCase(role)) {
-                        
-                        JOptionPane.showMessageDialog(
-                            this, "Selamat datang, " + nama + "!"
-                        );
-                        
-                        new AdminMainFrame().setVisible(true);
-                        
-                    } else if ("user".equalsIgnoreCase(role)) {
-                        
-                        JOptionPane.showMessageDialog(
-                            this, "Selamat datang, " + nama + "!"
-                        );
-                        
-                        new UserMainFrame().setVisible(true);
-                        
-                    } else {
-                        JOptionPane.showMessageDialog(
-                            this, "Role akun tidak dikenali!"
-                        );
-                        return;
-                    }
-                    
-                    dispose();
-                    
-                } else {
+
+                if (!rs.next()) {
                     JOptionPane.showMessageDialog(
-                        this, "Email atau password salah!"
+                            this,
+                            "Email atau password salah!",
+                            "Login Gagal",
+                            JOptionPane.WARNING_MESSAGE
                     );
+                    return;
                 }
+
+                int idUser = rs.getInt("id_user");
+                String nama = rs.getString("nama");
+                String role = rs.getString("role");
+
+                if ("admin".equalsIgnoreCase(role)) {
+
+                    AdminMainFrame adminFrame = new AdminMainFrame();
+                    adminFrame.setLocationRelativeTo(null);
+                    adminFrame.setVisible(true);
+
+                } else if ("user".equalsIgnoreCase(role)) {
+
+                    UserMainFrame userFrame = new UserMainFrame(idUser);
+                    userFrame.setLocationRelativeTo(null);
+                    userFrame.setVisible(true);
+
+                } else {
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Role akun tidak dikenali!",
+                            "Login Gagal",
+                            JOptionPane.WARNING_MESSAGE
+                    );
+                    return;
+                }
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Selamat datang, " + nama + "!"
+                );
+
+                dispose();
             }
 
-        } catch (Exception ex) {
+        } catch (java.sql.SQLException ex) {
+
+            logger.log(java.util.logging.Level.SEVERE, "Login database error", ex);
+
             JOptionPane.showMessageDialog(
-                this, "Login gagal: " + ex.getMessage()
+                    this,
+                    "Tidak dapat terhubung ke database. Silakan coba lagi.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
     }//GEN-LAST:event_btnLoginActionPerformed

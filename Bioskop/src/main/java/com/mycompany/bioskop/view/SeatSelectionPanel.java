@@ -4,17 +4,309 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Film;
+import com.mycompany.bioskop.entity.Jadwal;
+import com.mycompany.bioskop.entity.Kursi;
+import com.mycompany.bioskop.entity.Studio;
+import com.mycompany.bioskop.repository.DatabaseUtil;
+import com.mycompany.bioskop.repository.FilmRepository;
+import com.mycompany.bioskop.repository.StudioRepository;
+
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
+
 /**
  *
  * @author ACER NITRO
  */
 public class SeatSelectionPanel extends javax.swing.JPanel {
 
+    private final Jadwal jadwalTerpilih;
+    private final int idUser;
+
+    private final Map<String, JToggleButton> tombolKursi = new LinkedHashMap<>();
+    private final Map<String, Kursi> dataKursi = new LinkedHashMap<>();
+    private final Map<String, Color> warnaAsli = new LinkedHashMap<>();
+
+    private final Color warnaDipilih = new Color(46, 160, 67);
+    private final Color warnaTerisi = new Color(150, 150, 150);
+
+    private final NumberFormat formatRupiah
+            = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
     /**
      * Creates new form SeatSelectionPanel
      */
     public SeatSelectionPanel() {
+        this(null, 0);
+    }
+
+    public SeatSelectionPanel(Jadwal jadwal, int idUser) {
+        this.jadwalTerpilih = jadwal;
+        this.idUser = idUser;
+
         initComponents();
+        daftarkanTombolKursi();
+
+        if (jadwal == null) {
+            nonaktifkanSemuaKursi();
+            btnLanjutPembayaran.setEnabled(false);
+            return;
+        }
+
+        tampilkanInfoJadwal();
+        muatKursi();
+
+        btnKembaliFilm.addActionListener(e -> {
+            java.awt.Window window
+                    = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+            if (window instanceof UserMainFrame frame) {
+                frame.tampilkanBeranda();
+            }
+        });
+
+        btnLanjutPembayaran.addActionListener(e -> lanjutPembayaran());
+    }
+    
+    private void daftarkanTombolKursi() {
+        JToggleButton[][] tombol = {
+            {btnF1, btnF2, btnF3, btnF4, btnF5, btnF6, btnF7, btnF8},
+            {btnA1, btnA2, btnA3, btnA4, btnA5, btnA6, btnA7, btnA8},
+            {btnB1, btnB2, btnB3, btnB4, btnB5, btnB6, btnB7, btnB8},
+            {btnC1, btnC2, btnC3, btnC4, btnC5, btnC6, btnC7, btnC8},
+            {btnD1, btnD2, btnD3, btnD4, btnD5, btnD6, btnD7, btnD8},
+            {btnE1, bbtnE2, btnE3, btnE4, btnE5, btnE6, btnE7, btnE8}
+        };
+
+        String[] baris = {"F", "A", "B", "C", "D", "E"};
+
+        for (int i = 0; i < tombol.length; i++) {
+            for (int j = 0; j < tombol[i].length; j++) {
+                String kode = baris[i] + (j + 1);
+                JToggleButton button = tombol[i][j];
+
+                tombolKursi.put(kode, button);
+                warnaAsli.put(kode, button.getBackground());
+
+                button.setToolTipText(kode);
+
+                button.addItemListener(e -> {
+                    if (button.isSelected()) {
+                        button.setBackground(warnaDipilih);
+                    } else {
+                        button.setBackground(warnaAsli.get(kode));
+                    }
+
+                    perbaruiRingkasan();
+                });
+            }
+        }
+    }
+
+    private void nonaktifkanSemuaKursi() {
+        for (JToggleButton button : tombolKursi.values()) {
+            button.setEnabled(false);
+        }
+    }
+
+    private void tampilkanInfoJadwal() {
+        Film film = new FilmRepository().getFilm(jadwalTerpilih.getIdFilm());
+
+        String judulFilm = film.getJudul() == null
+                ? "Film tidak ditemukan"
+                : film.getJudul();
+
+        String tanggal = jadwalTerpilih.getTanggal() == null
+                ? "-"
+                : jadwalTerpilih.getTanggal().format(
+                        DateTimeFormatter.ofPattern("dd MMMM yyyy",
+                                new Locale("id", "ID"))
+                );
+
+        String jam = jadwalTerpilih.getJamMulai() == null
+                ? "-"
+                : jadwalTerpilih.getJamMulai().format(
+                        DateTimeFormatter.ofPattern("HH:mm")
+                );
+
+        lblInfoFilmKursi.setText(
+                judulFilm + " | " + tanggal + " | " + jam + " WIB"
+        );
+
+        lblHargaKursi.setText(formatRupiah.format(jadwalTerpilih.getHarga()));
+        perbaruiRingkasan();
+    }
+
+    private void muatKursi() {
+        nonaktifkanSemuaKursi();
+        dataKursi.clear();
+
+        Set<Integer> kursiTerisi = new HashSet<>();
+
+        String sqlKursi
+                = "SELECT id_kursi, baris, nomor "
+                + "FROM kursi WHERE id_studio = ?";
+
+        String sqlTerisi
+                = "SELECT DISTINCT d.id_kursi "
+                + "FROM detail_pemesanan d "
+                + "JOIN pemesanan p ON p.id_pemesanan = d.id_pemesanan "
+                + "WHERE d.id_jadwal = ? AND COALESCE(p.status, 'Pending') <> 'Gagal'";
+
+        try (Connection conn = DatabaseUtil.getConnection()) {
+
+            try (PreparedStatement stmt = conn.prepareStatement(sqlKursi)) {
+                stmt.setInt(1, jadwalTerpilih.getIdStudio());
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Kursi kursi = new Kursi(
+                                rs.getInt("id_kursi"),
+                                jadwalTerpilih.getIdStudio(),
+                                rs.getString("baris").trim().toUpperCase(),
+                                rs.getInt("nomor")
+                        );
+
+                        String kode = kursi.getBaris() + kursi.getNomor();
+
+                        if (tombolKursi.containsKey(kode)) {
+                            dataKursi.put(kode, kursi);
+                        }
+                    }
+                }
+            }
+
+            try (PreparedStatement stmt = conn.prepareStatement(sqlTerisi)) {
+                stmt.setInt(1, jadwalTerpilih.getIdJadwal());
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        kursiTerisi.add(rs.getInt("id_kursi"));
+                    }
+                }
+            }
+
+            for (Map.Entry<String, JToggleButton> entry : tombolKursi.entrySet()) {
+                String kode = entry.getKey();
+                JToggleButton button = entry.getValue();
+                Kursi kursi = dataKursi.get(kode);
+
+                button.setSelected(false);
+
+                if (kursi == null) {
+                    button.setEnabled(false);
+                    button.setBackground(warnaTerisi);
+                    button.setToolTipText(kode + " - Tidak terdaftar di database");
+                } else if (kursiTerisi.contains(kursi.getIdKursi())) {
+                    button.setEnabled(false);
+                    button.setBackground(warnaTerisi);
+                    button.setToolTipText(kode + " - Sudah dipesan");
+                } else {
+                    button.setEnabled(true);
+                    button.setBackground(warnaAsli.get(kode));
+                    button.setToolTipText(kode + " - Tersedia");
+                }
+            }
+
+            if (dataKursi.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Data kursi untuk studio ini belum tersedia di database.",
+                        "Kursi tidak tersedia",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            }
+
+        } catch (SQLException e) {
+            nonaktifkanSemuaKursi();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Gagal memuat kursi dari database:\n" + e.getMessage(),
+                    "Kesalahan Database",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        }
+
+        perbaruiRingkasan();
+    }
+
+    private List<Kursi> getKursiDipilih() {
+        List<Kursi> hasil = new ArrayList<>();
+
+        for (Map.Entry<String, JToggleButton> entry : tombolKursi.entrySet()) {
+            if (entry.getValue().isSelected()) {
+                Kursi kursi = dataKursi.get(entry.getKey());
+
+                if (kursi != null) {
+                    hasil.add(kursi);
+                }
+            }
+        }
+
+        return hasil;
+    }
+
+    private void perbaruiRingkasan() {
+        List<Kursi> dipilih = getKursiDipilih();
+
+        List<String> kodeKursi = dipilih.stream()
+                .map(k -> k.getBaris() + k.getNomor())
+                .collect(Collectors.toList());
+
+        int jumlah = dipilih.size();
+        double total = jumlah * jadwalTerpilihHarga();
+
+        lblRingkasanKursi.setText(
+                kodeKursi.isEmpty() ? "-" : String.join(", ", kodeKursi)
+        );
+
+        lblJumlahKursi.setText(String.valueOf(jumlah));
+        lblHargaKursi.setText(formatRupiah.format(jadwalTerpilihHarga()));
+        lblTotalHargaKursi.setText("Total: " + formatRupiah.format(total));
+    }
+
+    private double jadwalTerpilihHarga() {
+        return jadwalTerpilih == null ? 0 : jadwalTerpilih.getHarga();
+    }
+
+    private void lanjutPembayaran() {
+        List<Kursi> dipilih = getKursiDipilih();
+
+        if (dipilih.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Pilih minimal satu kursi terlebih dahulu.",
+                    "Kursi belum dipilih",
+                    JOptionPane.WARNING_MESSAGE
+            );
+            return;
+        }
+
+        java.awt.Window window
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (window instanceof UserMainFrame frame) {
+            frame.tampilkanPanel(
+                    new PembayaranPanel(jadwalTerpilih, idUser, dipilih)
+            );
+        }
     }
 
     /**
@@ -100,81 +392,6 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
         pnlKeteranganTerisi = new javax.swing.JPanel();
         btnKembaliFilm = new javax.swing.JButton();
         btnLanjutPembayaran = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        pnlHeader1 = new javax.swing.JPanel();
-        lblJudulKursi8 = new javax.swing.JLabel();
-        lblInfoFilmKursi1 = new javax.swing.JLabel();
-        pnlLayarBioskop1 = new javax.swing.JPanel();
-        lblJudulKursi9 = new javax.swing.JLabel();
-        pnlRingkasanKursi1 = new javax.swing.JPanel();
-        lblJudulRingkasan1 = new javax.swing.JLabel();
-        lblTotalHargaKursi1 = new javax.swing.JLabel();
-        lblRingkasanKursi1 = new javax.swing.JLabel();
-        lblJumlahKursi1 = new javax.swing.JLabel();
-        lblHargaKursi1 = new javax.swing.JLabel();
-        pnlDenahKursi1 = new javax.swing.JPanel();
-        btnF9 = new javax.swing.JToggleButton();
-        btnF10 = new javax.swing.JToggleButton();
-        btnF11 = new javax.swing.JToggleButton();
-        btnF12 = new javax.swing.JToggleButton();
-        btnA9 = new javax.swing.JToggleButton();
-        btnB9 = new javax.swing.JToggleButton();
-        btnC9 = new javax.swing.JToggleButton();
-        btnD9 = new javax.swing.JToggleButton();
-        btnE2 = new javax.swing.JToggleButton();
-        btnF13 = new javax.swing.JToggleButton();
-        btnF14 = new javax.swing.JToggleButton();
-        btnF15 = new javax.swing.JToggleButton();
-        btnF16 = new javax.swing.JToggleButton();
-        btnA10 = new javax.swing.JToggleButton();
-        btnB10 = new javax.swing.JToggleButton();
-        btnC10 = new javax.swing.JToggleButton();
-        btnD10 = new javax.swing.JToggleButton();
-        btnE9 = new javax.swing.JToggleButton();
-        btnA11 = new javax.swing.JToggleButton();
-        btnB11 = new javax.swing.JToggleButton();
-        btnC11 = new javax.swing.JToggleButton();
-        btnD11 = new javax.swing.JToggleButton();
-        bbtnE3 = new javax.swing.JToggleButton();
-        btnA12 = new javax.swing.JToggleButton();
-        btnB12 = new javax.swing.JToggleButton();
-        btnC12 = new javax.swing.JToggleButton();
-        btnD12 = new javax.swing.JToggleButton();
-        btnE10 = new javax.swing.JToggleButton();
-        btnA13 = new javax.swing.JToggleButton();
-        btnB13 = new javax.swing.JToggleButton();
-        btnC13 = new javax.swing.JToggleButton();
-        btnD13 = new javax.swing.JToggleButton();
-        btnE11 = new javax.swing.JToggleButton();
-        btnA14 = new javax.swing.JToggleButton();
-        btnA15 = new javax.swing.JToggleButton();
-        btnB14 = new javax.swing.JToggleButton();
-        btnC14 = new javax.swing.JToggleButton();
-        btnD14 = new javax.swing.JToggleButton();
-        btnE12 = new javax.swing.JToggleButton();
-        btnA16 = new javax.swing.JToggleButton();
-        btnB15 = new javax.swing.JToggleButton();
-        btnC15 = new javax.swing.JToggleButton();
-        btnD15 = new javax.swing.JToggleButton();
-        btnE13 = new javax.swing.JToggleButton();
-        btnB16 = new javax.swing.JToggleButton();
-        btnC16 = new javax.swing.JToggleButton();
-        btnD16 = new javax.swing.JToggleButton();
-        btnE14 = new javax.swing.JToggleButton();
-        lblJudulKursi10 = new javax.swing.JLabel();
-        lblJudulKursi11 = new javax.swing.JLabel();
-        lblJudulKursi12 = new javax.swing.JLabel();
-        lblJudulKursi13 = new javax.swing.JLabel();
-        lblJudulKursi14 = new javax.swing.JLabel();
-        lblJudulKursi15 = new javax.swing.JLabel();
-        lblKeteranganTersedia1 = new javax.swing.JLabel();
-        lblKeteranganDipilih1 = new javax.swing.JLabel();
-        lblKeteranganTerisi1 = new javax.swing.JLabel();
-        pnlKeteranganTerpilih1 = new javax.swing.JPanel();
-        pnlKeteranganTersedia1 = new javax.swing.JPanel();
-        pnlKeteranganTerisi1 = new javax.swing.JPanel();
-        btnKembaliFilm1 = new javax.swing.JButton();
-        btnLanjutPembayaran1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(240, 237, 248));
 
@@ -971,835 +1188,6 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
         btnLanjutPembayaran.setFocusable(false);
         btnLanjutPembayaran.addActionListener(this::btnLanjutPembayaranActionPerformed);
 
-        jPanel1.setBackground(new java.awt.Color(240, 237, 248));
-
-        pnlHeader1.setBackground(new java.awt.Color(240, 237, 248));
-
-        lblJudulKursi8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi8.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi8.setText("Pilih Kursi");
-
-        lblInfoFilmKursi1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        lblInfoFilmKursi1.setForeground(new java.awt.Color(110, 110, 110));
-        lblInfoFilmKursi1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblInfoFilmKursi1.setText("Avengers: Endgame | 20 November 2026 | 19.00 WIB");
-
-        javax.swing.GroupLayout pnlHeader1Layout = new javax.swing.GroupLayout(pnlHeader1);
-        pnlHeader1.setLayout(pnlHeader1Layout);
-        pnlHeader1Layout.setHorizontalGroup(
-            pnlHeader1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHeader1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlHeader1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblJudulKursi8)
-                    .addComponent(lblInfoFilmKursi1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(619, Short.MAX_VALUE))
-        );
-        pnlHeader1Layout.setVerticalGroup(
-            pnlHeader1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlHeader1Layout.createSequentialGroup()
-                .addComponent(lblJudulKursi8)
-                .addGap(0, 0, 0)
-                .addComponent(lblInfoFilmKursi1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pnlLayarBioskop1.setBackground(new java.awt.Color(48, 35, 109));
-
-        lblJudulKursi9.setBackground(new java.awt.Color(255, 255, 255));
-        lblJudulKursi9.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi9.setForeground(new java.awt.Color(255, 255, 255));
-        lblJudulKursi9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi9.setText("Layar Bioskop");
-
-        javax.swing.GroupLayout pnlLayarBioskop1Layout = new javax.swing.GroupLayout(pnlLayarBioskop1);
-        pnlLayarBioskop1.setLayout(pnlLayarBioskop1Layout);
-        pnlLayarBioskop1Layout.setHorizontalGroup(
-            pnlLayarBioskop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLayarBioskop1Layout.createSequentialGroup()
-                .addGap(425, 425, 425)
-                .addComponent(lblJudulKursi9, javax.swing.GroupLayout.PREFERRED_SIZE, 567, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlLayarBioskop1Layout.setVerticalGroup(
-            pnlLayarBioskop1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlLayarBioskop1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(lblJudulKursi9, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pnlRingkasanKursi1.setBackground(new java.awt.Color(255, 255, 255));
-        pnlRingkasanKursi1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
-
-        lblJudulRingkasan1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulRingkasan1.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulRingkasan1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulRingkasan1.setText("Ringkasan Pesanan");
-
-        lblTotalHargaKursi1.setBackground(new java.awt.Color(118, 87, 189));
-        lblTotalHargaKursi1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTotalHargaKursi1.setForeground(new java.awt.Color(118, 87, 189));
-        lblTotalHargaKursi1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblTotalHargaKursi1.setText("Total");
-
-        lblRingkasanKursi1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        lblRingkasanKursi1.setForeground(new java.awt.Color(110, 110, 110));
-        lblRingkasanKursi1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblRingkasanKursi1.setText("Kursi Dipilih");
-
-        lblJumlahKursi1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        lblJumlahKursi1.setForeground(new java.awt.Color(110, 110, 110));
-        lblJumlahKursi1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJumlahKursi1.setText("Jumlah Tiket");
-
-        lblHargaKursi1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
-        lblHargaKursi1.setForeground(new java.awt.Color(110, 110, 110));
-        lblHargaKursi1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblHargaKursi1.setText("Harga Per Tiket");
-
-        pnlDenahKursi1.setBackground(new java.awt.Color(255, 255, 255));
-        pnlDenahKursi1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
-
-        btnF9.setBackground(new java.awt.Color(118, 87, 189));
-        btnF9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF9.setForeground(new java.awt.Color(255, 255, 255));
-        btnF9.setText("1");
-        btnF9.setFocusable(false);
-        btnF9.addActionListener(this::btnF9ActionPerformed);
-
-        btnF10.setBackground(new java.awt.Color(118, 87, 189));
-        btnF10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF10.setForeground(new java.awt.Color(255, 255, 255));
-        btnF10.setText("8");
-        btnF10.setFocusable(false);
-        btnF10.addActionListener(this::btnF10ActionPerformed);
-
-        btnF11.setBackground(new java.awt.Color(118, 87, 189));
-        btnF11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF11.setForeground(new java.awt.Color(255, 255, 255));
-        btnF11.setText("3");
-        btnF11.setFocusable(false);
-        btnF11.addActionListener(this::btnF11ActionPerformed);
-
-        btnF12.setBackground(new java.awt.Color(118, 87, 189));
-        btnF12.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF12.setForeground(new java.awt.Color(255, 255, 255));
-        btnF12.setText("2");
-        btnF12.setFocusable(false);
-        btnF12.addActionListener(this::btnF12ActionPerformed);
-
-        btnA9.setBackground(new java.awt.Color(118, 87, 189));
-        btnA9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA9.setForeground(new java.awt.Color(255, 255, 255));
-        btnA9.setText("1");
-        btnA9.setFocusable(false);
-        btnA9.addActionListener(this::btnA9ActionPerformed);
-
-        btnB9.setBackground(new java.awt.Color(118, 87, 189));
-        btnB9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB9.setForeground(new java.awt.Color(255, 255, 255));
-        btnB9.setText("1");
-        btnB9.setFocusable(false);
-        btnB9.addActionListener(this::btnB9ActionPerformed);
-
-        btnC9.setBackground(new java.awt.Color(118, 87, 189));
-        btnC9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC9.setForeground(new java.awt.Color(255, 255, 255));
-        btnC9.setText("1");
-        btnC9.setFocusable(false);
-        btnC9.addActionListener(this::btnC9ActionPerformed);
-
-        btnD9.setBackground(new java.awt.Color(118, 87, 189));
-        btnD9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD9.setForeground(new java.awt.Color(255, 255, 255));
-        btnD9.setText("1");
-        btnD9.setFocusable(false);
-        btnD9.addActionListener(this::btnD9ActionPerformed);
-
-        btnE2.setBackground(new java.awt.Color(118, 87, 189));
-        btnE2.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE2.setForeground(new java.awt.Color(255, 255, 255));
-        btnE2.setText("1");
-        btnE2.setFocusable(false);
-        btnE2.addActionListener(this::btnE2ActionPerformed);
-
-        btnF13.setBackground(new java.awt.Color(118, 87, 189));
-        btnF13.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF13.setForeground(new java.awt.Color(255, 255, 255));
-        btnF13.setText("4");
-        btnF13.setFocusable(false);
-        btnF13.addActionListener(this::btnF13ActionPerformed);
-
-        btnF14.setBackground(new java.awt.Color(118, 87, 189));
-        btnF14.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF14.setForeground(new java.awt.Color(255, 255, 255));
-        btnF14.setText("5");
-        btnF14.setFocusable(false);
-        btnF14.addActionListener(this::btnF14ActionPerformed);
-
-        btnF15.setBackground(new java.awt.Color(118, 87, 189));
-        btnF15.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF15.setForeground(new java.awt.Color(255, 255, 255));
-        btnF15.setText("6");
-        btnF15.setFocusable(false);
-        btnF15.addActionListener(this::btnF15ActionPerformed);
-
-        btnF16.setBackground(new java.awt.Color(118, 87, 189));
-        btnF16.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnF16.setForeground(new java.awt.Color(255, 255, 255));
-        btnF16.setText("7");
-        btnF16.setFocusable(false);
-        btnF16.addActionListener(this::btnF16ActionPerformed);
-
-        btnA10.setBackground(new java.awt.Color(118, 87, 189));
-        btnA10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA10.setForeground(new java.awt.Color(255, 255, 255));
-        btnA10.setText("8");
-        btnA10.setFocusable(false);
-        btnA10.addActionListener(this::btnA10ActionPerformed);
-
-        btnB10.setBackground(new java.awt.Color(118, 87, 189));
-        btnB10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB10.setForeground(new java.awt.Color(255, 255, 255));
-        btnB10.setText("8");
-        btnB10.setFocusable(false);
-        btnB10.addActionListener(this::btnB10ActionPerformed);
-
-        btnC10.setBackground(new java.awt.Color(118, 87, 189));
-        btnC10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC10.setForeground(new java.awt.Color(255, 255, 255));
-        btnC10.setText("8");
-        btnC10.setFocusable(false);
-        btnC10.addActionListener(this::btnC10ActionPerformed);
-
-        btnD10.setBackground(new java.awt.Color(118, 87, 189));
-        btnD10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD10.setForeground(new java.awt.Color(255, 255, 255));
-        btnD10.setText("8");
-        btnD10.setFocusable(false);
-        btnD10.addActionListener(this::btnD10ActionPerformed);
-
-        btnE9.setBackground(new java.awt.Color(118, 87, 189));
-        btnE9.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE9.setForeground(new java.awt.Color(255, 255, 255));
-        btnE9.setText("8");
-        btnE9.setFocusable(false);
-        btnE9.addActionListener(this::btnE9ActionPerformed);
-
-        btnA11.setBackground(new java.awt.Color(118, 87, 189));
-        btnA11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA11.setForeground(new java.awt.Color(255, 255, 255));
-        btnA11.setText("2");
-        btnA11.setFocusable(false);
-        btnA11.addActionListener(this::btnA11ActionPerformed);
-
-        btnB11.setBackground(new java.awt.Color(118, 87, 189));
-        btnB11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB11.setForeground(new java.awt.Color(255, 255, 255));
-        btnB11.setText("2");
-        btnB11.setFocusable(false);
-        btnB11.addActionListener(this::btnB11ActionPerformed);
-
-        btnC11.setBackground(new java.awt.Color(118, 87, 189));
-        btnC11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC11.setForeground(new java.awt.Color(255, 255, 255));
-        btnC11.setText("2");
-        btnC11.setFocusable(false);
-        btnC11.addActionListener(this::btnC11ActionPerformed);
-
-        btnD11.setBackground(new java.awt.Color(118, 87, 189));
-        btnD11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD11.setForeground(new java.awt.Color(255, 255, 255));
-        btnD11.setText("2");
-        btnD11.setFocusable(false);
-        btnD11.addActionListener(this::btnD11ActionPerformed);
-
-        bbtnE3.setBackground(new java.awt.Color(118, 87, 189));
-        bbtnE3.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        bbtnE3.setForeground(new java.awt.Color(255, 255, 255));
-        bbtnE3.setText("2");
-        bbtnE3.setFocusable(false);
-        bbtnE3.addActionListener(this::bbtnE3ActionPerformed);
-
-        btnA12.setBackground(new java.awt.Color(118, 87, 189));
-        btnA12.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA12.setForeground(new java.awt.Color(255, 255, 255));
-        btnA12.setText("3");
-        btnA12.setFocusable(false);
-        btnA12.addActionListener(this::btnA12ActionPerformed);
-
-        btnB12.setBackground(new java.awt.Color(118, 87, 189));
-        btnB12.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB12.setForeground(new java.awt.Color(255, 255, 255));
-        btnB12.setText("3");
-        btnB12.setFocusable(false);
-        btnB12.addActionListener(this::btnB12ActionPerformed);
-
-        btnC12.setBackground(new java.awt.Color(118, 87, 189));
-        btnC12.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC12.setForeground(new java.awt.Color(255, 255, 255));
-        btnC12.setText("3");
-        btnC12.setFocusable(false);
-        btnC12.addActionListener(this::btnC12ActionPerformed);
-
-        btnD12.setBackground(new java.awt.Color(118, 87, 189));
-        btnD12.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD12.setForeground(new java.awt.Color(255, 255, 255));
-        btnD12.setText("3");
-        btnD12.setFocusable(false);
-        btnD12.addActionListener(this::btnD12ActionPerformed);
-
-        btnE10.setBackground(new java.awt.Color(118, 87, 189));
-        btnE10.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE10.setForeground(new java.awt.Color(255, 255, 255));
-        btnE10.setText("3");
-        btnE10.setFocusable(false);
-        btnE10.addActionListener(this::btnE10ActionPerformed);
-
-        btnA13.setBackground(new java.awt.Color(118, 87, 189));
-        btnA13.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA13.setForeground(new java.awt.Color(255, 255, 255));
-        btnA13.setText("4");
-        btnA13.setFocusable(false);
-        btnA13.addActionListener(this::btnA13ActionPerformed);
-
-        btnB13.setBackground(new java.awt.Color(118, 87, 189));
-        btnB13.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB13.setForeground(new java.awt.Color(255, 255, 255));
-        btnB13.setText("4");
-        btnB13.setFocusable(false);
-        btnB13.addActionListener(this::btnB13ActionPerformed);
-
-        btnC13.setBackground(new java.awt.Color(118, 87, 189));
-        btnC13.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC13.setForeground(new java.awt.Color(255, 255, 255));
-        btnC13.setText("4");
-        btnC13.setFocusable(false);
-        btnC13.addActionListener(this::btnC13ActionPerformed);
-
-        btnD13.setBackground(new java.awt.Color(118, 87, 189));
-        btnD13.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD13.setForeground(new java.awt.Color(255, 255, 255));
-        btnD13.setText("4");
-        btnD13.setFocusable(false);
-        btnD13.addActionListener(this::btnD13ActionPerformed);
-
-        btnE11.setBackground(new java.awt.Color(118, 87, 189));
-        btnE11.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE11.setForeground(new java.awt.Color(255, 255, 255));
-        btnE11.setText("4");
-        btnE11.setFocusable(false);
-        btnE11.addActionListener(this::btnE11ActionPerformed);
-
-        btnA14.setBackground(new java.awt.Color(118, 87, 189));
-        btnA14.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA14.setForeground(new java.awt.Color(255, 255, 255));
-        btnA14.setText("5");
-        btnA14.setFocusable(false);
-        btnA14.addActionListener(this::btnA14ActionPerformed);
-
-        btnA15.setBackground(new java.awt.Color(118, 87, 189));
-        btnA15.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA15.setForeground(new java.awt.Color(255, 255, 255));
-        btnA15.setText("7");
-        btnA15.setFocusable(false);
-        btnA15.addActionListener(this::btnA15ActionPerformed);
-
-        btnB14.setBackground(new java.awt.Color(118, 87, 189));
-        btnB14.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB14.setForeground(new java.awt.Color(255, 255, 255));
-        btnB14.setText("7");
-        btnB14.setFocusable(false);
-        btnB14.addActionListener(this::btnB14ActionPerformed);
-
-        btnC14.setBackground(new java.awt.Color(118, 87, 189));
-        btnC14.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC14.setForeground(new java.awt.Color(255, 255, 255));
-        btnC14.setText("7");
-        btnC14.setFocusable(false);
-        btnC14.addActionListener(this::btnC14ActionPerformed);
-
-        btnD14.setBackground(new java.awt.Color(118, 87, 189));
-        btnD14.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD14.setForeground(new java.awt.Color(255, 255, 255));
-        btnD14.setText("7");
-        btnD14.setFocusable(false);
-        btnD14.addActionListener(this::btnD14ActionPerformed);
-
-        btnE12.setBackground(new java.awt.Color(118, 87, 189));
-        btnE12.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE12.setForeground(new java.awt.Color(255, 255, 255));
-        btnE12.setText("7");
-        btnE12.setFocusable(false);
-        btnE12.addActionListener(this::btnE12ActionPerformed);
-
-        btnA16.setBackground(new java.awt.Color(118, 87, 189));
-        btnA16.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnA16.setForeground(new java.awt.Color(255, 255, 255));
-        btnA16.setText("6");
-        btnA16.setFocusable(false);
-        btnA16.addActionListener(this::btnA16ActionPerformed);
-
-        btnB15.setBackground(new java.awt.Color(118, 87, 189));
-        btnB15.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB15.setForeground(new java.awt.Color(255, 255, 255));
-        btnB15.setText("6");
-        btnB15.setFocusable(false);
-        btnB15.addActionListener(this::btnB15ActionPerformed);
-
-        btnC15.setBackground(new java.awt.Color(118, 87, 189));
-        btnC15.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC15.setForeground(new java.awt.Color(255, 255, 255));
-        btnC15.setText("6");
-        btnC15.setFocusable(false);
-        btnC15.addActionListener(this::btnC15ActionPerformed);
-
-        btnD15.setBackground(new java.awt.Color(118, 87, 189));
-        btnD15.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD15.setForeground(new java.awt.Color(255, 255, 255));
-        btnD15.setText("6");
-        btnD15.setFocusable(false);
-        btnD15.addActionListener(this::btnD15ActionPerformed);
-
-        btnE13.setBackground(new java.awt.Color(118, 87, 189));
-        btnE13.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE13.setForeground(new java.awt.Color(255, 255, 255));
-        btnE13.setText("6");
-        btnE13.setFocusable(false);
-        btnE13.addActionListener(this::btnE13ActionPerformed);
-
-        btnB16.setBackground(new java.awt.Color(118, 87, 189));
-        btnB16.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnB16.setForeground(new java.awt.Color(255, 255, 255));
-        btnB16.setText("5");
-        btnB16.setFocusable(false);
-        btnB16.addActionListener(this::btnB16ActionPerformed);
-
-        btnC16.setBackground(new java.awt.Color(118, 87, 189));
-        btnC16.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnC16.setForeground(new java.awt.Color(255, 255, 255));
-        btnC16.setText("5");
-        btnC16.setFocusable(false);
-        btnC16.addActionListener(this::btnC16ActionPerformed);
-
-        btnD16.setBackground(new java.awt.Color(150, 150, 150));
-        btnD16.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnD16.setForeground(new java.awt.Color(255, 255, 255));
-        btnD16.setText("5");
-        btnD16.setEnabled(false);
-        btnD16.setFocusable(false);
-        btnD16.addActionListener(this::btnD16ActionPerformed);
-
-        btnE14.setBackground(new java.awt.Color(118, 87, 189));
-        btnE14.setFont(new java.awt.Font("Segoe UI", 1, 10)); // NOI18N
-        btnE14.setForeground(new java.awt.Color(255, 255, 255));
-        btnE14.setText("5");
-        btnE14.setFocusable(false);
-        btnE14.addActionListener(this::btnE14ActionPerformed);
-
-        lblJudulKursi10.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi10.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi10.setText("F");
-
-        lblJudulKursi11.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi11.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi11.setText("A");
-
-        lblJudulKursi12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi12.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi12.setText("B");
-
-        lblJudulKursi13.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi13.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi13.setText("C");
-
-        lblJudulKursi14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi14.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi14.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi14.setText("D");
-
-        lblJudulKursi15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblJudulKursi15.setForeground(new java.awt.Color(48, 35, 109));
-        lblJudulKursi15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblJudulKursi15.setText("E");
-
-        lblKeteranganTersedia1.setBackground(new java.awt.Color(118, 87, 189));
-        lblKeteranganTersedia1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblKeteranganTersedia1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblKeteranganTersedia1.setText("Tersedia");
-
-        lblKeteranganDipilih1.setBackground(new java.awt.Color(118, 87, 189));
-        lblKeteranganDipilih1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblKeteranganDipilih1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblKeteranganDipilih1.setText("Dipilih");
-
-        lblKeteranganTerisi1.setBackground(new java.awt.Color(0, 0, 0));
-        lblKeteranganTerisi1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lblKeteranganTerisi1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblKeteranganTerisi1.setText("Terisi");
-
-        pnlKeteranganTerpilih1.setBackground(new java.awt.Color(54, 162, 105));
-
-        javax.swing.GroupLayout pnlKeteranganTerpilih1Layout = new javax.swing.GroupLayout(pnlKeteranganTerpilih1);
-        pnlKeteranganTerpilih1.setLayout(pnlKeteranganTerpilih1Layout);
-        pnlKeteranganTerpilih1Layout.setHorizontalGroup(
-            pnlKeteranganTerpilih1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-        pnlKeteranganTerpilih1Layout.setVerticalGroup(
-            pnlKeteranganTerpilih1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-
-        pnlKeteranganTersedia1.setBackground(new java.awt.Color(118, 87, 189));
-
-        javax.swing.GroupLayout pnlKeteranganTersedia1Layout = new javax.swing.GroupLayout(pnlKeteranganTersedia1);
-        pnlKeteranganTersedia1.setLayout(pnlKeteranganTersedia1Layout);
-        pnlKeteranganTersedia1Layout.setHorizontalGroup(
-            pnlKeteranganTersedia1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-        pnlKeteranganTersedia1Layout.setVerticalGroup(
-            pnlKeteranganTersedia1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-
-        pnlKeteranganTerisi1.setBackground(new java.awt.Color(150, 150, 150));
-
-        javax.swing.GroupLayout pnlKeteranganTerisi1Layout = new javax.swing.GroupLayout(pnlKeteranganTerisi1);
-        pnlKeteranganTerisi1.setLayout(pnlKeteranganTerisi1Layout);
-        pnlKeteranganTerisi1Layout.setHorizontalGroup(
-            pnlKeteranganTerisi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-        pnlKeteranganTerisi1Layout.setVerticalGroup(
-            pnlKeteranganTerisi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout pnlDenahKursi1Layout = new javax.swing.GroupLayout(pnlDenahKursi1);
-        pnlDenahKursi1.setLayout(pnlDenahKursi1Layout);
-        pnlDenahKursi1Layout.setHorizontalGroup(
-            pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(lblJudulKursi11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnA9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnA11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnA12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnA13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(btnA14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnA16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnA15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnA10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(lblJudulKursi12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnB9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnB11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnB12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnB13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(btnB16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnB15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnB14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnB10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(lblJudulKursi13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnC9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnC11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnC12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnC13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(btnC16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnC15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnC14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnC10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(lblJudulKursi14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnD9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnD11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnD12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnD13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(btnD16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnD15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnD14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnD10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(lblJudulKursi15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnE2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(bbtnE3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnE10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnE11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(btnE14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnE13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnE12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnE9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(129, 129, 129)
-                        .addComponent(lblJudulKursi10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnF9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnF12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnF11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnF13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(140, 140, 140)
-                        .addComponent(btnF14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnF15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnF16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(20, 20, 20)
-                        .addComponent(btnF10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(329, 329, 329)
-                        .addComponent(pnlKeteranganTersedia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(lblKeteranganTersedia1)
-                        .addGap(43, 43, 43)
-                        .addComponent(pnlKeteranganTerpilih1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(lblKeteranganDipilih1)
-                        .addGap(34, 34, 34)
-                        .addComponent(pnlKeteranganTerisi1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(lblKeteranganTerisi1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlDenahKursi1Layout.setVerticalGroup(
-            pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblJudulKursi11))
-                    .addComponent(btnA9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnA10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblJudulKursi12))
-                    .addComponent(btnB9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnB10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblJudulKursi13))
-                    .addComponent(btnC9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnC10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblJudulKursi14))
-                    .addComponent(btnD9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnD10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblJudulKursi15))
-                    .addComponent(btnE2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bbtnE3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnE10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnE11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnE14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnE13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnE12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnE9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(lblJudulKursi10))
-                    .addComponent(btnF9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF12, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF13, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF14, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF15, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF16, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnF10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10)
-                .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblKeteranganTersedia1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblKeteranganDipilih1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblKeteranganTerisi1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlDenahKursi1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(pnlDenahKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlKeteranganTersedia1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pnlKeteranganTerpilih1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pnlKeteranganTerisi1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-        );
-
-        javax.swing.GroupLayout pnlRingkasanKursi1Layout = new javax.swing.GroupLayout(pnlRingkasanKursi1);
-        pnlRingkasanKursi1.setLayout(pnlRingkasanKursi1Layout);
-        pnlRingkasanKursi1Layout.setHorizontalGroup(
-            pnlRingkasanKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRingkasanKursi1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnlRingkasanKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlRingkasanKursi1Layout.createSequentialGroup()
-                        .addGroup(pnlRingkasanKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblJudulRingkasan1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnlRingkasanKursi1Layout.createSequentialGroup()
-                                .addComponent(lblRingkasanKursi1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblHargaKursi1)))
-                        .addGap(345, 345, 345))
-                    .addGroup(pnlRingkasanKursi1Layout.createSequentialGroup()
-                        .addComponent(lblJumlahKursi1)
-                        .addGap(497, 497, 497)
-                        .addComponent(lblTotalHargaKursi1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(pnlDenahKursi1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        pnlRingkasanKursi1Layout.setVerticalGroup(
-            pnlRingkasanKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlRingkasanKursi1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnlDenahKursi1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblJudulRingkasan1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(pnlRingkasanKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHargaKursi1)
-                    .addComponent(lblRingkasanKursi1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlRingkasanKursi1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTotalHargaKursi1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblJumlahKursi1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        btnKembaliFilm1.setBackground(new java.awt.Color(216, 209, 231));
-        btnKembaliFilm1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnKembaliFilm1.setForeground(new java.awt.Color(48, 35, 109));
-        btnKembaliFilm1.setText("Kembali");
-        btnKembaliFilm1.setFocusable(false);
-        btnKembaliFilm1.addActionListener(this::btnKembaliFilm1ActionPerformed);
-
-        btnLanjutPembayaran1.setBackground(new java.awt.Color(118, 87, 189));
-        btnLanjutPembayaran1.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
-        btnLanjutPembayaran1.setForeground(new java.awt.Color(255, 255, 255));
-        btnLanjutPembayaran1.setText("Lanjut Pembayaran");
-        btnLanjutPembayaran1.setFocusable(false);
-        btnLanjutPembayaran1.addActionListener(this::btnLanjutPembayaran1ActionPerformed);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnKembaliFilm1, javax.swing.GroupLayout.PREFERRED_SIZE, 430, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnLanjutPembayaran1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pnlHeader1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(pnlRingkasanKursi1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(pnlLayarBioskop1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(2, 2, 2))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(pnlHeader1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(pnlLayarBioskop1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(pnlRingkasanKursi1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLanjutPembayaran1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnKembaliFilm1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -1812,11 +1200,6 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                 .addComponent(pnlRingkasanKursi, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnlLayarBioskop, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1831,11 +1214,6 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
                     .addComponent(btnLanjutPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnKembaliFilm, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -2039,218 +1417,10 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLanjutPembayaranActionPerformed
 
-    private void btnF9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF9ActionPerformed
-
-    private void btnF10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF10ActionPerformed
-
-    private void btnF11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF11ActionPerformed
-
-    private void btnF12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF12ActionPerformed
-
-    private void btnA9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA9ActionPerformed
-
-    private void btnB9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB9ActionPerformed
-
-    private void btnC9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC9ActionPerformed
-
-    private void btnD9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD9ActionPerformed
-
-    private void btnE2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE2ActionPerformed
-
-    private void btnF13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF13ActionPerformed
-
-    private void btnF14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF14ActionPerformed
-
-    private void btnF15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF15ActionPerformed
-
-    private void btnF16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnF16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnF16ActionPerformed
-
-    private void btnA10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA10ActionPerformed
-
-    private void btnB10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB10ActionPerformed
-
-    private void btnC10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC10ActionPerformed
-
-    private void btnD10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD10ActionPerformed
-
-    private void btnE9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE9ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE9ActionPerformed
-
-    private void btnA11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA11ActionPerformed
-
-    private void btnB11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB11ActionPerformed
-
-    private void btnC11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC11ActionPerformed
-
-    private void btnD11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD11ActionPerformed
-
-    private void bbtnE3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bbtnE3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bbtnE3ActionPerformed
-
-    private void btnA12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA12ActionPerformed
-
-    private void btnB12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB12ActionPerformed
-
-    private void btnC12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC12ActionPerformed
-
-    private void btnD12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD12ActionPerformed
-
-    private void btnE10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE10ActionPerformed
-
-    private void btnA13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA13ActionPerformed
-
-    private void btnB13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB13ActionPerformed
-
-    private void btnC13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC13ActionPerformed
-
-    private void btnD13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD13ActionPerformed
-
-    private void btnE11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE11ActionPerformed
-
-    private void btnA14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA14ActionPerformed
-
-    private void btnA15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA15ActionPerformed
-
-    private void btnB14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB14ActionPerformed
-
-    private void btnC14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC14ActionPerformed
-
-    private void btnD14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD14ActionPerformed
-
-    private void btnE12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE12ActionPerformed
-
-    private void btnA16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnA16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnA16ActionPerformed
-
-    private void btnB15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB15ActionPerformed
-
-    private void btnC15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC15ActionPerformed
-
-    private void btnD15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD15ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD15ActionPerformed
-
-    private void btnE13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE13ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE13ActionPerformed
-
-    private void btnB16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnB16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnB16ActionPerformed
-
-    private void btnC16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnC16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnC16ActionPerformed
-
-    private void btnD16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnD16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnD16ActionPerformed
-
-    private void btnE14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnE14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnE14ActionPerformed
-
-    private void btnKembaliFilm1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliFilm1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnKembaliFilm1ActionPerformed
-
-    private void btnLanjutPembayaran1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLanjutPembayaran1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLanjutPembayaran1ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton bbtnE2;
-    private javax.swing.JToggleButton bbtnE3;
     private javax.swing.JToggleButton btnA1;
-    private javax.swing.JToggleButton btnA10;
-    private javax.swing.JToggleButton btnA11;
-    private javax.swing.JToggleButton btnA12;
-    private javax.swing.JToggleButton btnA13;
-    private javax.swing.JToggleButton btnA14;
-    private javax.swing.JToggleButton btnA15;
-    private javax.swing.JToggleButton btnA16;
     private javax.swing.JToggleButton btnA2;
     private javax.swing.JToggleButton btnA3;
     private javax.swing.JToggleButton btnA4;
@@ -2258,15 +1428,7 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnA6;
     private javax.swing.JToggleButton btnA7;
     private javax.swing.JToggleButton btnA8;
-    private javax.swing.JToggleButton btnA9;
     private javax.swing.JToggleButton btnB1;
-    private javax.swing.JToggleButton btnB10;
-    private javax.swing.JToggleButton btnB11;
-    private javax.swing.JToggleButton btnB12;
-    private javax.swing.JToggleButton btnB13;
-    private javax.swing.JToggleButton btnB14;
-    private javax.swing.JToggleButton btnB15;
-    private javax.swing.JToggleButton btnB16;
     private javax.swing.JToggleButton btnB2;
     private javax.swing.JToggleButton btnB3;
     private javax.swing.JToggleButton btnB4;
@@ -2274,15 +1436,7 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnB6;
     private javax.swing.JToggleButton btnB7;
     private javax.swing.JToggleButton btnB8;
-    private javax.swing.JToggleButton btnB9;
     private javax.swing.JToggleButton btnC1;
-    private javax.swing.JToggleButton btnC10;
-    private javax.swing.JToggleButton btnC11;
-    private javax.swing.JToggleButton btnC12;
-    private javax.swing.JToggleButton btnC13;
-    private javax.swing.JToggleButton btnC14;
-    private javax.swing.JToggleButton btnC15;
-    private javax.swing.JToggleButton btnC16;
     private javax.swing.JToggleButton btnC2;
     private javax.swing.JToggleButton btnC3;
     private javax.swing.JToggleButton btnC4;
@@ -2290,15 +1444,7 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnC6;
     private javax.swing.JToggleButton btnC7;
     private javax.swing.JToggleButton btnC8;
-    private javax.swing.JToggleButton btnC9;
     private javax.swing.JToggleButton btnD1;
-    private javax.swing.JToggleButton btnD10;
-    private javax.swing.JToggleButton btnD11;
-    private javax.swing.JToggleButton btnD12;
-    private javax.swing.JToggleButton btnD13;
-    private javax.swing.JToggleButton btnD14;
-    private javax.swing.JToggleButton btnD15;
-    private javax.swing.JToggleButton btnD16;
     private javax.swing.JToggleButton btnD2;
     private javax.swing.JToggleButton btnD3;
     private javax.swing.JToggleButton btnD4;
@@ -2306,29 +1452,14 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnD6;
     private javax.swing.JToggleButton btnD7;
     private javax.swing.JToggleButton btnD8;
-    private javax.swing.JToggleButton btnD9;
     private javax.swing.JToggleButton btnE1;
-    private javax.swing.JToggleButton btnE10;
-    private javax.swing.JToggleButton btnE11;
-    private javax.swing.JToggleButton btnE12;
-    private javax.swing.JToggleButton btnE13;
-    private javax.swing.JToggleButton btnE14;
-    private javax.swing.JToggleButton btnE2;
     private javax.swing.JToggleButton btnE3;
     private javax.swing.JToggleButton btnE4;
     private javax.swing.JToggleButton btnE5;
     private javax.swing.JToggleButton btnE6;
     private javax.swing.JToggleButton btnE7;
     private javax.swing.JToggleButton btnE8;
-    private javax.swing.JToggleButton btnE9;
     private javax.swing.JToggleButton btnF1;
-    private javax.swing.JToggleButton btnF10;
-    private javax.swing.JToggleButton btnF11;
-    private javax.swing.JToggleButton btnF12;
-    private javax.swing.JToggleButton btnF13;
-    private javax.swing.JToggleButton btnF14;
-    private javax.swing.JToggleButton btnF15;
-    private javax.swing.JToggleButton btnF16;
     private javax.swing.JToggleButton btnF2;
     private javax.swing.JToggleButton btnF3;
     private javax.swing.JToggleButton btnF4;
@@ -2336,59 +1467,31 @@ public class SeatSelectionPanel extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnF6;
     private javax.swing.JToggleButton btnF7;
     private javax.swing.JToggleButton btnF8;
-    private javax.swing.JToggleButton btnF9;
     private javax.swing.JButton btnKembaliFilm;
-    private javax.swing.JButton btnKembaliFilm1;
     private javax.swing.JButton btnLanjutPembayaran;
-    private javax.swing.JButton btnLanjutPembayaran1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblHargaKursi;
-    private javax.swing.JLabel lblHargaKursi1;
     private javax.swing.JLabel lblInfoFilmKursi;
-    private javax.swing.JLabel lblInfoFilmKursi1;
     private javax.swing.JLabel lblJudulKursi;
     private javax.swing.JLabel lblJudulKursi1;
-    private javax.swing.JLabel lblJudulKursi10;
-    private javax.swing.JLabel lblJudulKursi11;
-    private javax.swing.JLabel lblJudulKursi12;
-    private javax.swing.JLabel lblJudulKursi13;
-    private javax.swing.JLabel lblJudulKursi14;
-    private javax.swing.JLabel lblJudulKursi15;
     private javax.swing.JLabel lblJudulKursi2;
     private javax.swing.JLabel lblJudulKursi3;
     private javax.swing.JLabel lblJudulKursi4;
     private javax.swing.JLabel lblJudulKursi5;
     private javax.swing.JLabel lblJudulKursi6;
     private javax.swing.JLabel lblJudulKursi7;
-    private javax.swing.JLabel lblJudulKursi8;
-    private javax.swing.JLabel lblJudulKursi9;
     private javax.swing.JLabel lblJudulRingkasan;
-    private javax.swing.JLabel lblJudulRingkasan1;
     private javax.swing.JLabel lblJumlahKursi;
-    private javax.swing.JLabel lblJumlahKursi1;
     private javax.swing.JLabel lblKeteranganDipilih;
-    private javax.swing.JLabel lblKeteranganDipilih1;
     private javax.swing.JLabel lblKeteranganTerisi;
-    private javax.swing.JLabel lblKeteranganTerisi1;
     private javax.swing.JLabel lblKeteranganTersedia;
-    private javax.swing.JLabel lblKeteranganTersedia1;
     private javax.swing.JLabel lblRingkasanKursi;
-    private javax.swing.JLabel lblRingkasanKursi1;
     private javax.swing.JLabel lblTotalHargaKursi;
-    private javax.swing.JLabel lblTotalHargaKursi1;
     private javax.swing.JPanel pnlDenahKursi;
-    private javax.swing.JPanel pnlDenahKursi1;
     private javax.swing.JPanel pnlHeader;
-    private javax.swing.JPanel pnlHeader1;
     private javax.swing.JPanel pnlKeteranganTerisi;
-    private javax.swing.JPanel pnlKeteranganTerisi1;
     private javax.swing.JPanel pnlKeteranganTerpilih;
-    private javax.swing.JPanel pnlKeteranganTerpilih1;
     private javax.swing.JPanel pnlKeteranganTersedia;
-    private javax.swing.JPanel pnlKeteranganTersedia1;
     private javax.swing.JPanel pnlLayarBioskop;
-    private javax.swing.JPanel pnlLayarBioskop1;
     private javax.swing.JPanel pnlRingkasanKursi;
-    private javax.swing.JPanel pnlRingkasanKursi1;
     // End of variables declaration//GEN-END:variables
 }

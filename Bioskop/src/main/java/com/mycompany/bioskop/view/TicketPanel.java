@@ -23,6 +23,7 @@ public class TicketPanel extends javax.swing.JPanel {
     private DetailPesananRepository detailPesananRepository = new DetailPesananRepository();
     private KursiRepository kursiRepository = new KursiRepository();
     private PembayaranRepository pembayaranRepository = new PembayaranRepository();
+    private int idUser;
 
 
     /**
@@ -30,18 +31,45 @@ public class TicketPanel extends javax.swing.JPanel {
      */
     public TicketPanel() {
         initComponents();
-        
-         javax.swing.JFrame frame = new javax.swing.JFrame("Test Ticket");
-        frame.setContentPane(this);
-        frame.setSize(1200, 700);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
     }
-    
+
     public TicketPanel(int idPemesanan) {
         initComponents();
+
+        Pemesanan pemesanan = pemesananRepository.getPemesanan(idPemesanan);
+
+        if (pemesanan.getIdPemesanan() == 0) {
+            lblPesanBerhasil.setText("Data pemesanan tidak ditemukan.");
+            return;
+        }
+
+        this.idUser = pemesanan.getIdUser();
         tampilkanDataTiket(idPemesanan);
+    }
+
+    public TicketPanel(Riwayat riwayat, int idUser) {
+        initComponents();
+        this.idUser = idUser;
+
+        if (riwayat == null || riwayat.getIdUser() != idUser) {
+            lblPesanBerhasil.setText("Data tiket tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            lblInfoBerhasil1.setText("");
+            return;
+        }
+
+        Pemesanan pemesanan
+                = pemesananRepository.getPemesanan(riwayat.getIdPemesanan());
+
+        if (pemesanan.getIdPemesanan() == 0
+                || pemesanan.getIdUser() != idUser) {
+            lblPesanBerhasil.setText("Data tiket tidak ditemukan.");
+            lblInfoBerhasil.setText("");
+            lblInfoBerhasil1.setText("");
+            return;
+        }
+
+        tampilkanDataTiket(riwayat.getIdPemesanan());
     }
     
     private void tampilkanDataTiket(int idPemesanan) {
@@ -203,12 +231,10 @@ public class TicketPanel extends javax.swing.JPanel {
         lblJudulFilmTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJudulFilmTiket.setText("Judul Film");
 
-        lblTanggalTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblTanggalTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblTanggalTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTanggalTiket.setText("Tanggal");
 
-        lblJamTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJamTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJamTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJamTiket.setText("Jam");
@@ -223,17 +249,14 @@ public class TicketPanel extends javax.swing.JPanel {
         lblTotalTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblTotalTiket.setText("Total Pembayaran");
 
-        lblStudioTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblStudioTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblStudioTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblStudioTiket.setText("Studio");
 
-        lblKodeBooking.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblKodeBooking.setForeground(new java.awt.Color(110, 110, 110));
         lblKodeBooking.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblKodeBooking.setText("Kode Booking");
 
-        lblJumlahTiket.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblJumlahTiket.setForeground(new java.awt.Color(110, 110, 110));
         lblJumlahTiket.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblJumlahTiket.setText("Jumlah Tiket");
@@ -288,7 +311,6 @@ public class TicketPanel extends javax.swing.JPanel {
         pnlBerhasil.setBackground(new java.awt.Color(255, 255, 255));
         pnlBerhasil.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 209, 231)));
 
-        lblInfoBerhasil.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblInfoBerhasil.setForeground(new java.awt.Color(110, 110, 110));
         lblInfoBerhasil.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblInfoBerhasil.setText("Pembayaran berhasil. Selamat menonton!");
@@ -298,7 +320,6 @@ public class TicketPanel extends javax.swing.JPanel {
         lblPesanBerhasil.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblPesanBerhasil.setText("Tiket Berhasil Dipesan!");
 
-        lblInfoBerhasil1.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         lblInfoBerhasil1.setForeground(new java.awt.Color(110, 110, 110));
         lblInfoBerhasil1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
@@ -334,7 +355,7 @@ public class TicketPanel extends javax.swing.JPanel {
         btnKembaliBeranda.setBackground(new java.awt.Color(118, 87, 189));
         btnKembaliBeranda.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnKembaliBeranda.setForeground(new java.awt.Color(255, 255, 255));
-        btnKembaliBeranda.setText("Kreembali Ke Beranda");
+        btnKembaliBeranda.setText("Kembali Ke Beranda");
         btnKembaliBeranda.setFocusable(false);
         btnKembaliBeranda.addActionListener(this::btnKembaliBerandaActionPerformed);
 
@@ -369,7 +390,7 @@ public class TicketPanel extends javax.swing.JPanel {
                 .addComponent(pnlBerhasil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
                 .addComponent(pnlTiket, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 92, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnRiwayatTiket, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnKembaliBeranda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -378,17 +399,22 @@ public class TicketPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnKembaliBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliBerandaActionPerformed
-           UserMainFrame beranda = new UserMainFrame();
-            beranda.setVisible(true);
+        java.awt.Window window
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
 
-            javax.swing.JFrame frame = (javax.swing.JFrame)
-                    javax.swing.SwingUtilities.getWindowAncestor(this);
-
-            frame.dispose();
+        if (window instanceof UserMainFrame frame) {
+            frame.tampilkanBeranda();
+        }
     }//GEN-LAST:event_btnKembaliBerandaActionPerformed
 
     private void btnRiwayatTiketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRiwayatTiketActionPerformed
         // TODO add your handling code here:
+        java.awt.Window window
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (window instanceof UserMainFrame frame) {
+            frame.tampilkanPanel(new RiwayatPanel(idUser));
+        }
     }//GEN-LAST:event_btnRiwayatTiketActionPerformed
 
 

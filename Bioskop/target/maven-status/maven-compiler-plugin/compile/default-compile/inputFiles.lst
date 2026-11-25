@@ -5,6 +5,7 @@
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Kursi.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Pembayaran.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Pemesanan.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Riwayat.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/Studio.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/entity/User.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/exception/AuthException.java
@@ -18,12 +19,13 @@
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/LaporanRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/PembayaranRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/PemesananRepository.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/RiwayatRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/StudioRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/repository/UserRepository.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/service/AuthService.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/service/FilmService.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/AdminMainFrame.java
-/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/DetailFilmPanel.java
+/home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/BerandaPanel.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/FilmPanel.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/JadwalPanel.java
 /home/bill/Documents/kuliah/project/PT.SHS/Bioskop/src/main/java/com/mycompany/bioskop/view/LaporanPanel.java
