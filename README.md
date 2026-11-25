@@ -15,7 +15,7 @@ aplikasi untuk mengelola operasional bioskop: film, jadwal tayang, studio, kursi
 **Latar Belakang**:
 Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan penjualan di buku) rentan kesalahan, seperti: kursi terjual ganda, laporan pendapatan lambat, dan informasi film tidak mudah diakses pelanggan.
 
-**Sistem Manajemen Bioskop PT.shs** adalah aplikasi yang memusatkan seluruh proses tersebut: admin mengelola film, studio, dan jadwal; kasir/pelanggan memesan tiket dengan memilih kursi secara langsung; dan manajemen dapat melihat laporan penjualan.
+**Sistem Manajemen Bioskop PT.shs** adalah aplikasi yang memusatkan seluruh proses tersebut: admin mengelola film, studio, dan jadwal. pelanggan memesan tiket dengan memilih kursi secara langsung
 
 ### Tujuan
 - Mempermudah pengelolaan data film, studio, dan jadwal tayang.
@@ -30,8 +30,6 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 ### Peran
 **Admin** : Mengelola seluruh data master dan melihat laporan 
 
-**Kasir** : Melayani pemesanan tiket langsung di loket 
-
 **Pelanggan** : Melihat film, memesan tiket, melihat riwayat pesanan 
 
 ### Tabel Fungsionalitas
@@ -45,13 +43,12 @@ Pengelolaan bioskop secara manual (jadwal di papan, tiket kertas, pencatatan pen
 | Studio | Kelola studio dan kursi | Mengatur studio, tipe (regular/premium), kapasitas, dan tata letak kursi. | Admin |
 | Jadwal | Lihat jadwal | Menampilkan jadwal tayang per film dan tanggal beserta harga tiket. | Semua |
 | Jadwal | Kelola jadwal | Menentukan film, studio, tanggal, jam, dan harga. Sistem menolak jadwal yang bentrok di studio yang sama. | Admin |
-| Pemesanan | Pilih kursi | Menampilkan denah kursi. Kursi yang sudah dipesan pada jadwal tersebut tidak dapat dipilih. | Pelanggan, Kasir |
-| Pemesanan | Buat pesanan | Mengonfirmasi kursi yang dipilih. Sistem mengecek ketersediaan kursi sebelum pesanan disimpan dengan status `pending`. | Pelanggan, Kasir |
-| Pemesanan | Batalkan pesanan | Membatalkan pesanan selama statusnya masih `pending`, lalu kursi dilepas kembali. | Pelanggan, Kasir |
-| Pembayaran | Bayar pesanan | Mencatat metode dan jumlah pembayaran. Jika berhasil, status pesanan menjadi `lunas`. | Pelanggan, Kasir |
-| Pembayaran | Cetak tiket | Menampilkan atau mencetak tiket untuk pesanan yang sudah `lunas`. | Pelanggan, Kasir |
+| Pemesanan | Pilih kursi | Menampilkan denah kursi. Kursi yang sudah dipesan pada jadwal tersebut tidak dapat dipilih. | Pelanggan |
+| Pemesanan | Buat pesanan | Mengonfirmasi kursi yang dipilih. Sistem mengecek ketersediaan kursi. | Pelanggan |
+| Pembayaran | Bayar pesanan | Mencatat metode dan jumlah pembayaran. Jika berhasil, status pesanan menjadi `sukses`. | Pelanggan |
+| Pembayaran | Cetak tiket | Menampilkan tiket untuk pesanan yang sudah `sukses`. | Pelanggan |
 | Riwayat | Lihat riwayat | Menampilkan daftar pesanan milik pengguna sendiri. | Pelanggan |
-| Laporan | Rekap penjualan | Menampilkan pendapatan harian atau bulanan dan film terlaris. | Admin |
+| Laporan | Rekap penjualan | Menampilkan pendapatan dan film terlaris. | Admin |
 
 ---
 
@@ -161,12 +158,7 @@ Version Control : Git & GitHub
 ## 7. Struktur Folder (Rencana)
 ```
 manajemen-bioskop/
-├── docs/            # dokumentasi & diagram
-├── database/        # skema SQL & seeder
-├── src/             # kode sumber
+├── docs/                    
+├── src/             
 └── README.md
 ```
-
----
-
-2026 **PT.shs** — Kelompok shs
