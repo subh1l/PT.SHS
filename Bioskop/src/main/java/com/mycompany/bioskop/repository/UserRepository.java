@@ -81,18 +81,20 @@ public class UserRepository {
         }
     }
     
-    public void addUser(String nama, String email, String password, String role){
+    public void addUser(String nama, String email, String password, String role)
+            throws SQLException {
+
+        String sql = "INSERT INTO user (nama, email, password, role) "
+                + "VALUES (?, ?, ?, ?)";
+
         try (
-                Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("INSERT INTO user (nama, email, password, role) VALUES (?, ?, ?, ?)")
-                ){
+                Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, nama);
             stmt.setString(2, email);
             stmt.setString(3, password);
             stmt.setString(4, role);
+
             stmt.executeUpdate();
-        }catch(SQLException e){
-            e.printStackTrace();
         }
     }
 
@@ -112,18 +114,16 @@ public class UserRepository {
         }
     }
 
-    public boolean existsByEmail(String email){
+    public boolean existsByEmail(String email) throws SQLException {
+        String sql = "SELECT 1 FROM user WHERE email = ?";
+
         try (
-                Connection conn = DatabaseUtil.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT 1 FROM user WHERE email = ?")
-            ){
+                Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next();
             }
-        }catch(SQLException e){
-            e.printStackTrace();
-            return false;
         }
     }
 }

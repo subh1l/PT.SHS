@@ -4,6 +4,17 @@
  */
 package com.mycompany.bioskop.view;
 
+import com.mycompany.bioskop.entity.Film;
+import com.mycompany.bioskop.entity.Jadwal;
+import com.mycompany.bioskop.repository.FilmRepository;
+import com.mycompany.bioskop.repository.JadwalRepository;
+import java.text.NumberFormat;
+import java.util.List;
+import java.util.Locale;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ACER NITRO
@@ -13,10 +24,152 @@ public class BerandaPanel extends javax.swing.JPanel {
     /**
      * Creates new form BerandaPanel
      */
+    private final FilmRepository filmRepository = new FilmRepository();
+    private final JadwalRepository jadwalRepository = new JadwalRepository();
+    private List<Film> daftarFilm = new java.util.ArrayList<>();
+
     public BerandaPanel() {
         initComponents();
+        jTable1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jTable1.setDefaultEditor(Object.class, null);
+        jButton1.addActionListener(e -> pilihJadwal());
+        btnDetail.addActionListener(e -> lihatDetail());
+        muatFilm();
     }
 
+    private void muatFilm() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        daftarFilm = new java.util.ArrayList<>();
+        try {
+            List<Jadwal> semuaJadwal = jadwalRepository.getAllJadwal();
+            NumberFormat rupiah = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+            for (Film f : filmRepository.getAllFilm()) {
+                if (!"Tayang".equals(f.getStatus())) {
+                    continue;
+                }
+                double termurah = 0;
+                for (Jadwal j : semuaJadwal) {
+                    if (j.getIdFilm() == f.getIdFilm()
+                            && (termurah == 0 || j.getHarga() < termurah)) {
+                        termurah = j.getHarga();
+                    }
+                }
+                daftarFilm.add(f);
+                model.addRow(new Object[]{
+                    f.getJudul(),
+                    f.getGenre(),
+                    f.getRatingUsia(),
+                    termurah == 0 ? "-" : rupiah.format(termurah)
+                });
+            }
+            if (!daftarFilm.isEmpty()) {
+                lblBanner.setText(daftarFilm.get(0).getJudul());
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal memuat film: " + e.getMessage());
+        }
+    }
+
+    private Film filmTerpilih() {
+        int baris = jTable1.getSelectedRow();
+        if (baris == -1 || baris >= daftarFilm.size()) {
+            JOptionPane.showMessageDialog(this, "Silakan pilih film terlebih dahulu!");
+            return null;
+        }
+        return daftarFilm.get(baris);
+    }
+
+    private void lihatDetail() {
+        Film f = filmTerpilih();
+        if (f == null) {
+            return;
+        }
+        JOptionPane.showMessageDialog(this,
+                f.getJudul() + "\n"
+                + "Genre: " + f.getGenre() + "\n"
+                + "Durasi: " + f.getDurasiMenit() + " menit\n"
+                + "Rating: " + f.getRatingUsia() + "\n\n"
+                + f.getSinopsis(),
+                "Detail Film", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void pilihJadwal() {
+        Film film = filmTerpilih();
+        if (film == null) {
+            return;
+        }
+
+        List<Jadwal> jadwalFilm = new java.util.ArrayList<>();
+
+        for (Jadwal jadwal : jadwalRepository.getAllJadwal()) {
+            if (jadwal.getIdFilm() == film.getIdFilm()) {
+                jadwalFilm.add(jadwal);
+            }
+        }
+
+        if (jadwalFilm.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Belum ada jadwal untuk film ini.",
+                    "Jadwal tidak tersedia",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            return;
+        }
+
+        jadwalFilm.sort(
+                java.util.Comparator
+                        .comparing(Jadwal::getTanggal)
+                        .thenComparing(Jadwal::getJamMulai)
+        );
+
+        java.time.format.DateTimeFormatter formatTanggal
+                = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy");
+
+        java.time.format.DateTimeFormatter formatJam
+                = java.time.format.DateTimeFormatter.ofPattern("HH:mm");
+
+        String[] pilihan = new String[jadwalFilm.size()];
+
+        for (int i = 0; i < jadwalFilm.size(); i++) {
+            Jadwal jadwal = jadwalFilm.get(i);
+
+            pilihan[i] = jadwal.getTanggal().format(formatTanggal)
+                    + " | " + jadwal.getJamMulai().format(formatJam)
+                    + " | Rp" + String.format("%,.0f", jadwal.getHarga());
+        }
+
+        String jadwalDipilih = (String) JOptionPane.showInputDialog(
+                this,
+                "Pilih jadwal untuk " + film.getJudul() + ":",
+                "Pilih Jadwal",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                pilihan,
+                pilihan[0]
+        );
+
+        if (jadwalDipilih == null) {
+            return;
+        }
+
+        int index = java.util.Arrays.asList(pilihan).indexOf(jadwalDipilih);
+
+        if (index < 0) {
+            return;
+        }
+
+        java.awt.Window window
+                = javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        if (window instanceof UserMainFrame frame) {
+            frame.tampilkanPanel(
+                    new SeatSelectionPanel(jadwalFilm.get(index), frame.getIdUser())
+            );
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -107,7 +260,7 @@ public class BerandaPanel extends javax.swing.JPanel {
                 .addComponent(lblBanner)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDeskripsi)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(btnDetail)
                 .addGap(29, 29, 29))
         );
@@ -165,8 +318,8 @@ public class BerandaPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton1)))
                 .addContainerGap())
         );

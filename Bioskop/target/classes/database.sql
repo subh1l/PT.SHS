@@ -120,7 +120,7 @@ CREATE TABLE `pemesanan` (
 CREATE TABLE `studio` (
   `id_studio` int NOT NULL,
   `nama_studio` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tipe` enum('IMAX','Reguler') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tipe` enum('IMAX','Reguler', 'VIP', 'Premium') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `kapasitas` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

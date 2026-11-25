@@ -64,11 +64,12 @@
               </Group>
               <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
               <Component id="pnlTotalBayar" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="14" pref="14" max="-2" attributes="0"/>
+              <EmptySpace pref="59" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="btnKembali" min="-2" pref="30" max="-2" attributes="0"/>
                   <Component id="btnBayar" min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -161,27 +162,24 @@
                           <Component id="lblJudulFilm" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="0" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="lblGenre" min="-2" pref="60" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="250" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="lblTanggalPembayaran" min="-2" pref="80" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="230" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblJamPembayaran" min="-2" pref="40" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="270" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="lblStudioPembayaran" min="-2" pref="70" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lblJamPembayaran" min="-2" pref="40" max="-2" attributes="0"/>
+                                      <Component id="lblStudioPembayaran" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="240" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -331,7 +329,7 @@
               <Color blue="6d" green="23" red="30" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Ringlasan Pesanan"/>
+            <Property name="text" type="java.lang.String" value="Ringkasan Pesanan"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblJamPembayaran">
@@ -442,7 +440,7 @@
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Bayar langsung di loket"/>
+            <Property name="text" type="java.lang.String" value="Pembayaran melalui E-Wallet GoPay"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblSubMetodeBayar">
@@ -474,7 +472,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Qris"/>
+            <Property name="text" type="java.lang.String" value="Dana"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbQRISActionPerformed"/>
@@ -485,7 +483,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Transfer Bank"/>
+            <Property name="text" type="java.lang.String" value="Bank"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="rbKasir">
@@ -493,7 +491,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="13" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Bayar di Kasir"/>
+            <Property name="text" type="java.lang.String" value="GoPay"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbKasirActionPerformed"/>
@@ -508,7 +506,7 @@
               <Color blue="6e" green="6e" red="6e" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="text" type="java.lang.String" value="Scan QR untuk pembayaran"/>
+            <Property name="text" type="java.lang.String" value="Pembayaran melalui E-Wallet Dana"/>
           </Properties>
         </Component>
       </SubComponents>
